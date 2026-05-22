@@ -1,0 +1,67 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+  class?: string;
+  /** Dunkler Section-Hintergrund (z. B. Navy) */
+  theme?: 'light' | 'dark';
+  /** z. B. für aria-labelledby */
+  headingId?: string;
+  /** Bernstein-Akzent für Eyebrow auf hellem Grund */
+  eyebrowTone?: 'muted' | 'brand';
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  align = 'left',
+  class: className,
+  theme = 'light',
+  headingId,
+  eyebrowTone = 'muted',
+} = Astro.props;
+const onDark = theme === 'dark';
+---
+
+<div
+  class:list={[
+    align === 'center' && 'mx-auto text-center',
+    'max-w-3xl',
+    className,
+  ]}
+>
+  <p
+    class:list={[
+      'mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] md:mb-3.5',
+      onDark ? 'text-ice-blue/85' : eyebrowTone === 'brand' ? 'text-bernstein' : 'text-steel-navy/70',
+    ]}
+  >
+    {eyebrow}
+  </p>
+  <h2
+    id={headingId}
+    class:list={[
+      'font-display text-[clamp(1.875rem,3.5vw,3rem)] font-light leading-[1.12] tracking-[-0.02em]',
+      onDark ? 'text-off-white' : 'text-steel-navy',
+    ]}
+    style="text-wrap: balance;"
+  >
+    {title}
+  </h2>
+  {
+    subtitle && (
+      <p
+        class:list={[
+          'mt-5 text-base font-normal leading-[1.7] md:text-[1.0625rem]',
+          onDark ? 'text-ice-blue/90' : 'text-steel-navy/[0.78]',
+          align === 'center' && 'mx-auto max-w-2xl',
+        ]}
+      >
+        {subtitle}
+      </p>
+    )
+  }
+</div>

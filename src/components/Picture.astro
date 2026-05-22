@@ -1,0 +1,43 @@
+---
+/**
+ * Responsives Bild: AVIF → WebP → Fallback.
+ * Legen Sie Dateien unter public/ ab, z. B. /images/hero.avif
+ */
+interface Props {
+  avifSrc?: string;
+  webpSrc?: string;
+  fallbackSrc: string;
+  alt: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  sizes?: string;
+  width?: number;
+  height?: number;
+}
+
+const {
+  avifSrc,
+  webpSrc,
+  fallbackSrc,
+  alt,
+  class: className,
+  loading = 'lazy',
+  sizes,
+  width,
+  height,
+} = Astro.props;
+---
+
+<picture>
+  {avifSrc && <source srcset={avifSrc} type="image/avif" sizes={sizes} />}
+  {webpSrc && <source srcset={webpSrc} type="image/webp" sizes={sizes} />}
+  <img
+    src={fallbackSrc}
+    alt={alt}
+    class={className}
+    loading={loading}
+    decoding="async"
+    width={width}
+    height={height}
+  />
+</picture>

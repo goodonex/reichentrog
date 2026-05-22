@@ -1,0 +1,467 @@
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import '@fontsource/cormorant-garamond/300-italic.css';
+@import '@fontsource/cormorant-garamond/400-italic.css';
+@import '@fontsource/dm-sans/300.css';
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-steel-navy: #1a2e4e;
+    --color-steel-blue: #2e4e70;
+    --color-meridian: #6d90bc;
+    --color-bernstein: #cc9e4d;
+    --color-off-white: #f5f2ea;
+    --color-ice-blue: #e0e8ef;
+    --color-brand-navy: #2a2d52;
+    --color-hero-dark: #0f1923;
+    --color-warum-dark: #0a1018;
+    --color-editorial-navy: #1c2b4a;
+    --color-bone: #eee9e0;
+
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-bg-strong: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.45);
+    --glass-blur: blur(24px) saturate(180%);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --glass-radius: 24px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply font-sans font-normal text-steel-navy antialiased;
+    background: var(--color-off-white);
+  }
+
+  ::selection {
+    background: rgba(204, 158, 77, 0.35);
+    color: var(--color-steel-navy);
+  }
+
+  .grain-overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .section-mesh-light {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(109, 144, 188, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 50%, rgba(204, 158, 77, 0.06), transparent);
+  }
+
+  .section-mesh-ice {
+    background-image:
+      radial-gradient(ellipse 70% 60% at 0% 100%, rgba(26, 46, 78, 0.06), transparent),
+      radial-gradient(ellipse 50% 40% at 100% 0%, rgba(109, 144, 188, 0.1), transparent);
+  }
+
+  /* Editorial dark sections — Lesbarkeit über Video/Foto */
+  .editorial-dark-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 15, 28, var(--editorial-overlay-top, 0.5)) 0%,
+      rgba(10, 15, 28, var(--editorial-overlay-mid, 0.62)) 45%,
+      rgba(10, 15, 28, var(--editorial-overlay-bottom, 0.72)) 100%
+    );
+  }
+
+  @media (max-width: 767px) {
+    .editorial-dark-overlay {
+      --editorial-overlay-top: 0.58;
+      --editorial-overlay-mid: 0.72;
+      --editorial-overlay-bottom: 0.8;
+    }
+  }
+
+  #scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: 2px;
+    width: 0%;
+    background: #1c2b4a;
+    transition: width 100ms linear;
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  #site-nav[data-scrolled='true'] .glass-nav-shell {
+    background: var(--glass-bg-strong);
+  }
+
+  /* Navigation auf dunklem Hero */
+  #site-nav[data-on-hero='true'] .glass-nav-shell {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(26, 46, 78, 0.48);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.28);
+  }
+
+  /* Logo (Kompass + Wortmarke) — Brand-Navy bzw. Off-White je nach Hero/Scroll */
+  .rk-logo {
+    color: var(--color-brand-navy);
+  }
+
+  #site-nav[data-on-hero='true'] .rk-logo {
+    color: var(--color-off-white);
+  }
+
+  #site-nav[data-on-hero='true'] .rk-logo .rk-logo-sub {
+    opacity: 0.55;
+  }
+
+  #site-nav[data-no-hero='true'] .rk-logo {
+    color: var(--color-brand-navy);
+  }
+
+  #site-nav[data-no-hero='true'] .rk-logo .rk-logo-sub {
+    opacity: 0.65;
+  }
+
+  .rk-logo-footer {
+    color: var(--color-off-white);
+  }
+
+  .rk-logo-footer .rk-logo {
+    color: inherit;
+  }
+
+  .rk-logo-footer .rk-logo-sub {
+    opacity: 0.55;
+  }
+
+  #site-nav[data-on-hero='true'] .nav-link {
+    color: rgba(224, 232, 239, 0.92);
+  }
+
+  #site-nav[data-on-hero='true'] .nav-link:hover {
+    color: #fff;
+  }
+
+  #site-nav[data-on-hero='true'] .nav-cta {
+    background: var(--color-off-white);
+    color: var(--color-steel-navy);
+  }
+
+  #site-nav[data-on-hero='true'] .nav-cta:hover {
+    background: #fff;
+  }
+
+  #site-nav[data-on-hero='true'] .nav-toggle-btn {
+    color: var(--color-off-white);
+  }
+
+  /* Primär-CTA in der Nav (Objekt anbieten) */
+  #site-nav[data-on-hero='true'] .nav-highlight {
+    background: var(--color-off-white);
+    color: var(--color-steel-navy);
+  }
+
+  #site-nav[data-on-hero='true'] .nav-highlight:hover {
+    background: #fff;
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-highlight {
+    background: var(--color-steel-navy);
+    color: var(--color-off-white);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-highlight:hover {
+    background: var(--color-steel-blue);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .glass-nav-shell {
+    background: rgba(245, 242, 234, 0.72);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: var(--glass-shadow);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .rk-logo {
+    color: var(--color-brand-navy);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .rk-logo .rk-logo-sub {
+    opacity: 0.65;
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-link {
+    color: var(--color-steel-blue);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-link:hover {
+    color: var(--color-steel-navy);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-cta {
+    background: var(--color-steel-navy);
+    color: var(--color-off-white);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-toggle-btn {
+    color: var(--color-steel-navy);
+  }
+
+  details summary {
+    list-style: none;
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* Logo auf dunklem Hintergrund — außerhalb @layer, schlägt Tailwind-Utilities */
+.rk-logo.rk-logo--light,
+footer .rk-logo-footer .rk-logo,
+footer .rk-logo-footer svg {
+  color: #f5f2ea;
+}
+
+.rk-logo.rk-logo--light .rk-logo-sub,
+footer .rk-logo-footer .rk-logo-sub {
+  opacity: 0.55;
+}
+
+/* Section-Hintergrundfarben — verifiziert aus dem Code */
+/* #hero: Video/Poster — Scroll-Exit rgba(245,240,232) (HeroVideo.astro) */
+/* #alles-aus-einer-hand: #F5F2EA (tailwind.config off-white) */
+/* #warum: Foto/Video — Edge-Top #576272, Edge-Bottom #10131a (WarumSection + .section-photo-fades) */
+/* #banken-hintergrund: Foto/Video — Edge-Top #273442, Edge-Bottom #303a45 (BankenHintergrund.astro) */
+/* #off-market: #1C2B4A (OffMarketStatement.astro bg-[#1c2b4a]) */
+/* #privatkunden: #E0E8EF (Parent #leistungen bg-ice-blue) */
+/* #ankauf: #E0E8EF */
+/* #geschaeftskunden: #E0E8EF */
+/* #leistungen / #cases: #E0E8EF (bg-ice-blue) */
+/* #reichweite: #F5F2EA (bg-off-white) */
+/* #team: Foto — Edge-Top #3B434A, Edge-Bottom #353E47 (TeamSection.astro) */
+/* #stimmen: #F5F2EA (bg-off-white) */
+/* #faq: #EEE9E0 (index.astro bg-[#EEE9E0]) */
+/* #kontakt: #F5F2EA (bg-off-white) */
+/* #footer: #1A2E4E (Footer.astro bg-steel-navy) */
+
+/* Foto/Video: unterer Rand ausblenden für nahtlosen ::after-Übergang */
+.section-photo-bg .section-video-bg__poster,
+.section-photo-bg .section-video-bg__video,
+.hero-video-stack.section-photo-bg .hero-poster,
+.hero-video-stack.section-photo-bg .hero-video {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+}
+
+/*
+ * Section-Edge-Fades — Foto/Video-Sections
+ * Oben: Vorgängerfarbe → transparent (Bild scheint durch, kein Navy-Streifen)
+ * Unten: Bildkante + Overlay → nächste Section-Farbe
+ */
+.section-photo-fades {
+  --section-fade-height: 80px;
+}
+
+.section-photo-fades::before,
+.section-photo-fades::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--section-fade-height);
+  pointer-events: none;
+}
+
+.section-photo-fades::before {
+  top: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    var(--section-fade-from) 0%,
+    color-mix(in oklab, var(--section-fade-from) 25%, transparent) 45%,
+    transparent 100%
+  );
+}
+
+.section-photo-fades::after {
+  bottom: calc(var(--section-fade-height) / -2);
+  z-index: 10;
+  background: linear-gradient(
+    to bottom,
+    var(--section-fade-edge-bottom) 0%,
+    var(--section-fade-to) 100%
+  );
+}
+
+/* Section-Exit-Gradients — 80px, oklab, ::after auf der oberen Section */
+#hero,
+#alles-aus-einer-hand,
+#warum,
+#banken-hintergrund,
+#off-market,
+#leistungen,
+#cases,
+#reichweite,
+#team,
+#stimmen,
+#faq,
+#kontakt {
+  position: relative;
+  overflow: visible;
+}
+
+#hero {
+  --section-exit-edge: #202127;
+  --section-exit-to: #f5f2ea;
+}
+
+#hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(
+    in oklab to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--section-exit-edge) 45%, transparent) 42%,
+    var(--section-exit-to) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+#alles-aus-einer-hand {
+  z-index: 2;
+}
+
+#warum {
+  z-index: 2;
+}
+
+#banken-hintergrund {
+  z-index: 1;
+}
+
+#off-market::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(in oklab to bottom, transparent, #e0e8ef);
+  pointer-events: none;
+  z-index: 5;
+}
+
+#leistungen {
+  z-index: 2;
+}
+
+#cases {
+  z-index: 1;
+}
+
+#cases::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(in oklab to bottom, transparent, #f5f2ea);
+  pointer-events: none;
+  z-index: 5;
+}
+
+#reichweite {
+  z-index: 2;
+}
+
+#team {
+  z-index: 1;
+}
+
+#stimmen::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(in oklab to bottom, transparent, #eee9e0);
+  pointer-events: none;
+  z-index: 5;
+}
+
+#faq::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(in oklab to bottom, transparent, #f5f2ea);
+  pointer-events: none;
+  z-index: 5;
+}
+
+#kontakt::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(in oklab to bottom, transparent, #1a2e4e);
+  pointer-events: none;
+  z-index: 5;
+}

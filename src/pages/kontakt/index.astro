@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import GlassCard from '../../components/GlassCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { phoneDisplay, phoneHref, emailDisplay, emailHref } from '../../content/site';
+
+const title = 'Kontakt | Reichentrog & Kollegen';
+const description =
+  'Kontakt zur Immobilien-Kanzlei Reichentrog & Kollegen in Hamburg — Telefon, E-Mail, Formular.';
+const objektRef = Astro.url.searchParams.get('objekt')?.trim() ?? '';
+---
+
+<BaseLayout {title} {description}>
+  <Nav variant="page" />
+  <main id="main" class="section-mesh-ice bg-ice-blue pb-24 pt-28 md:pt-32" data-cursor-surface="light">
+    <div class="mx-auto max-w-content px-6">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <SectionHeader
+            eyebrow="Kontakt"
+            title="Sprechen wir miteinander."
+            subtitle="Ob Sie verkaufen, kaufen oder zunächst nur Klarheit suchen — ein Erstgespräch verpflichtet zu nichts."
+          />
+          <address class="mt-10 space-y-3 not-italic">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-steel-navy/55">Direkt</p>
+            <p>
+              <a class="text-xl text-steel-navy transition hover:text-bernstein" href={phoneHref}
+                >{phoneDisplay}</a
+              >
+            </p>
+            <p>
+              <a class="text-xl text-steel-navy transition hover:text-bernstein" href={emailHref}
+                >{emailDisplay}</a
+              >
+            </p>
+          </address>
+          <p class="mt-8 text-sm text-steel-navy/70">
+            Objekt für den Ankauf?
+            <a href="/objekt-anbieten/" class="font-medium text-steel-navy underline underline-offset-2"
+              >Zur Lead-Seite</a
+            >
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <GlassCard class="p-8 md:p-10">
+            <ContactForm formName="kontakt-seite" objektRef={objektRef} />
+          </GlassCard>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

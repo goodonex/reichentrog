@@ -1,0 +1,54 @@
+---
+/**
+ * Überlappender Farbverlauf — sitzt halb in der vorherigen, halb in der nächsten Section.
+ * Keine sichtbare Kante, nur weicher Übergang.
+ */
+interface Props {
+  from: string;
+  to: string;
+  size?: 'default' | 'wide';
+}
+
+const { from, to, size = 'default' } = Astro.props;
+
+const sizeClass =
+  size === 'wide'
+    ? 'section-blend--wide'
+    : 'section-blend--default';
+
+const gradient = `linear-gradient(to bottom,
+  ${from} 0%,
+  color-mix(in srgb, ${from} 88%, ${to}) 12%,
+  color-mix(in srgb, ${from} 68%, ${to}) 28%,
+  color-mix(in srgb, ${from} 48%, ${to}) 44%,
+  color-mix(in srgb, ${from} 32%, ${to}) 58%,
+  color-mix(in srgb, ${from} 18%, ${to}) 72%,
+  color-mix(in srgb, ${from} 8%, ${to}) 86%,
+  ${to} 100%)`;
+---
+
+<div
+  class:list={['section-blend pointer-events-none', sizeClass]}
+  style={`background: ${gradient};`}
+  aria-hidden="true"
+></div>
+
+<style>
+  .section-blend {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+  }
+
+  .section-blend--default {
+    height: clamp(5rem, 11vw, 7.5rem);
+    margin-top: clamp(-3.5rem, -8vw, -5rem);
+    margin-bottom: clamp(-3.5rem, -8vw, -5rem);
+  }
+
+  .section-blend--wide {
+    height: clamp(6.5rem, 14vw, 10rem);
+    margin-top: clamp(-4.5rem, -10vw, -6.5rem);
+    margin-bottom: clamp(-4.5rem, -10vw, -6.5rem);
+  }
+</style>

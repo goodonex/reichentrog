@@ -1,0 +1,19 @@
+---
+import googleReviews from '../data/google-reviews.json';
+
+const ratingLabel = googleReviews.rating.toFixed(1).replace('.', ',');
+const reviewCount = googleReviews.userRatingCount;
+---
+
+<p
+  class="hero-trust-bar hero-reveal-item mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed text-off-white/60 opacity-0"
+  data-hero-item="trust"
+>
+  <span>
+    ★★★★★ {ratingLabel} · {reviewCount} Bewertungen auf Google
+  </span>
+  <span class="hidden sm:inline" aria-hidden="true">·</span>
+  <span>DEKRA-zertifizierte Bewertungen</span>
+  <span class="hidden sm:inline" aria-hidden="true">·</span>
+  <span>Persönliche Mandatsführung</span>
+</p>

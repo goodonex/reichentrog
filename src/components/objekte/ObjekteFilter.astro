@@ -1,0 +1,109 @@
+---
+const defaultMax = 2_500_000;
+---
+
+<section
+  class="border-b border-[#1c2b4a]/10 bg-[#F5F0E8] py-10 md:py-12"
+  data-objekte-filter
+  aria-label="Objektfilter"
+>
+  <div class="mx-auto flex max-w-content flex-col gap-10 px-6 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+    <div class="min-w-0 flex-1 lg:max-w-md">
+      <label class="objekte-filter__label block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1c2b4a]/70" for="objekte-preis">
+        Preisrahmen bis
+        <span class="mt-1 block font-display text-2xl font-light normal-case tracking-normal text-[#1c2b4a]" data-preis-output>
+          {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(defaultMax)}
+        </span>
+      </label>
+      <input
+        id="objekte-preis"
+        type="range"
+        min="500000"
+        max="10000000"
+        step="500000"
+        value={defaultMax}
+        class="objekte-filter__range mt-5 w-full"
+        data-preis-slider
+        aria-valuemin={500000}
+        aria-valuemax={10000000}
+        aria-valuenow={defaultMax}
+      />
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1c2b4a]/70">Objekttyp</span>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Objekttyp filtern" data-typ-filter>
+        <button type="button" class="objekte-filter__toggle is-active" data-typ="alle" aria-pressed="true">
+          Alle
+        </button>
+        <button type="button" class="objekte-filter__toggle" data-typ="wohn" aria-pressed="false">
+          Wohnimmobilien
+        </button>
+        <button type="button" class="objekte-filter__toggle" data-typ="gewerbe" aria-pressed="false">
+          Gewerbe &amp; Investment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="mx-auto mt-6 max-w-content px-6 text-center text-sm text-[#1c2b4a]/60" data-objekte-empty hidden>
+    Keine Objekte entsprechen den gewählten Filtern.
+  </p>
+</section>
+
+<style>
+  .objekte-filter__range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(to right, #1c2b4a 25%, rgba(28, 43, 74, 0.15) 25%);
+    outline: none;
+  }
+
+  .objekte-filter__range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #f5f0e8;
+    background: #1c2b4a;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(28, 43, 74, 0.25);
+  }
+
+  .objekte-filter__range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #f5f0e8;
+    background: #1c2b4a;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(28, 43, 74, 0.25);
+  }
+
+  .objekte-filter__toggle {
+    border-radius: 9999px;
+    border: 1px solid rgba(28, 43, 74, 0.22);
+    background: #f5f0e8;
+    padding: 0.625rem 1.125rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1c2b4a;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .objekte-filter__toggle.is-active {
+    border-color: #1c2b4a;
+    background: #1c2b4a;
+    color: #f5f0e8;
+  }
+
+  .objekte-filter__toggle:hover:not(.is-active) {
+    border-color: rgba(28, 43, 74, 0.4);
+    background: rgba(255, 255, 255, 0.45);
+  }
+</style>

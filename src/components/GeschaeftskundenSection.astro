@@ -1,0 +1,114 @@
+---
+import RevealSection from './RevealSection.astro';
+
+const services = [
+  'Projektentwicklung & Exit-Strategien',
+  'Portfolio-Transaktionen',
+  'Finanzierungs- und Banken-Dialog',
+  'Off-Market Matching',
+  'Due-Diligence-Struktur',
+  'Stakeholder-Koordination',
+];
+---
+
+<div class="geschaeftskunden-section section-photo-fades relative left-1/2 z-[2] w-screen max-w-none -translate-x-1/2 py-24 md:py-32">
+  <picture class="geschaeftskunden-section__media absolute inset-0" aria-hidden="true">
+    <source srcset="/images/sections/geschaeftskunden-hamburg.webp" type="image/webp" />
+    <img
+      src="/images/sections/geschaeftskunden-hamburg.jpg"
+      alt=""
+      width="2400"
+      height="1350"
+      class="geschaeftskunden-section__photo absolute inset-0 min-h-full min-w-full object-cover object-[center_35%]"
+      loading="lazy"
+      decoding="async"
+    />
+  </picture>
+  <div class="geschaeftskunden-section__overlay absolute inset-0 bg-[rgba(10,15,28,0.35)]" aria-hidden="true"></div>
+
+  <div class="relative z-[3] mx-auto max-w-content px-6">
+    <RevealSection>
+      <div class="geschaeftskunden-glass max-w-2xl rounded-[var(--glass-radius)] px-8 py-10 md:px-10 md:py-12">
+        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
+          Geschäftskunden
+        </p>
+        <h2
+          class="font-display text-[clamp(1.875rem,3.5vw,3rem)] font-light leading-[1.12] tracking-[-0.02em] text-[#F5F0E8]"
+          style="text-wrap: balance;"
+        >
+          Projektentwicklung, Portfolios, Finanzierung
+        </h2>
+        <p class="mt-5 text-base font-normal leading-[1.7] text-[#F5F0E8]/70 md:text-[1.0625rem]">
+          Für Investoren und Projektentwickler: Struktur, Netzwerk und Banken-Know-how — von der ersten
+          Einordnung bis zur Umsetzung.
+        </p>
+        <ul class="mt-12 space-y-0 divide-y divide-[#F5F0E8]/15 border-t border-[#F5F0E8]/15">
+          {
+            services.map((item, i) => (
+              <li class="flex gap-5 py-5">
+                <span class="w-8 shrink-0 pt-0.5 font-display text-sm font-light text-[#C9A96E] tabular-nums">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="text-[0.95rem] leading-snug text-[#F5F0E8]/85">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </RevealSection>
+  </div>
+</div>
+
+<style>
+  .geschaeftskunden-section {
+    --section-fade-from: #e0e8ef;
+    --section-fade-edge-bottom: #2d292e;
+    --section-fade-to: #e0e8ef;
+  }
+
+  .geschaeftskunden-section__photo {
+    z-index: 0;
+    image-rendering: auto;
+  }
+
+  .geschaeftskunden-section__overlay {
+    z-index: 1;
+  }
+
+  .geschaeftskunden-section.section-photo-fades::after {
+    content: none;
+  }
+
+  .geschaeftskunden-glass {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(
+      155deg,
+      rgba(10, 15, 28, 0.72) 0%,
+      rgba(10, 15, 28, 0.58) 48%,
+      rgba(10, 15, 28, 0.5) 100%
+    );
+    border: 1px solid rgba(245, 240, 232, 0.16);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+
+  .geschaeftskunden-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(ellipse 90% 70% at 0% 0%, rgba(255, 255, 255, 0.06), transparent 55%);
+    pointer-events: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .geschaeftskunden-glass {
+      background: rgba(10, 15, 28, 0.88);
+    }
+  }
+</style>

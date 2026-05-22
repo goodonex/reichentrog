@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+  staggerChildren?: boolean;
+}
+
+const { class: className, staggerChildren = false } = Astro.props;
+---
+
+<div
+  class:list={['reveal-section opacity-0 translate-y-6 transition-none', className]}
+  data-reveal
+  data-reveal-stagger={staggerChildren ? 'true' : undefined}
+>
+  <slot />
+</div>

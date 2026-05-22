@@ -1,0 +1,171 @@
+---
+/**
+ * Hamburg-Einsteller (Ken-Burns) → Übergang ins persönliche Statement-Video.
+ * Eine durchgehende Drohnen-/Zoom-Fahrt „in ein Fenster“ liefert am ehesten **ein geschnittenes Master-Video** —
+ * hier: web-taugliche Annäherung (Zoom + Einblendung). Bei prefers-reduced-motion: nur großes Video.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const poster = '/videos/reichentrog-statement-poster.jpg';
+const src = '/videos/reichentrog-statement.mp4';
+const hamburgSrc = '/images/hero/hamburg.avif';
+---
+
+<div
+  class:list={[
+    'statement-sequence relative mx-auto w-full overflow-hidden rounded-[var(--glass-radius)] shadow-[0_40px_100px_-30px_rgba(26,46,78,0.45)] ring-1 ring-white/10',
+    className,
+  ]}
+>
+  <!-- Ebene 1: Hamburg (leichter Zoom Richtung „Innenstadt / Architektur“) -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img
+      src={hamburgSrc}
+      alt=""
+      width="1280"
+      height="720"
+      class="statement-sequence__hamburg h-[118%] w-[118%] max-w-none -translate-x-[8%] -translate-y-[6%] object-cover object-[50%_58%] opacity-95"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <!-- „Näher an die Fassaden“: zweite Ebene gleiche Vorlage, engerer Bildausschnitt (ohne Extra-Material) -->
+  <div
+    class="statement-sequence__building pointer-events-none absolute inset-0 overflow-hidden opacity-0 will-change-[opacity]"
+    aria-hidden="true"
+  >
+    <img
+      src={hamburgSrc}
+      alt=""
+      width="1280"
+      height="720"
+      class="h-full w-full scale-125 object-cover object-[52%_72%] blur-[0.5px]"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div
+    class="pointer-events-none absolute inset-0 bg-gradient-to-b from-steel-navy/75 via-steel-navy/35 to-steel-navy/90"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_45%,transparent_20%,rgba(26,46,78,0.55)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative z-10 flex min-h-[min(78vh,880px)] flex-col justify-end px-4 pb-8 pt-24 sm:px-6 md:min-h-[min(82vh,920px)] md:px-10 md:pb-12 md:pt-28">
+    <p
+      class="statement-sequence__kicker mb-6 max-w-xl font-display text-sm font-light text-off-white/95 md:text-base"
+    >
+      <span class="text-[11px] font-medium uppercase tracking-[0.28em] text-bernstein">Hamburg</span>
+      <span class="mx-2 text-off-white/40" aria-hidden="true">·</span>
+      <span class="text-ice-blue/90">Von der Stadt — zum persönlichen Gespräch.</span>
+    </p>
+
+    <div
+      class="statement-sequence__video-wrap mx-auto w-full max-w-5xl origin-bottom rounded-2xl border border-white/20 bg-steel-navy/40 shadow-2xl backdrop-blur-[2px] md:rounded-3xl"
+    >
+      <div
+        class="relative w-full min-h-[min(50vh,520px)] md:min-h-[min(58vh,680px)]"
+      >
+        <video
+          class="h-full w-full rounded-2xl object-cover object-center md:rounded-3xl"
+          controls
+          playsinline
+          preload="metadata"
+          poster={poster}
+          title="Persönliches Statement der Kanzlei"
+        >
+          <source src={src} type="video/mp4" />
+          <p class="p-6 text-sm text-ice-blue">Video kann in diesem Browser nicht abgespielt werden.</p>
+        </video>
+      </div>
+      <p
+        class="border-t border-white/10 bg-steel-navy/80 px-5 py-4 text-sm leading-relaxed text-ice-blue/95 md:px-6 md:text-[0.95rem]"
+      >
+        Persönliches Statement — Klicken zum Abspielen (Ton).
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Ein durchgängiger Kamera-Take (Hamburg → Gebäude → Inhaber) ist am besten als ein Master-MP4 umgesetzt. */
+  @media (prefers-reduced-motion: no-preference) {
+    .statement-sequence__hamburg {
+      animation: statement-kb 22s ease-in-out infinite alternate;
+    }
+    .statement-sequence__building {
+      animation: statement-building 11s ease-in-out 0.6s forwards;
+    }
+    .statement-sequence__kicker {
+      animation: statement-kicker-fade 22s ease-in-out infinite alternate;
+    }
+    .statement-sequence__video-wrap {
+      animation: statement-video-in 1.35s cubic-bezier(0.22, 1, 0.36, 1) 2.4s both;
+    }
+  }
+
+  @keyframes statement-kb {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.14) translate(0, -1.5%);
+    }
+  }
+
+  @keyframes statement-building {
+    0% {
+      opacity: 0;
+    }
+    22% {
+      opacity: 0.42;
+    }
+    42% {
+      opacity: 0.5;
+    }
+    62% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes statement-kicker-fade {
+    0%,
+    35% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0.88;
+    }
+  }
+
+  @keyframes statement-video-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.75rem) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .statement-sequence__video-wrap {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

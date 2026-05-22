@@ -1,0 +1,91 @@
+---
+import RevealSection from './RevealSection.astro';
+import SectionVideoBg from './SectionVideoBg.astro';
+
+const partners = [
+  'Privatbanken',
+  'Vermögensverwalter',
+  'Family Offices',
+  'Steuerberater',
+  'Notariate',
+];
+---
+
+<div class="banken-hintergrund section-photo-fades relative min-h-[520px] w-full">
+  <!--
+    HIGGSFIELD PROMPT (BankenHintergrund-Background):
+    Side-angle close-up of two hands on a dark desk — documents, fountain pen, cufflinks, warm
+    tungsten lamp, shallow depth of field. Discreet private-banking atmosphere, muted desaturated
+    tones, no faces, no generic front-facing handshake. Alternative: overhead view of consultation
+    at table, focus on hands and papers only. Dark, warm, cinematic stillness with minimal movement.
+    Seamless 15–20s loop.
+  -->
+  <!-- TODO: Higgsfield-Video exportieren → /videos/banken-loop.webm + .mp4 (max 4 MB) + Poster /images/sections/banken-poster.jpg -->
+  <SectionVideoBg
+    posterSrc="/images/sections/banken-poster.jpg"
+    videoMp4="/videos/banken-loop.mp4"
+    videoWebm="/videos/banken-loop.webm"
+    fallbackClass="banken-hintergrund__bg"
+  />
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="editorial-dark-overlay absolute inset-0" aria-hidden="true"></div>
+
+  <div class="relative z-[2] mx-auto flex min-h-[520px] max-w-content items-center px-6 py-24 md:py-32 lg:py-36">
+    <RevealSection class="w-full">
+      <div class="max-w-2xl">
+        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
+          Banken-Hintergrund
+        </p>
+        <h2
+          class="font-display text-[clamp(2rem,4vw,3.25rem)] font-light leading-[1.1] tracking-[-0.02em] text-[#F5F0E8]"
+          style="text-wrap: balance;"
+        >
+          Warum Banken mit uns arbeiten.
+        </h2>
+        <p class="mt-6 text-[0.95rem] leading-relaxed text-[rgba(245,240,232,0.85)]">
+          Reichentrog & Kollegen ist seit Jahren erster Ansprechpartner für Hamburger Privatbanken und
+          Vermögensverwalter, wenn Immobilienangelegenheiten ihrer Mandanten diskret und verlässlich gelöst
+          werden müssen. Daraus haben wir gelernt, was Vermögende und institutionelle Eigentümer erwarten:
+          keine Show, kein Massengeschäft, keine Kompromisse bei der Vertraulichkeit. Dieses Niveau bringen
+          wir in jeden Auftrag — ob Bank-Mandat oder Privatkunde.
+        </p>
+        <p
+          class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium uppercase tracking-[0.14em] text-[#F5F0E8]/60"
+          aria-label="Partner-Kategorien"
+        >
+          {
+            partners.map((p, i) => (
+              <>
+                {i > 0 && (
+                  <span class="text-[#F5F0E8]/30" aria-hidden="true">
+                    ·
+                  </span>
+                )}
+                <span>{p}</span>
+              </>
+            ))
+          }
+        </p>
+        <p class="mt-10 text-sm text-[#F5F0E8]/70">
+          <span data-countup data-target="10" data-suffix="+">10+</span> Jahre Erfahrung im Bankenumfeld
+        </p>
+      </div>
+    </RevealSection>
+  </div>
+</div>
+
+<style>
+  .banken-hintergrund {
+    --section-fade-from: #18243d;
+    --section-fade-edge-bottom: #303a45;
+    --section-fade-to: #1c2b4a;
+  }
+
+  .banken-hintergrund__bg {
+    background-color: #1c2b4a;
+    background-image:
+      radial-gradient(ellipse 75% 55% at 82% 28%, rgba(109, 144, 188, 0.22), transparent 58%),
+      radial-gradient(ellipse 50% 42% at 8% 78%, rgba(204, 158, 77, 0.07), transparent 52%),
+      linear-gradient(180deg, #18243d 0%, #1c2b4a 42%, #152038 100%);
+  }
+</style>

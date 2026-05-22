@@ -1,0 +1,120 @@
+---
+/**
+ * Video-Platzhalter: optional Portrait als „Poster“ (wie Video-Thumbnail).
+ */
+interface Props {
+  name: string;
+  tagline: string;
+  variant?: 'dark' | 'light';
+  class?: string;
+  posterSrc?: string;
+  /** Barrierefrei: z. B. „Oliver Alberich — Video-Statement“ */
+  posterAlt?: string;
+}
+
+const {
+  name,
+  tagline,
+  variant = 'dark',
+  class: className,
+  posterSrc,
+  posterAlt,
+} = Astro.props;
+
+const isDark = variant === 'dark';
+const posterAltFinal = posterAlt ?? `Video-Vorschau — ${name}`;
+---
+
+<div
+  class:list={[
+    className,
+    'overflow-hidden rounded-[var(--glass-radius)] border shadow-2xl',
+    isDark
+      ? 'border-white/15 bg-gradient-to-br from-steel-navy via-steel-navy to-steel-blue/90 text-off-white'
+      : 'border-steel-blue/15 bg-white/80 text-steel-navy shadow-[0_24px_80px_-20px_rgba(26,46,78,0.15)]',
+  ]}
+>
+  <div class="relative aspect-video overflow-hidden bg-steel-navy">
+    {
+      posterSrc ? (
+        <>
+          <img
+            src={posterSrc}
+            alt={posterAltFinal}
+            width={1024}
+            height={1024}
+            class="absolute inset-0 max-h-full max-w-full min-h-full min-w-full object-cover object-[center_15%]"
+            loading="lazy"
+            decoding="async"
+            style="image-rendering: auto;"
+          />
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-steel-navy/95 via-steel-navy/35 to-steel-blue/25"
+            aria-hidden="true"
+          />
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-r from-steel-navy/50 via-transparent to-steel-navy/20"
+            aria-hidden="true"
+          />
+        </>
+      ) : (
+        <div
+          class:list={[
+            'absolute inset-0',
+            isDark
+              ? 'bg-gradient-to-br from-steel-blue/50 via-steel-navy/80 to-steel-navy'
+              : 'bg-gradient-to-br from-ice-blue to-off-white',
+          ]}
+        >
+          <div
+            class="absolute inset-0 opacity-40"
+            style="background-image: radial-gradient(circle at 30% 20%, rgba(204,158,77,0.25), transparent 50%);"
+            aria-hidden="true"
+          />
+        </div>
+      )
+    }
+
+    <div class="relative flex h-full w-full items-center justify-center">
+      <button
+        type="button"
+        class:list={[
+          'group relative z-[1] flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 shadow-lg backdrop-blur-[2px] transition-transform duration-500 hover:scale-105 md:h-20 md:w-20',
+          isDark
+            ? 'border-off-white/50 bg-steel-navy/35 text-off-white hover:bg-steel-navy/55'
+            : 'border-steel-navy/25 bg-white/95 text-steel-navy hover:bg-white',
+        ]}
+        aria-label={`Video ${name} abspielen — folgt in Kürze`}
+        disabled
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" class="ml-1" fill="currentColor" aria-hidden="true">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <span
+      class:list={[
+        'absolute bottom-4 left-4 z-[1] rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em]',
+        isDark ? 'bg-black/40 text-ice-blue backdrop-blur-sm' : 'bg-white/90 text-steel-blue',
+      ]}
+    >
+      Video folgt
+    </span>
+  </div>
+
+  <div class:list={['px-8 py-7 md:px-10 md:py-8', !isDark && 'bg-white/50 backdrop-blur-sm']}>
+    <p
+      class:list={[
+        'text-xs font-medium uppercase tracking-[0.22em]',
+        isDark ? 'text-bernstein' : 'text-steel-blue',
+      ]}
+    >
+      Statement
+    </p>
+    <h3 class="mt-2 font-display text-2xl font-light md:text-3xl">{name}</h3>
+    <p class:list={['mt-2 text-sm leading-relaxed', isDark ? 'text-ice-blue/95' : 'text-steel-blue']}>
+      {tagline}
+    </p>
+  </div>
+</div>

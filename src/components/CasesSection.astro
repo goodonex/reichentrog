@@ -1,0 +1,55 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import RevealSection from './RevealSection.astro';
+import GlassCard from './GlassCard.astro';
+import { caseStudies } from '../content/cases';
+---
+
+<RevealSection staggerChildren>
+  <SectionHeader
+    eyebrow="Referenzen"
+    eyebrowTone="brand"
+    title="Was wir lösen, statt was wir versprechen."
+    subtitle="Anonymisierte Auszüge — ohne Namen, ohne Adressen, ohne Objektbilder."
+  />
+  <!-- TODO: Echte Cases von Oliver Alberich einsetzen.
+       Schema pro Case: { kategorie, ort, ausgangslage (2 Sätze), vorgehen (2 Sätze), ergebnis (1 Satz mit Kennzahl) }
+       Keine Namen, keine Adressen, keine Objektbilder.
+       Anfrage an: o.alberich@reichentrog-finance.de -->
+  <div class="mt-14 grid gap-8 lg:grid-cols-3">
+    {
+      caseStudies.map((c) => (
+        <GlassCard
+          class="flex flex-col border-steel-blue/14 bg-gradient-to-br from-white/80 via-ice-blue/35 to-white/70 p-8"
+          data-reveal-child
+        >
+          <p class="inline-flex w-fit rounded-full border border-bernstein/25 bg-bernstein/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-steel-navy">
+            {c.category}
+          </p>
+          <div class="mt-6 space-y-6 text-sm leading-relaxed text-steel-navy/85">
+            <div>
+              <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-steel-blue">
+                Ausgangslage
+              </p>
+              <p class="mt-2.5">{c.situation}</p>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-steel-blue">
+                Vorgehen
+              </p>
+              <p class="mt-2.5">{c.action}</p>
+            </div>
+            <div class="border-t border-steel-blue/12 pt-5">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-bernstein">
+                Ergebnis
+              </p>
+              <p class="mt-2.5 font-display text-base font-light leading-snug text-steel-navy">
+                {c.result}
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      ))
+    }
+  </div>
+</RevealSection>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Impressum | Reichentrog & Kollegen"
+  description="Impressum der Reichentrog & Kollegen GmbH."
+>
+  <Nav variant="page" />
+  <main id="main" class="bg-off-white px-6 pb-24 pt-32" data-cursor-surface="light">
+    <article class="mx-auto max-w-content text-steel-navy">
+      <h1 class="font-display text-3xl text-steel-navy">Impressum</h1>
+
+      <section class="mt-8 space-y-1 text-[0.98rem] leading-relaxed">
+        <p><strong>Reichentrog &amp; Kollegen GmbH</strong></p>
+        <p>Geschaeftsfuehrer: Norbert Heinz Reichentrog</p>
+        <p>Karnapp 25, 21079 Hamburg</p>
+        <p>Telefon: <a class="underline underline-offset-2" href="tel:+494041009000">040/41 00 90-0</a></p>
+        <p>Telefax: 040/41 00 90-25</p>
+        <p>
+          E-Mail:
+          <a class="underline underline-offset-2" href="mailto:info@reichentrog-finance.de">info@reichentrog-finance.de</a>
+        </p>
+      </section>
+
+      <section class="mt-10 space-y-2 text-[0.98rem] leading-relaxed">
+        <p>Vertreten durch den Geschaeftsfuehrer: Norbert Heinz Reichentrog</p>
+        <p>Mitglied Handelskammer Hamburg, Adolphsplatz 1, 20457 Hamburg</p>
+        <p>Registereintrag: Amtsgericht Hamburg HRB 124843</p>
+        <p>Steuernummer: 47/754/00515</p>
+        <p>USt-Ident-Nummer: DE 259107166</p>
+      </section>
+
+      <section class="mt-10">
+        <h2 class="font-display text-2xl text-steel-navy">Bildrechte</h2>
+        <p class="mt-3 text-[0.98rem] leading-relaxed">&copy; shutterstock / SN-Photography / Pixabay</p>
+        <p class="text-[0.98rem] leading-relaxed">&copy; Daniel Sumesgutner</p>
+      </section>
+
+      <section class="mt-10">
+        <h2 class="font-display text-2xl text-steel-navy">Konzeption und Programmierung</h2>
+        <p class="mt-3 text-[0.98rem] leading-relaxed">Kausche und Partner</p>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

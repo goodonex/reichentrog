@@ -1,0 +1,166 @@
+---
+/** Hero-Hintergrund: Scroll-gekoppeltes Video (Desktop), Poster (Mobile). */
+interface Props {
+  posterAvif?: string;
+  posterJpg?: string;
+  videoMp4?: string;
+  videoWebm?: string;
+}
+
+/** Cache-Bust nach Asset-Tausch — Browser cachen Video/Poster unter gleicher URL aggressiv. */
+const assetVersion = '20260520-blankenese';
+
+const {
+  posterAvif = `/images/hero/hero-poster.avif?v=${assetVersion}`,
+  posterJpg = `/images/hero/hero-poster.jpg?v=${assetVersion}`,
+  videoMp4 = `/videos/hero-loop.mp4?v=${assetVersion}`,
+  videoWebm = `/videos/hero-loop.webm?v=${assetVersion}`,
+} = Astro.props;
+---
+
+<div
+  id="hero-video-stack"
+  class="hero-video-stack section-photo-bg pointer-events-none"
+  aria-hidden="true"
+  style="--hero-exit-fade: 0"
+>
+  <picture class="hero-poster-wrap">
+    <source srcset={posterAvif} type="image/avif" />
+    <img
+      id="hero-poster"
+      src={posterJpg}
+      alt=""
+      width="1920"
+      height="1080"
+      class="hero-poster"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+
+  <!--
+    HIGGSFIELD PROMPT — Hero Background Video:
+    Cinematic slow forward drift down a quiet tree-lined residential avenue
+    in Hamburg Blankenese at golden hour — dappled morning light through
+    mature oak trees, elegant villa facades glimpsed between foliage,
+    wet cobblestones reflecting warm amber light, extremely slow camera
+    movement, no people, no cars, photorealistic, ultra-detailed,
+    desaturated warm tones, deep shadows, quiet and exclusive atmosphere
+    Export: min. 10 Sekunden, WebM + MP4, max 4MB gesamt
+  -->
+  <video
+    id="hero-video"
+    class="hero-video"
+    muted
+    playsinline
+    preload="none"
+    poster={posterJpg}
+  >
+    <source src={videoWebm} type="video/webm" />
+    <source src={videoMp4} type="video/mp4" />
+  </video>
+
+  <div class="hero-video-overlay" aria-hidden="true"></div>
+  <div class="grain-overlay hero-video-grain" aria-hidden="true"></div>
+  <div class="hero-video-exit-fade" aria-hidden="true"></div>
+</div>
+
+<style>
+  .hero-video-stack {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: calc(1 - var(--hero-exit-fade, 0));
+  }
+
+  .hero-poster-wrap,
+  .hero-poster,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.04);
+    transform-origin: center center;
+    image-rendering: auto;
+  }
+
+  .hero-poster {
+    z-index: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .hero-poster.is-hidden {
+    opacity: 0;
+  }
+
+  .hero-video {
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .hero-video.is-ready {
+    opacity: 1;
+  }
+
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(10, 15, 28, 0.55);
+  }
+
+  .hero-video-grain {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-video-exit-fade {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 55%,
+      color-mix(in oklab, #202127 calc(var(--hero-exit-fade, 0) * 55%), transparent) 78%,
+      color-mix(in oklab, #f5f2ea calc(var(--hero-exit-fade, 0) * 100%), transparent) 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      display: none !important;
+    }
+
+    .hero-poster.is-hidden {
+      opacity: 1;
+    }
+
+    .hero-poster,
+    .hero-video {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-video {
+      display: none !important;
+    }
+
+    .hero-poster.is-hidden {
+      opacity: 1;
+    }
+
+    .hero-poster,
+    .hero-video {
+      transform: none;
+    }
+  }
+</style>

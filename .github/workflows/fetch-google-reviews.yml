@@ -1,0 +1,40 @@
+# TODO: Cron-Job einrichten (wöchentlich, Montag früh)
+# Secret: GOOGLE_PLACES_API_KEY in Repository Settings → Secrets
+
+name: Fetch Google Reviews
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch reviews from Google Places API
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: node scripts/fetch-google-reviews.mjs
+        working-directory: .
+
+      - name: Commit cache if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/google-reviews.json
+          if git diff --staged --quiet; then
+            echo "No changes to google-reviews.json"
+          else
+            git commit -m "chore: update Google reviews cache"
+            git push
+          fi

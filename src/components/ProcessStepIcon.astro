@@ -1,0 +1,78 @@
+---
+/** Tabler-style Outline-Icons für Prozess-Stepper */
+interface Props {
+  name: 'pen-paper' | 'network' | 'handshake' | 'key' | 'tools-network';
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['h-12 w-12 shrink-0 text-steel-navy', className]}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  {
+    name === 'pen-paper' && (
+      <>
+        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+        <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
+        <path d="M9 15h6" />
+        <path d="M9 11h3" />
+        <path d="M15 11l-4 4" />
+      </>
+    )
+  }
+  {
+    name === 'network' && (
+      <>
+        <circle cx="12" cy="5" r="2" />
+        <circle cx="5" cy="19" r="2" />
+        <circle cx="19" cy="19" r="2" />
+        <path d="M12 7v4" />
+        <path d="M8.5 15.5L6.5 17" />
+        <path d="M15.5 15.5l2 1.5" />
+        <path d="M10 14h4" />
+      </>
+    )
+  }
+  {
+    name === 'handshake' && (
+      <>
+        <path d="M11 12l2 2 4-4" />
+        <path d="M7 12l2 2" />
+        <path d="M3 8l3-3 3 3" />
+        <path d="M6 5v4" />
+        <path d="M14 8l3-3 3 3" />
+        <path d="M17 5v4" />
+        <path d="M4 11v5a2 2 0 0 0 2 2h2" />
+        <path d="M18 11v5a2 2 0 0 1-2 2h-2" />
+      </>
+    )
+  }
+  {
+    name === 'key' && (
+      <>
+        <circle cx="8" cy="15" r="4" />
+        <path d="M10.5 13.5L16 8" />
+        <path d="M16 8h3v3" />
+        <path d="M19 8l2 2" />
+      </>
+    )
+  }
+  {
+    name === 'tools-network' && (
+      <>
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+        <circle cx="18" cy="6" r="1.5" />
+      </>
+    )
+  }
+</svg>

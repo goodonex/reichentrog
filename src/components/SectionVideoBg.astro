@@ -1,0 +1,111 @@
+---
+/**
+ * Section-Hintergrund: Video auf Desktop, Poster auf Mobile.
+ * Dateien unter public/videos/ und public/images/ — max. 4 MB, WebM + MP4.
+ */
+interface Props {
+  posterSrc: string;
+  videoMp4: string;
+  videoWebm: string;
+  fallbackClass: string;
+}
+
+const { posterSrc, videoMp4, videoWebm, fallbackClass } = Astro.props;
+---
+
+<div class="section-video-bg section-photo-bg absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class:list={['absolute inset-0', fallbackClass]}></div>
+
+  <img
+    src={posterSrc}
+    alt=""
+    width="1920"
+    height="1280"
+    class="section-video-bg__poster absolute inset-0 min-h-full min-w-full object-cover object-center opacity-0 transition-opacity duration-500"
+    loading="lazy"
+    decoding="async"
+    data-section-poster
+  />
+
+  <video
+    class="section-video-bg__video absolute inset-0 hidden min-h-full min-w-full object-cover object-center md:block"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+  >
+    <source src={videoWebm} type="video/webm" />
+    <source src={videoMp4} type="video/mp4" />
+  </video>
+</div>
+
+<style>
+  .section-video-bg__video {
+    pointer-events: none;
+    image-rendering: auto;
+  }
+
+  .section-video-bg__video.is-unavailable {
+    display: none !important;
+  }
+
+  .section-video-bg__video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  .section-video-bg__video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
+  }
+
+  .section-video-bg__poster.is-loaded {
+    opacity: 1;
+  }
+
+  .section-video-bg__poster {
+    image-rendering: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-video-bg__video {
+      display: none !important;
+    }
+
+    .section-video-bg__poster {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .section-video-bg__video {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-section-poster]').forEach((img) => {
+    const reveal = () => img.classList.add('is-loaded');
+    if (img.complete && img.naturalWidth > 0) {
+      reveal();
+      return;
+    }
+    img.addEventListener('load', reveal, { once: true });
+    img.addEventListener(
+      'error',
+      () => {
+        img.remove();
+      },
+      { once: true },
+    );
+  });
+
+  document.querySelectorAll<HTMLVideoElement>('.section-video-bg__video').forEach((video) => {
+    const hide = () => video.classList.add('is-unavailable');
+
+    video.addEventListener('error', hide, { once: true });
+
+    video.play().catch(hide);
+  });
+</script>

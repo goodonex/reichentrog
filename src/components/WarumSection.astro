@@ -1,0 +1,147 @@
+---
+import RevealSection from './RevealSection.astro';
+import SectionVideoBg from './SectionVideoBg.astro';
+
+const cards = [
+  {
+    num: '01',
+    title: 'Flexibel',
+    text: 'Mandatsform und Tempo stimmen wir auf Sie ab — vom selektiven Off-Market bis zur ausgerollten Vermarktung, wenn es passt.',
+  },
+  {
+    num: '02',
+    title: 'Diskret',
+    text: 'Kein unnötiges Portal-Rauschen: qualifizierte Nachfrager, geschützte Vertraulichkeit.',
+  },
+  {
+    num: '03',
+    title: 'Individuell',
+    text: 'Jede Immobilie hat eine eigene Geschichte — wir übersetzen sie in eine nachvollziehbare Transaktionsstrategie.',
+  },
+];
+---
+
+<div class="warum-section section-photo-fades relative w-full py-24 md:py-32 lg:py-36">
+  <!--
+    HIGGSFIELD PROMPT (WarumSection-Background):
+    Slow Ken Burns push-in on Hamburg Altbau architectural detail — brick and stucco facade,
+    ornate window frame or stairwell fragment, overcast evening light, desaturated cool navy-grey
+    palette. No full building frontal, no people, quiet premium mood. Works as subtle loop or
+    slow zoom on still. Seamless 15–20s loop, cinematic real estate editorial.
+  -->
+  <!-- TODO: Higgsfield-Video exportieren → /videos/warum-loop.webm + .mp4 (max 4 MB) + Poster /images/sections/warum-poster.jpg -->
+  <SectionVideoBg
+    posterSrc="/images/sections/warum-poster.jpg"
+    videoMp4="/videos/warum-loop.mp4"
+    videoWebm="/videos/warum-loop.webm"
+    fallbackClass="warum-section__bg"
+  />
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="editorial-dark-overlay warum-section__overlay absolute inset-0" aria-hidden="true"></div>
+
+  <div class="relative z-[3] mx-auto max-w-content px-6">
+    <RevealSection staggerChildren>
+      <div class="max-w-2xl">
+        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
+          Unser Anspruch
+        </p>
+        <h2
+          class="font-display text-[clamp(1.875rem,3.5vw,3rem)] font-light leading-[1.12] tracking-[-0.02em] text-[#F5F0E8]"
+          style="text-wrap: balance;"
+        >
+          Kein Massengeschäft. Kein Kompromiss.
+        </h2>
+        <p class="mt-5 text-base font-normal leading-[1.7] text-[rgba(245,240,232,0.85)] md:text-[1.0625rem]">
+          Transaktionen wie strukturierte Absicherung: klar dokumentiert, persönlich betreut — ohne unnötige
+          Öffentlichkeit.
+        </p>
+      </div>
+
+      <div class="mt-10 grid items-stretch gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+        {
+          cards.map((card) => (
+            <article class="warum-glass-card flex h-full flex-col rounded-[var(--glass-radius)] p-8" data-reveal-child>
+              <p class="font-display text-4xl font-light tabular-nums text-bernstein">{card.num}</p>
+              <h3 class="mt-4 font-display text-xl text-[#F5F0E8]">{card.title}</h3>
+              <p class="mt-3 flex-1 text-sm leading-relaxed text-[rgba(245,240,232,0.82)]">{card.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </RevealSection>
+  </div>
+</div>
+
+<style>
+  .warum-section {
+    --section-fade-from: #f5f2ea;
+    --section-fade-edge-bottom: #10131a;
+    --section-fade-to: #18243d;
+  }
+
+  .warum-section :global(.section-video-bg) {
+    z-index: 0;
+  }
+
+  .warum-section__overlay {
+    z-index: 1;
+  }
+
+  .warum-section__bg {
+    background-color: #0f1923;
+    background-image:
+      radial-gradient(ellipse 85% 65% at 12% 18%, rgba(46, 78, 112, 0.42), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 88% 72%, rgba(204, 158, 77, 0.1), transparent 52%),
+      radial-gradient(ellipse 100% 70% at 50% 110%, rgba(26, 46, 78, 0.55), transparent 62%),
+      linear-gradient(168deg, #121c28 0%, #0f1923 48%, #0a1018 100%);
+  }
+
+  .warum-glass-card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.05) 45%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    border: 1px solid rgba(245, 240, 232, 0.14);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    transition:
+      transform 0.5s ease-out,
+      border-color 0.5s ease-out,
+      box-shadow 0.5s ease-out;
+  }
+
+  .warum-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse 90% 70% at 0% 0%, rgba(255, 255, 255, 0.09), transparent 55%);
+    pointer-events: none;
+  }
+
+  .warum-glass-card:hover {
+    transform: translateY(-0.25rem);
+    border-color: rgba(245, 240, 232, 0.22);
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .warum-glass-card {
+      transition: none;
+    }
+
+    .warum-glass-card:hover {
+      transform: none;
+    }
+  }
+</style>

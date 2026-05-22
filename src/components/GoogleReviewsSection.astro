@@ -1,0 +1,229 @@
+---
+/**
+ * Stimmen — liest ausschließlich aus google-reviews.json (kein Live-API-Call).
+ */
+import SectionHeader from './SectionHeader.astro';
+import RevealSection from './RevealSection.astro';
+import GlassCard from './GlassCard.astro';
+import reviewsCache from '../data/google-reviews.json';
+import type { GoogleReviewsCache } from '../data/google-reviews.types';
+import { googleMapsReviewsUrl } from '../content/site';
+
+const cache = reviewsCache as GoogleReviewsCache;
+/** Google Places API liefert max. 5 Reviews pro Abruf */
+const displayReviews = [...cache.reviews]
+  .sort((a, b) => {
+    if (a.authorName === 'Titus Braun') return -1;
+    if (b.authorName === 'Titus Braun') return 1;
+    return 0;
+  })
+  .slice(0, 5);
+
+function excerpt(text: string, max = 280) {
+  const t = text.replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${(lastSpace > 180 ? cut.slice(0, lastSpace) : cut).trim()} …`;
+}
+
+const rating = cache.rating ?? 5;
+const reviewCount = cache.userRatingCount ?? displayReviews.length;
+
+function stars(n: number) {
+  const full = Math.min(5, Math.max(0, Math.round(n)));
+  return '★'.repeat(full) + '☆'.repeat(5 - full);
+}
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join('')
+    .toUpperCase();
+---
+
+<RevealSection>
+  <SectionHeader
+    eyebrow="Vertrauen"
+    title="Was unsere Mandanten sagen"
+    subtitle="Auszüge aus Google-Bewertungen — Vertrauen entsteht durch Erfahrung."
+    align="center"
+    class="mx-auto"
+  />
+
+  <div class="reviews-marquee mt-14" aria-label="Google-Bewertungen">
+    <div class="reviews-marquee__viewport">
+      <div class="reviews-marquee__track" role="list">
+        {
+          [0, 1].map((setIndex) => (
+            <div
+              class="reviews-marquee__set flex shrink-0 gap-6"
+              aria-hidden={setIndex === 1 ? 'true' : undefined}
+            >
+              {displayReviews.map((review) => (
+                <GlassCard
+                  class="reviews-card shrink-0 border-steel-navy/10 bg-white/80 p-8"
+                  role="listitem"
+                >
+                  <div class="flex items-center gap-3">
+                    {
+                      review.profilePhotoUrl ? (
+                        <img
+                          src={review.profilePhotoUrl}
+                          alt=""
+                          width="40"
+                          height="40"
+                          class="review-avatar h-10 w-10 shrink-0 rounded-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          referrerpolicy="no-referrer"
+                        />
+                      ) : (
+                        <span
+                          class="review-avatar flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-off-white font-display text-sm text-steel-navy/70"
+                          aria-hidden="true"
+                        >
+                          {initials(review.authorName)}
+                        </span>
+                      )
+                    }
+                    <div class="min-w-0">
+                      <p class="font-display text-lg font-light leading-snug text-steel-navy">
+                        {review.authorName}
+                      </p>
+                      {
+                        review.relativeTimeDescription && (
+                          <p class="text-[11px] text-steel-navy/50">{review.relativeTimeDescription}</p>
+                        )
+                      }
+                    </div>
+                  </div>
+                  <p class="mt-4 font-sans text-sm leading-relaxed text-steel-navy/80" aria-hidden="true">
+                    <span class="text-steel-navy tracking-wide">{stars(review.rating)}</span>
+                  </p>
+                  <p class="reviews-card__text mt-4 font-sans text-sm leading-relaxed text-steel-navy/85">
+                    „{excerpt(review.text)}"
+                  </p>
+                </GlassCard>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-10 text-center font-sans text-sm text-steel-navy/70">
+    <span class="text-steel-navy" aria-hidden="true">{stars(rating)}</span>
+    <span class="ml-2">
+      {rating.toFixed(1)} von 5 Sternen · {reviewCount} Bewertungen
+    </span>
+  </p>
+
+  <div class="mt-8 flex flex-col items-center gap-4">
+    <a
+      href={googleMapsReviewsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex text-sm font-medium text-steel-navy underline decoration-steel-navy/30 underline-offset-4 transition hover:decoration-steel-navy"
+    >
+      Alle Bewertungen ansehen
+    </a>
+    <p class="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-steel-navy/50">
+      <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          fill="#1A2E4E"
+          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+        ></path>
+        <path
+          fill="#2E4E70"
+          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+        ></path>
+        <path
+          fill="#6D90BC"
+          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+        ></path>
+        <path
+          fill="#CC9E4D"
+          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+        ></path>
+      </svg>
+      Bewertungen von Google
+    </p>
+  </div>
+</RevealSection>
+
+<style>
+  .review-avatar {
+    filter: sepia(0.2) saturate(0.55) brightness(1.08);
+    background-color: #f5f2ea;
+  }
+
+  .reviews-marquee__viewport {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .reviews-marquee__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .reviews-card {
+    flex: 0 0 clamp(280px, 78vw, 360px);
+    height: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+      max-height 400ms ease,
+      height 400ms ease,
+      box-shadow 400ms ease;
+  }
+
+  .reviews-card.is-expanded {
+    box-shadow: 0 24px 64px -12px rgba(28, 43, 74, 0.22);
+  }
+
+  .reviews-card__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  .reviews-card.is-expanded .reviews-card__text {
+    -webkit-line-clamp: unset;
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .reviews-card {
+      flex: 0 0 clamp(300px, calc((min(72rem, 100vw - 3rem) - 3rem) / 3), 380px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-marquee__viewport {
+      overflow-x: auto;
+      -webkit-mask-image: none;
+      mask-image: none;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+    }
+
+    .reviews-marquee__track {
+      animation: none !important;
+      will-change: auto;
+    }
+
+    .reviews-card {
+      scroll-snap-align: start;
+    }
+  }
+</style>

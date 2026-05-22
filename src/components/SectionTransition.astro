@@ -1,0 +1,48 @@
+---
+/** Section-Wrapper — Layout, optionale Feather-Übergänge oben, Cursor-Surface. */
+interface Props {
+  class?: string;
+  as?: 'section' | 'div';
+  id?: string;
+  style?: string;
+  featherTop?:
+    | 'from-hero'
+    | 'from-off-white'
+    | 'from-ice'
+    | 'from-navy'
+    | 'from-bone'
+    | 'from-warum'
+    | 'from-navy-ice'
+    | false;
+  cursorSurface?: 'light';
+}
+
+const Tag = Astro.props.as ?? 'section';
+const { class: className, as: _as, id, style, featherTop = false, cursorSurface } = Astro.props;
+
+const featherClass =
+  featherTop === false
+    ? ''
+    : featherTop === 'from-hero'
+      ? 'feather-top-from-hero'
+      : featherTop === 'from-off-white'
+        ? 'feather-top-from-off-white'
+        : featherTop === 'from-ice'
+          ? 'feather-top-from-ice'
+          : featherTop === 'from-bone'
+            ? 'feather-top-from-bone'
+            : featherTop === 'from-warum'
+              ? 'feather-top-from-warum'
+              : featherTop === 'from-navy-ice'
+                ? 'feather-top-from-navy-ice'
+                : 'feather-top-from-navy';
+---
+
+<Tag
+  class:list={['relative overflow-visible', featherClass, className]}
+  id={id}
+  style={style}
+  data-cursor-surface={cursorSurface}
+>
+  <slot />
+</Tag>

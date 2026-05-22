@@ -1,0 +1,430 @@
+---
+interface Props {
+  formName: string;
+  lockAnliegen?: boolean;
+  defaultAnliegen?: string;
+  objektRef?: string;
+}
+
+const { formName, lockAnliegen = false, defaultAnliegen = '', objektRef = '' } = Astro.props;
+
+const presetType =
+  lockAnliegen && defaultAnliegen === 'ankauf'
+    ? 'verkaufen'
+    : objektRef
+      ? 'kaeufer'
+      : '';
+---
+
+<form
+  name={formName}
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  action="/danke/"
+  class="conversation-form flex flex-col"
+  data-conversation-form
+  data-preset-type={presetType}
+  data-objekt-ref={objektRef || undefined}
+>
+  <input type="hidden" name="form-name" value={formName} />
+  <input type="hidden" name="payload" value="" data-form-payload />
+  <input type="hidden" name="anliegen_typ" value="" data-field-typ />
+  <input type="hidden" name="anliegen_detail" value="" data-field-detail />
+  <input type="hidden" name="name" value="" data-field-name />
+  <input type="hidden" name="kontakt" value="" data-field-kontakt />
+  <input type="hidden" name="nachricht" value="" data-field-nachricht />
+  <input type="hidden" name="objekt" value={objektRef} data-field-objekt />
+
+  {
+    objektRef && (
+      <p
+        class="mb-6 rounded-xl border border-[#1c2b4a]/12 bg-white/70 px-4 py-3 text-sm leading-relaxed text-[#1c2b4a]"
+        role="status"
+      >
+        <span class="block text-[10px] font-semibold uppercase tracking-[0.16em] text-[#1c2b4a]/55">
+          Anfrage zu
+        </span>
+        <span class="mt-1 block font-medium">{objektRef}</span>
+      </p>
+    )
+  }
+
+  <p class="hidden">
+    <label>
+      Nicht ausfüllen: <input name="bot-field" />
+    </label>
+  </p>
+
+  <div class="conversation-form__progress mb-8 flex justify-center gap-2" aria-hidden="true">
+    <span class="conversation-form__dot h-2 w-2 rounded-full bg-[#1c2b4a]/20" data-step-dot="1"></span>
+    <span class="conversation-form__dot h-2 w-2 rounded-full bg-[#1c2b4a]/20" data-step-dot="2"></span>
+    <span class="conversation-form__dot h-2 w-2 rounded-full bg-[#1c2b4a]/20" data-step-dot="3"></span>
+  </div>
+
+  <div class="conversation-form__steps relative overflow-hidden">
+    <div class="conversation-form__step is-active" data-step="1">
+      <p class="font-display text-xl text-[#1c2b4a]">Was beschäftigt Sie gerade?</p>
+      <div class="mt-6 space-y-3">
+        <button type="button" class="conversation-form__choice" data-type="verkaufen">
+          Ich möchte verkaufen oder bewerten lassen
+        </button>
+        <button type="button" class="conversation-form__choice" data-type="kaeufer">
+          Ich suche eine Immobilie oder Kapitalanlage
+        </button>
+        <button type="button" class="conversation-form__choice" data-type="investor">
+          Ich bin Investor oder institutioneller Käufer
+        </button>
+      </div>
+    </div>
+
+    <div class="conversation-form__step" data-step="2" hidden>
+      <div data-step-panel="verkaufen" hidden>
+        <p class="font-display text-xl text-[#1c2b4a]">Wo liegt Ihre Immobilie?</p>
+        <input
+          type="text"
+          class="conversation-form__input mt-6"
+          placeholder="Stadtteil oder PLZ"
+          data-detail-input="verkaufen"
+        />
+        <button type="button" class="conversation-form__next mt-6" data-next-step disabled>
+          Weiter
+        </button>
+      </div>
+      <div data-step-panel="kaeufer" hidden>
+        <p class="font-display text-xl text-[#1c2b4a]">Welches Segment interessiert Sie?</p>
+        <div class="mt-6 space-y-3">
+          <button type="button" class="conversation-form__choice" data-detail="Bis 1 Mio.">
+            Bis 1 Mio.
+          </button>
+          <button type="button" class="conversation-form__choice" data-detail="1–3 Mio.">
+            1–3 Mio.
+          </button>
+          <button type="button" class="conversation-form__choice" data-detail="Über 3 Mio.">
+            Über 3 Mio.
+          </button>
+        </div>
+      </div>
+      <div data-step-panel="investor" hidden>
+        <p class="font-display text-xl text-[#1c2b4a]">Welches Volumen planen Sie?</p>
+        <div class="mt-6 space-y-3">
+          <button type="button" class="conversation-form__choice" data-detail="Einzelobjekt">
+            Einzelobjekt
+          </button>
+          <button type="button" class="conversation-form__choice" data-detail="Portfolio">
+            Portfolio
+          </button>
+          <button type="button" class="conversation-form__choice" data-detail="Offen">
+            Offen
+          </button>
+        </div>
+      </div>
+      <button type="button" class="conversation-form__back mt-6" data-prev-step>← Zurück</button>
+    </div>
+
+    <div class="conversation-form__step" data-step="3" hidden>
+      <p class="font-display text-xl text-[#1c2b4a]">Wie erreichen wir Sie?</p>
+      <div class="mt-6 space-y-4">
+        <div>
+          <label class="conversation-form__label" for={`name-${formName}`}>Name</label>
+          <input
+            id={`name-${formName}`}
+            type="text"
+            required
+            autocomplete="name"
+            class="conversation-form__input"
+            data-contact-name
+          />
+        </div>
+        <div>
+          <label class="conversation-form__label" for={`kontakt-${formName}`}>Telefon oder E-Mail</label>
+          <input
+            id={`kontakt-${formName}`}
+            type="text"
+            required
+            autocomplete="email"
+            class="conversation-form__input"
+            data-contact-info
+          />
+        </div>
+      </div>
+      <button type="submit" class="conversation-form__submit mt-8">Gespräch anfragen</button>
+      <button type="button" class="conversation-form__back mt-4" data-prev-step>← Zurück</button>
+    </div>
+  </div>
+</form>
+
+<style>
+  .conversation-form__step {
+    opacity: 0;
+    transform: translateX(24px);
+    transition:
+      opacity 300ms ease,
+      transform 300ms ease;
+  }
+
+  .conversation-form__step.is-active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .conversation-form__step.is-exiting {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  .conversation-form__choice {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    border-radius: 9999px;
+    border: 1px solid #1c2b4a;
+    background: transparent;
+    padding: 0.875rem 1.25rem;
+    text-align: left;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: #1c2b4a;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .conversation-form__choice.is-selected,
+  .conversation-form__choice:hover {
+    background: #1c2b4a;
+    color: #f5f0e8;
+  }
+
+  .conversation-form__input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(28, 43, 74, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.875rem 1rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9375rem;
+    color: #1c2b4a;
+    outline: none;
+  }
+
+  .conversation-form__input:focus {
+    border-color: rgba(28, 43, 74, 0.35);
+    box-shadow: 0 0 0 2px rgba(28, 43, 74, 0.08);
+  }
+
+  .conversation-form__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(28, 43, 74, 0.55);
+  }
+
+  .conversation-form__next,
+  .conversation-form__submit {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #1c2b4a;
+    padding: 0.875rem 2rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f5f0e8;
+    transition: opacity 200ms ease;
+  }
+
+  .conversation-form__next:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .conversation-form__back {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: rgba(28, 43, 74, 0.65);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .conversation-form__dot.is-active {
+    background: #1c2b4a;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .conversation-form__step {
+      transition: none;
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  function initConversationForms() {
+    document.querySelectorAll<HTMLFormElement>('[data-conversation-form]').forEach((form) => {
+      if (form.dataset.initialized === 'true') return;
+      form.dataset.initialized = 'true';
+
+      let step = 1;
+      const urlObjekt = new URLSearchParams(window.location.search).get('objekt')?.trim() || '';
+      let objektRef = form.dataset.objektRef || urlObjekt;
+      let type = form.dataset.presetType || (objektRef ? 'kaeufer' : '');
+      let detail = objektRef;
+
+      if (urlObjekt && !form.dataset.objektRef) {
+        form.dataset.objektRef = urlObjekt;
+        if (!form.querySelector('[data-objekt-banner]')) {
+          const banner = document.createElement('p');
+          banner.className =
+            'mb-6 rounded-xl border border-[#1c2b4a]/12 bg-white/70 px-4 py-3 text-sm leading-relaxed text-[#1c2b4a]';
+          banner.setAttribute('role', 'status');
+          banner.setAttribute('data-objekt-banner', '');
+          banner.innerHTML = `<span class="block text-[10px] font-semibold uppercase tracking-[0.16em] text-[#1c2b4a]/55">Anfrage zu</span><span class="mt-1 block font-medium"></span>`;
+          banner.querySelector('span:last-child')!.textContent = urlObjekt;
+          const progress = form.querySelector('.conversation-form__progress');
+          if (progress) form.insertBefore(banner, progress);
+        }
+      }
+
+      const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
+      const dots = Array.from(form.querySelectorAll<HTMLElement>('[data-step-dot]'));
+      const panels = Array.from(form.querySelectorAll<HTMLElement>('[data-step-panel]'));
+
+      const payloadField = form.querySelector<HTMLInputElement>('[data-form-payload]')!;
+      const typField = form.querySelector<HTMLInputElement>('[data-field-typ]')!;
+      const detailField = form.querySelector<HTMLInputElement>('[data-field-detail]')!;
+      const nameField = form.querySelector<HTMLInputElement>('[data-field-name]')!;
+      const kontaktField = form.querySelector<HTMLInputElement>('[data-field-kontakt]')!;
+      const nachrichtField = form.querySelector<HTMLInputElement>('[data-field-nachricht]')!;
+      const objektField = form.querySelector<HTMLInputElement>('[data-field-objekt]');
+
+      const verkaufenInput = form.querySelector<HTMLInputElement>('[data-detail-input="verkaufen"]');
+      const verkaufenNext = form.querySelector<HTMLButtonElement>('[data-next-step]');
+
+      function updateDots() {
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i + 1 === step);
+        });
+      }
+
+      function showStep(next: number) {
+        const current = steps.find((s) => s.classList.contains('is-active'));
+        const target = steps.find((s) => s.dataset.step === String(next));
+        if (!target) return;
+
+        if (current && current !== target) {
+          current.classList.add('is-exiting');
+          current.classList.remove('is-active');
+          window.setTimeout(() => {
+            current.hidden = true;
+            current.classList.remove('is-exiting');
+          }, 300);
+        }
+
+        target.hidden = false;
+        window.requestAnimationFrame(() => target.classList.add('is-active'));
+        step = next;
+        updateDots();
+      }
+
+      function showPanel() {
+        panels.forEach((panel) => {
+          panel.hidden = panel.dataset.stepPanel !== type;
+        });
+      }
+
+      form.querySelectorAll<HTMLButtonElement>('[data-type]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          type = btn.dataset.type || '';
+          form.querySelectorAll('[data-type]').forEach((b) => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          showPanel();
+          showStep(2);
+        });
+      });
+
+      form.querySelectorAll<HTMLButtonElement>('[data-detail]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          detail = btn.dataset.detail || '';
+          form.querySelectorAll('[data-detail]').forEach((b) => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          showStep(3);
+        });
+      });
+
+      verkaufenInput?.addEventListener('input', () => {
+        detail = verkaufenInput.value.trim();
+        if (verkaufenNext) verkaufenNext.disabled = !detail;
+      });
+
+      verkaufenNext?.addEventListener('click', () => {
+        if (!detail) return;
+        showStep(3);
+      });
+
+      form.querySelectorAll<HTMLButtonElement>('[data-prev-step]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (step === 3) showStep(2);
+          else if (step === 2) showStep(1);
+        });
+      });
+
+      form.addEventListener('submit', (e) => {
+        const nameInput = form.querySelector<HTMLInputElement>('[data-contact-name]');
+        const kontaktInput = form.querySelector<HTMLInputElement>('[data-contact-info]');
+        const name = nameInput?.value.trim() || '';
+        const kontakt = kontaktInput?.value.trim() || '';
+
+        const payload = { typ: type, detail, name, kontakt, objekt: objektRef || undefined };
+        payloadField.value = JSON.stringify(payload);
+        typField.value = type;
+        detailField.value = detail;
+        nameField.value = name;
+        kontaktField.value = kontakt;
+        if (objektField) objektField.value = objektRef;
+        const objektLine = objektRef ? `Objekt: ${objektRef}\n` : '';
+        nachrichtField.value = `${objektLine}Typ: ${type}\nDetail: ${detail}`;
+
+        if (!type || !detail || !name || !kontakt) {
+          e.preventDefault();
+        }
+      });
+
+      if (objektField && objektRef) objektField.value = objektRef;
+
+      if (type) {
+        const presetBtn = form.querySelector<HTMLButtonElement>(`[data-type="${type}"]`);
+        presetBtn?.classList.add('is-selected');
+        showPanel();
+        if (objektRef && type === 'kaeufer') {
+          form.querySelectorAll('[data-detail]').forEach((btn) => {
+            if ((btn as HTMLButtonElement).dataset.detail === detail) {
+              btn.classList.add('is-selected');
+            }
+          });
+          showStep(3);
+        } else {
+          showStep(2);
+        }
+      } else {
+        updateDots();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConversationForms);
+  } else {
+    initConversationForms();
+  }
+</script>

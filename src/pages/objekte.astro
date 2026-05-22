@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import ObjekteHero from '../components/objekte/ObjekteHero.astro';
+import ObjekteFilter from '../components/objekte/ObjekteFilter.astro';
+import ObjektCard from '../components/objekte/ObjektCard.astro';
+import ReferenzObjektCard from '../components/objekte/ReferenzObjektCard.astro';
+import { aktiveObjekte, referenzObjekte } from '../content/objekte';
+
+const title = 'Objekte | Reichentrog & Kollegen';
+const description =
+  'Ausgewählte Immobilien — diskret vermittelt. Off-Market-Objekte und exklusive Mandate für qualifizierte Nachfrager in Hamburg.';
+---
+
+<BaseLayout {title} {description}>
+  <Nav variant="page" />
+
+  <main id="main" data-cursor-surface="light">
+    <ObjekteHero />
+
+    <ObjekteFilter />
+
+    <section class="bg-[#F5F0E8] py-16 md:py-20" aria-labelledby="objekte-aktiv-heading">
+      <div class="mx-auto max-w-content px-6">
+        <h2
+          id="objekte-aktiv-heading"
+          class="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1c2b4a]/70"
+        >
+          Aktuell verfügbar
+        </h2>
+        <div class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3" data-objekte-grid>
+          {aktiveObjekte.map((objekt) => <ObjektCard objekt={objekt} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#1c2b4a] px-6 py-10 md:py-12">
+      <p class="mx-auto max-w-2xl text-center text-sm leading-relaxed text-[#F5F0E8]/70">
+        Abgeschlossene Transaktionen — anonymisiert, ohne Namen und Adressen.
+      </p>
+    </section>
+
+    <section class="bg-[#F5F0E8] py-16 md:py-20" aria-labelledby="objekte-ref-heading">
+      <div class="mx-auto max-w-content px-6">
+        <h2
+          id="objekte-ref-heading"
+          class="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1c2b4a]/70"
+        >
+          Erfolgreich vermittelt
+        </h2>
+        <div class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {referenzObjekte.map((objekt) => <ReferenzObjektCard objekt={objekt} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import '../scripts/objekte-filter';
+</script>

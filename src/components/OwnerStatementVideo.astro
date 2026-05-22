@@ -1,0 +1,44 @@
+---
+/**
+ * Persönliches Statement-Video (Besitzer / Inhaber), z. B. im Kontakt-Block.
+ */
+interface Props {
+  class?: string;
+  /** Kurzzeile unter dem Video */
+  caption?: string;
+}
+
+const {
+  class: className,
+  caption = 'Persönliches Statement — Klicken zum Abspielen (Ton).',
+} = Astro.props;
+
+const poster = '/videos/reichentrog-statement-poster.jpg';
+const src = '/videos/reichentrog-statement.mp4';
+---
+
+<div
+  class:list={[
+    'overflow-hidden rounded-[var(--glass-radius)] border border-steel-blue/15 bg-steel-navy shadow-[0_24px_80px_-20px_rgba(26,46,78,0.2)] ring-1 ring-steel-navy/5',
+    className,
+  ]}
+>
+  <div class="relative aspect-video w-full bg-steel-navy">
+    <video
+      class="h-full w-full object-cover"
+      controls
+      playsinline
+      preload="metadata"
+      poster={poster}
+      title="Persönliches Statement der Kanzlei"
+    >
+      <source src={src} type="video/mp4" />
+      <p class="p-6 text-sm text-ice-blue">
+        Video kann in diesem Browser nicht abgespielt werden.
+      </p>
+    </video>
+  </div>
+  <p class="border-t border-white/10 bg-steel-navy/90 px-4 py-3 text-[11px] leading-relaxed text-ice-blue/90">
+    {caption}
+  </p>
+</div>

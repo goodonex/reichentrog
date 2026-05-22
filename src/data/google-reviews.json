@@ -1,0 +1,44 @@
+{
+  "fetchedAt": "2026-05-20T11:49:11.624Z",
+  "placeId": "ChIJRYeLAOKTsUcR6iFlqkSXUTo",
+  "rating": 5,
+  "userRatingCount": 15,
+  "reviews": [
+    {
+      "authorName": "Titus Braun",
+      "rating": 5,
+      "text": "Seit meinen ersten Gesprächen mit Norbert Reichentrog hat mich vor allem eines beeindruckt: Wenn man ihn anruft, hat er immer ein offenes Ohr und dazu die passenden, durchdachten Ideen. Seine fast 25 Jahre persönliche Erfahrung in der Immobilienbranche merkt man in jedem Satz. Er redet nicht um Themen herum, sondern bringt genau die Punkte auf den Tisch, die bei komplexen Entscheidungen wie Kauf, Miete oder Entwicklung gerne übersehen werden.\n\nWas ihn besonders auszeichnet, ist seine realistische Einschätzung von Immobilienwerten. Während viele Makler mit überhöhten Preisen locken, arbeitet Norbert transparent und ehrlich. Er bewertet Häuser und Wohnungen so, wie der Markt sie tatsächlich annimmt, und genau das schafft Sicherheit für alle Beteiligten. Dazu gehört auch, dass er nicht auf Exklusivität besteht. Er weiß, was er kann, vertraut seinem System und stellt den Bedarf der Käufer und Verkäufer in den Mittelpunkt.\n\nAuch seine Herangehensweise an Finanzierungen ist bemerkenswert strukturiert. Er versteht, was Banken benötigen, bereitet Unterlagen sauber auf und sorgt dafür, dass Prozesse nicht ins Stocken geraten. Diese Klarheit nimmt enorm viel Druck aus einem ohnehin sensiblen Bereich.\n\nFür alle, die einen Immobilienexperten suchen, der ehrlich berät, realistische Perspektiven gibt und mit Erfahrung, Ruhe und Struktur durch den gesamten Prozess führt, ist Norbert Reichentrog eine hervorragende Wahl.",
+      "profilePhotoUrl": "https://lh3.googleusercontent.com/a-/ALV-UjU9pZaBLOiq82aJMgGXkH4EMLD9ffuNQdZdjVsOuuvtYz0eHKQA=s128-c0x00000000-cc-rp-mo-ba3",
+      "relativeTimeDescription": "vor 5 Monaten"
+    },
+    {
+      "authorName": "Sascha Palmroth",
+      "rating": 5,
+      "text": "Herr Alberich hat spontan einen Termin innerhalb kürzester Zeit möglich gemacht. Informativ, professionell und freundlich. Leider habe ich die Immobilie nicht bekommen, da kann aber natürlich der Makler nichts für. Hr. Alberich kann ich nur empfehlen. Super Typ!",
+      "profilePhotoUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWRP4zdQW-KRokKt0xdHC9ja1Tz6aIkNnuUf-oxmMHYNZRfdLz-=s128-c0x00000000-cc-rp-mo-ba2",
+      "relativeTimeDescription": "vor 7 Monaten"
+    },
+    {
+      "authorName": "Tony Kausche",
+      "rating": 5,
+      "text": "Herr Reichentrog hat uns bei eine Anschlussfinanzierung unterstützt. Er hat uns professionell und gut beraten und die Terminfindung war auch super unkompliziert. Er ging auch die Extrameile für uns, was uns natürlich gefreut hat. Das ist in der heutigen Zeit nicht selbstverständlich!",
+      "profilePhotoUrl": "https://lh3.googleusercontent.com/a/ACg8ocIEsdAGVDhD5ijYBTM9u_jeFM7HCmzMzD59Al0x2ViHQylzCic=s128-c0x00000000-cc-rp-mo-ba3",
+      "relativeTimeDescription": "vor 7 Monaten"
+    },
+    {
+      "authorName": "Michael Aumer",
+      "rating": 5,
+      "text": "Herr Reichentrog hat binnen weniger Stunden auf unsere Anfrage reagiert, wir konnten sehr kurzfristig am Abend mit ihm das schöne Mietshaus besichtigen und wurden über alle Details super aufgeklärt. Wir können Herrn Reichentrog und Team sehr empfehlen. Hier sind Sie bestens aufgehoben.",
+      "profilePhotoUrl": "https://lh3.googleusercontent.com/a-/ALV-UjX-uO3XeuDJoiomYiP1nb20cyIEJXnVbXt-_P9L-_Q1jyxewrI=s128-c0x00000000-cc-rp-mo-ba2",
+      "relativeTimeDescription": "vor 11 Monaten"
+    },
+    {
+      "authorName": "Alexander von Engel",
+      "rating": 5,
+      "text": "Norbert Reichentrog und sein Team unterstützen uns optimal bei dem Verkauf von Immobilien im Norddeutschen Raum. Gerade zu unauffällig und von Geisterhand erfolgt die Zusammenarbeit mit großem Erfolg. Unsere Kunden und wir fühlen uns sehr gut betreut.",
+      "profilePhotoUrl": "https://lh3.googleusercontent.com/a/ACg8ocI5X0nmU3GRYpUS2NCnjcH0L7B5Y19CI4akg1mXf6XwKC1kDw=s128-c0x00000000-cc-rp-mo",
+      "relativeTimeDescription": "vor einem Jahr"
+    }
+  ],
+  "source": "google-places-api"
+}

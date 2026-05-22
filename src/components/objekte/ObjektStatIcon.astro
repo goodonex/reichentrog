@@ -1,0 +1,41 @@
+---
+interface Props {
+  icon: 'flaeche' | 'zimmer' | 'baujahr';
+  class?: string;
+}
+
+const { icon, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['h-4 w-4 shrink-0', className]}
+  viewBox="0 0 16 16"
+  fill="none"
+  aria-hidden="true"
+>
+  {
+    icon === 'flaeche' ? (
+      <path
+        d="M2 12V4l6-2 6 2v8l-6 2-6-2Z"
+        stroke="currentColor"
+        stroke-width="1.2"
+        stroke-linejoin="round"
+      />
+    ) : icon === 'zimmer' ? (
+      <>
+        <path d="M3 7V4h10v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+        <path
+          d="M2 12h12M5 7v5M11 7v5"
+          stroke="currentColor"
+          stroke-width="1.2"
+          stroke-linecap="round"
+        />
+      </>
+    ) : (
+      <>
+        <rect x="2.5" y="3" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2" />
+        <path d="M2.5 6.5h11M5.5 1.5v2M10.5 1.5v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+      </>
+    )
+  }
+</svg>

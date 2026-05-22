@@ -1,0 +1,133 @@
+---
+import RevealSection from './RevealSection.astro';
+
+const teamPhoto = '/images/team/team-foto.jpg';
+
+const team = [
+  {
+    name: 'Norbert Reichentrog',
+    tags: 'Privatkunden · Bewertung · Transaktion',
+    bio: 'Langjährige Bankenpraxis und Immobilientransaktionen — vom Erstgespräch bis zur unterschriftsreifen Abwicklung.',
+    quote:
+      'Ich habe zwanzig Jahre bei der Bank gelernt, was Diskretion wirklich bedeutet. Das bringe ich in jeden Auftrag.',
+  },
+  {
+    name: 'Oliver Alberich',
+    tags: 'Geschäftskunden · Projektentwicklung · Finanzierung',
+    bio: 'Immobilien- und Projektentwicklung mit Finanzierungs-Expertise — strukturiert, wo Komplexität zusammenläuft.',
+    quote:
+      'Komplexe Transaktionen brauchen Struktur. Mein Job ist es, dass Sie davon nichts merken.',
+  },
+];
+---
+
+<div class="team-section section-photo-fades relative flex min-h-[600px] flex-col justify-end">
+  <img
+    src={teamPhoto}
+    alt="Norbert Reichentrog und Oliver Alberich — Partner bei Reichentrog & Kollegen"
+    width="1024"
+    height="346"
+    class="team-section__photo absolute inset-0 min-h-full min-w-full object-cover object-[center_20%]"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="team-section__overlay absolute inset-0 bg-[rgba(10,15,28,0.55)]" aria-hidden="true"></div>
+
+  <RevealSection class="relative z-[3] w-full">
+    <div class="mx-auto max-w-content px-6 pb-20 text-center">
+      <p class="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f5f0e8]/60">
+        Team
+      </p>
+      <h2
+        class="font-display text-[clamp(1.875rem,3.5vw,3rem)] font-light leading-[1.12] tracking-[-0.02em] text-[#f5f0e8]"
+        style="text-wrap: balance;"
+      >
+        Zwei Partner — eine Linie
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl font-sans text-base leading-relaxed text-[#f5f0e8]/70">
+        Persönliche Mandatsführung statt anonymer Callcenter-Strukturen.
+      </p>
+
+      <div class="team-section__members mx-auto mt-12 max-w-4xl">
+        <div class="flex flex-col items-stretch gap-10 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-12">
+          {
+            team.map((member, index) => (
+              <>
+                {index > 0 && (
+                  <>
+                    <div
+                      class="h-px w-full shrink-0 bg-[#f5f0e8]/20 md:hidden"
+                      aria-hidden="true"
+                    />
+                    <div
+                      class="hidden w-px shrink-0 self-stretch bg-[#f5f0e8]/20 md:block"
+                      aria-hidden="true"
+                    />
+                  </>
+                )}
+                <article class="team-member group relative text-left">
+                  <div class="team-member__scrim relative">
+                    <div class="team-member__body relative z-[1]">
+                      <h3 class="font-display text-[22px] font-light leading-tight text-[#f5f0e8]">
+                        {member.name}
+                      </h3>
+                      <p class="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-[#C9A96E]">
+                        {member.tags}
+                      </p>
+                      <p class="mt-4 font-sans text-sm leading-relaxed text-[#f5f0e8]/70">
+                        {member.bio}
+                      </p>
+                      <p class="team-member__quote-mobile mt-4 font-sans text-sm italic leading-relaxed text-[#f5f0e8]/75 md:hidden">
+                        „{member.quote}"
+                      </p>
+                    </div>
+                    <div
+                      class="team-member__overlay absolute inset-0 z-[2] hidden flex-col items-center justify-center rounded-lg bg-gradient-to-t from-[rgba(28,43,74,0.94)] via-[rgba(28,43,74,0.72)] to-[rgba(28,43,74,0.38)] px-6 text-center opacity-0 transition-opacity duration-500 ease-out md:flex md:group-hover:opacity-100"
+                      aria-hidden="true"
+                    >
+                      <span class="font-display text-[80px] leading-none text-[#f5f0e8]/30">„</span>
+                      <p class="max-w-[220px] font-sans text-sm italic leading-relaxed text-[#f5f0e8]">
+                        {member.quote}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </RevealSection>
+</div>
+
+<style>
+  .team-section {
+    --section-fade-from: #f5f2ea;
+    --section-fade-edge-bottom: #353e47;
+    --section-fade-to: #f5f2ea;
+  }
+
+  .team-section__photo,
+  .team-section__overlay {
+    pointer-events: none;
+  }
+
+  .team-section__photo {
+    image-rendering: auto;
+  }
+
+  .team-member__scrim {
+    background: rgba(10, 15, 28, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-member__overlay {
+      transition: none;
+    }
+  }
+</style>

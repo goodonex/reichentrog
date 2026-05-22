@@ -1,0 +1,86 @@
+---
+import ReichentrogLogo from './ReichentrogLogo.astro';
+
+/**
+ * Schlank: Lead-Fokus (Ankauf / Objekt anbieten). Keine langen Anker-Menüs.
+ */
+interface Props {
+  /** Auf Unterseiten: kein Hero-Glas/Licht-Logo — sofort Lesbarkeit auf hellem Grund */
+  variant?: 'home' | 'page';
+}
+
+const { variant = 'home' } = Astro.props;
+
+const links = [
+  { href: '/ankauf/', label: 'Ankauf & Profile' },
+  { href: '/objekte/', label: 'Objekte' },
+  { href: '/objekt-anbieten/', label: 'Objekt anbieten', highlight: true },
+  { href: '/kontakt/', label: 'Kontakt' },
+];
+---
+
+<header
+  id="site-nav"
+  class="pointer-events-none fixed left-0 right-0 top-4 z-[200] flex justify-center px-4"
+  data-on-hero={variant === 'home' ? 'true' : 'false'}
+  data-no-hero={variant === 'page' ? 'true' : undefined}
+>
+  <div
+    class="glass-nav-shell pointer-events-auto flex w-full max-w-4xl flex-col gap-2 rounded-full border border-white/45 bg-[var(--glass-bg)] px-3 py-2 shadow-[var(--glass-shadow)] backdrop-blur-[24px] backdrop-saturate-[180%] transition-[background,border-color,box-shadow] duration-500 md:flex-row md:items-center md:justify-between md:gap-3 md:px-5 md:py-2.5"
+    style="--glass-radius: 9999px;"
+    data-cursor-surface={variant === 'page' ? 'light' : undefined}
+  >
+    <div class="flex h-11 items-center justify-between md:h-12 md:justify-start md:gap-6">
+      <a
+        href="/"
+        class="group min-w-0 shrink py-0.5 transition-opacity duration-300 hover:opacity-95"
+        aria-label="Reichentrog &amp; Kollegen — Startseite"
+      >
+        <ReichentrogLogo layout="horizontal" />
+      </a>
+      <button
+        type="button"
+        id="nav-toggle"
+        class="nav-toggle-btn inline-flex h-10 w-10 items-center justify-center rounded-full text-steel-navy transition-colors duration-300 hover:bg-white/30 md:hidden"
+        aria-controls="nav-panel"
+        aria-expanded="false"
+        aria-label="Menü öffnen"
+      >
+        <span class="sr-only">Navigation</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            stroke="currentColor"
+            stroke-width="1.5"
+            d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav
+      id="nav-panel"
+      class="hidden flex-col gap-1 pb-2 md:flex md:flex-row md:items-center md:gap-1 md:pb-0"
+      aria-hidden="true"
+    >
+      {
+        links.map(({ href, label, highlight }) =>
+          highlight ? (
+            <a
+              href={href}
+              class="nav-highlight mt-1 rounded-full bg-steel-navy px-4 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-off-white transition hover:bg-steel-blue md:mt-0"
+            >
+              {label}
+            </a>
+          ) : (
+            <a
+              href={href}
+              class="nav-link group relative rounded-full px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-steel-blue transition-colors duration-300 hover:text-steel-navy"
+            >
+              <span class="absolute inset-0 -z-10 scale-95 rounded-full bg-white/0 opacity-0 transition-all group-hover:scale-100 group-hover:bg-white/35 group-hover:opacity-100" />
+              {label}
+            </a>
+          ),
+        )
+      }
+    </nav>
+  </div>
+</header>

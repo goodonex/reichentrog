@@ -1,0 +1,44 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import RevealSection from './RevealSection.astro';
+import GlassCard from './GlassCard.astro';
+import ContactForm from './ContactForm.astro';
+import { phoneDisplay, phoneHref } from '../content/site';
+---
+
+<RevealSection>
+  <div class="max-w-2xl">
+    <SectionHeader
+      eyebrow="Kontakt"
+      title="Sprechen wir miteinander."
+      subtitle="Ob Sie verkaufen, kaufen oder zunächst nur Klarheit über Ihre Optionen suchen — ein Erstgespräch verpflichtet zu nichts und gibt Ihnen die Grundlage für Ihre Entscheidung."
+    />
+  </div>
+  <p class="mx-auto mt-5 max-w-xl text-center font-sans text-sm leading-relaxed text-steel-navy/70">
+    Kein Inserat, kein Portal, keine Öffentlichkeit — bis Sie es wollen.
+  </p>
+  <div class="mt-10 grid gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-5">
+      <div class="flex flex-wrap justify-center gap-4 lg:justify-start">
+        <a
+          href="#kontakt-form"
+          class="inline-flex items-center gap-2 rounded-full bg-steel-navy px-8 py-3.5 text-xs font-medium uppercase tracking-[0.12em] text-off-white shadow-lg transition hover:bg-steel-blue"
+        >
+          Erstgespräch anfragen
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href={phoneHref}
+          class="inline-flex items-center gap-2 rounded-full border border-steel-navy/25 bg-white/60 px-8 py-3.5 text-xs font-medium uppercase tracking-[0.12em] text-steel-navy transition hover:bg-white"
+        >
+          Direkt anrufen · {phoneDisplay}
+        </a>
+      </div>
+    </div>
+    <div id="kontakt-form" class="lg:col-span-7 scroll-mt-28">
+      <GlassCard class="p-8 md:p-10">
+        <ContactForm formName="kontakt" />
+      </GlassCard>
+    </div>
+  </div>
+</RevealSection>

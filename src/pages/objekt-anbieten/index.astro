@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import GlassCard from '../../components/GlassCard.astro';
+import ContactForm from '../../components/ContactForm.astro';
+
+const title = 'Objekt anbieten | Reichentrog & Kollegen';
+const description =
+  'Immobilie oder Grundstück diskret anbieten — Ankaufsprofile, schnelle Ersteinschätzung, persönliche Rückmeldung.';
+---
+
+<BaseLayout {title} {description}>
+  <Nav variant="page" />
+  <main id="main" class="section-mesh-ice bg-ice-blue pb-24 pt-28 md:pt-32" data-cursor-surface="light">
+    <div class="mx-auto max-w-content px-6">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="text-[11px] font-medium uppercase tracking-[0.28em] text-bernstein">Lead · Ankauf</p>
+          <h1 class="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] font-light leading-tight text-steel-navy">
+            Objekt anbieten
+          </h1>
+          <p class="mt-6 text-[0.95rem] leading-relaxed text-steel-navy/80">
+            Sie möchten verkaufen oder ein Objekt für unsere Suchprofile einreichen? Kurz die Eckdaten
+            senden — wir prüfen Passung und melden uns persönlich. Kein Portal-Rauschen, keine
+            Massenabwicklung.
+          </p>
+          <ul class="mt-10 space-y-4 text-sm text-steel-navy/85">
+            <li class="flex gap-3">
+              <span class="mt-1 font-display text-bernstein" aria-hidden="true">·</span>
+              <span
+                ><strong class="font-medium text-steel-navy">Klarheit:</strong> Welches Profil (A–D) passt — oder
+                Sonderfall?</span
+              >
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-1 font-display text-bernstein" aria-hidden="true">·</span>
+              <span
+                ><strong class="font-medium text-steel-navy">Tempo:</strong> vollständige Angaben beschleunigen die
+                Prüfung.</span
+              >
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-1 font-display text-bernstein" aria-hidden="true">·</span>
+              <span
+                ><strong class="font-medium text-steel-navy">Diskretion:</strong> Ihre Daten werden vertraulich
+                behandelt.</span
+              >
+            </li>
+          </ul>
+          <p class="mt-10 text-sm text-steel-navy/70">
+            <a
+              href="/ankauf/"
+              class="font-medium text-steel-navy underline decoration-steel-navy/25 underline-offset-2 hover:decoration-bernstein/50"
+              >Zu den Ankaufsprofilen &amp; Kriterien</a
+            >
+            ·
+            <a
+              href="/downloads/ankaufsprofile.pdf"
+              class="font-medium text-steel-navy underline decoration-steel-navy/25 underline-offset-2 hover:decoration-bernstein/50"
+              download
+              >PDF</a
+            >
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <GlassCard class="p-8 md:p-10">
+            <p class="text-[11px] font-medium uppercase tracking-[0.14em] text-steel-navy/55">
+              Formular · Ankauf / Objekt
+            </p>
+            <ContactForm formName="objekt-anbieten" lockAnliegen defaultAnliegen="ankauf" />
+          </GlassCard>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

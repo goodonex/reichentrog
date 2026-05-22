@@ -1,0 +1,36 @@
+---
+/** Off-Market Statement — zwischen Banken-Hintergrund und Privatkunden */
+---
+
+<section id="off-market" class="off-market-statement relative bg-[#1c2b4a] py-24 md:py-[120px]">
+  <div class="relative z-[2] mx-auto max-w-content px-6 text-center">
+    <h2
+      class="off-market-statement__headline translate-y-8 font-display text-[clamp(2rem,5vw,4rem)] font-light italic leading-[1.12] text-[#f5f0e8] opacity-0"
+      style="text-wrap: balance;"
+    >
+      Die besten Objekte werden nie inseriert.
+    </h2>
+    <p class="mx-auto mt-8 max-w-[480px] font-sans text-[15px] leading-relaxed text-[#f5f0e8]/60">
+      Unser Off-Market-Netzwerk umfasst vorqualifizierte Käufer, Family Offices und institutionelle
+      Investoren — diskret, ohne Marktgeräusch.
+    </p>
+  </div>
+</section>
+
+<style>
+  .off-market-statement__headline.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 700ms ease-out,
+      transform 700ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .off-market-statement__headline {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>

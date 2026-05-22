@@ -1,0 +1,49 @@
+---
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  eyebrow = 'Aktuelle Mandate',
+  title = 'Ausgewählte Objekte — diskret vermittelt.',
+  subtitle = 'Alle Objekte werden persönlich qualifiziert. Anfragen nur auf Eignung.',
+} = Astro.props;
+---
+
+<section class="objekte-hero section-photo-fades relative flex min-h-[420px] items-center justify-center px-6 pb-20 pt-32 md:min-h-[480px] md:pb-24 md:pt-36">
+  <div class="objekte-hero__bg absolute inset-0" aria-hidden="true"></div>
+  <div class="objekte-hero__overlay absolute inset-0" aria-hidden="true"></div>
+
+  <div class="relative z-[2] mx-auto max-w-3xl text-center">
+    <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/60">{eyebrow}</p>
+    <h1
+      class="mt-4 font-display text-[clamp(2rem,4.5vw,3.25rem)] font-light leading-[1.12] tracking-[-0.02em] text-[#F5F0E8]"
+      style="text-wrap: balance;"
+    >
+      {title}
+    </h1>
+    <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[#F5F0E8]/70">{subtitle}</p>
+  </div>
+</section>
+
+<style>
+  .objekte-hero {
+    --section-fade-from: #f5f2ea;
+    --section-fade-edge-bottom: #36363e;
+    --section-fade-to: #f5f0e8;
+  }
+
+  .objekte-hero__bg {
+    background-color: #1c2b4a;
+    background-image: url('/images/ihk-hamburg.jpg');
+    background-size: cover;
+    background-position: center;
+    image-rendering: auto;
+  }
+
+  .objekte-hero__overlay {
+    background: rgba(10, 15, 28, 0.65);
+  }
+</style>
