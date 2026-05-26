@@ -5,18 +5,24 @@ import SectionVideoBg from './SectionVideoBg.astro';
 const cards = [
   {
     num: '01',
-    title: 'Flexibel',
-    text: 'Mandatsform und Tempo stimmen wir auf Sie ab — vom selektiven Off-Market bis zur ausgerollten Vermarktung, wenn es passt.',
+    title: 'Finanzierung ist unser Haus',
+    text:
+      'Wir sprechen Banker-Sprache — und das merken unsere Kunden spätestens beim Notar. Wir stellen nicht nur die Objektakte vollständig, sondern auch die Finanzierungsakte. Kein Nachbessern, keine geplatzten Termine.',
+    iconKey: 'bank',
   },
   {
     num: '02',
-    title: 'Diskret',
-    text: 'Kein unnötiges Portal-Rauschen: qualifizierte Nachfrager, geschützte Vertraulichkeit.',
+    title: 'Kein Alleinauftrag erforderlich',
+    text:
+      'Als einzige Kanzlei in Hamburg arbeiten wir ohne Zwang zum Alleinauftrag. Mandatsform und Tempo stimmen wir individuell ab — vom selektiven Off-Market bis zur breiten Vermarktung, wenn es passt. Deshalb kommen 95 % unserer Privatkunden nach dem ersten Gespräch zu uns.',
+    iconKey: 'handshake',
   },
   {
     num: '03',
-    title: 'Individuell',
-    text: 'Jede Immobilie hat eine eigene Geschichte — wir übersetzen sie in eine nachvollziehbare Transaktionsstrategie.',
+    title: 'Wöchentlich informiert. Immer.',
+    text:
+      'Jeder Mandant bekommt von uns regelmäßige Updates — ob Investor mit Portfolio oder Eigentümer mit Einfamilienhaus. Keine Stille, keine Hoffnung. Wir haben Mandate von Engel & Völkers gewonnen, weil die einfach aufgehört hatten, sich zu melden.',
+    iconKey: 'calendar-check',
   },
 ];
 ---
@@ -40,7 +46,7 @@ const cards = [
   <div class="editorial-dark-overlay warum-section__overlay absolute inset-0" aria-hidden="true"></div>
 
   <div class="relative z-[3] mx-auto max-w-content px-6">
-    <RevealSection staggerChildren>
+    <RevealSection>
       <div class="max-w-2xl">
         <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
           Unser Anspruch
@@ -49,20 +55,88 @@ const cards = [
           class="font-display text-[clamp(1.875rem,3.5vw,3rem)] font-light leading-[1.12] tracking-[-0.02em] text-[#F5F0E8]"
           style="text-wrap: balance;"
         >
-          Kein Massengeschäft. Kein Kompromiss.
+          Was uns von jedem anderen Makler unterscheidet.
         </h2>
         <p class="mt-5 text-base font-normal leading-[1.7] text-[rgba(245,240,232,0.85)] md:text-[1.0625rem]">
-          Transaktionen wie strukturierte Absicherung: klar dokumentiert, persönlich betreut — ohne unnötige
-          Öffentlichkeit.
+          Drei Gründe, warum unsere Kunden — ob Privat oder Investor — nicht woanders hingehen,
+          wenn sie einmal mit uns gearbeitet haben.
         </p>
       </div>
 
       <div class="mt-10 grid items-stretch gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
         {
-          cards.map((card) => (
-            <article class="warum-glass-card flex h-full flex-col rounded-[var(--glass-radius)] p-8" data-reveal-child>
-              <p class="font-display text-4xl font-light tabular-nums text-bernstein">{card.num}</p>
-              <h3 class="mt-4 font-display text-xl text-[#F5F0E8]">{card.title}</h3>
+          cards.map((card, i) => (
+            <article
+              class="usp-card warum-glass-card flex h-full flex-col rounded-[var(--glass-radius)] p-8"
+              style={`--usp-card-delay:${i * 150}ms;`}
+            >
+              <span class="warum-glass-card__icon" aria-hidden="true">
+                {card.iconKey === 'bank' && (
+                  <svg
+                    viewBox="0 0 32 32"
+                    width="32"
+                    height="32"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    role="img"
+                    aria-label="Bankfassade"
+                  >
+                    <path d="M4 28h24" />
+                    <path d="M4 13h24" />
+                    <path d="M4 13 16 5l12 8" />
+                    <path d="M8 13v15" />
+                    <path d="M13 13v15" />
+                    <path d="M19 13v15" />
+                    <path d="M24 13v15" />
+                  </svg>
+                )}
+                {card.iconKey === 'handshake' && (
+                  <svg
+                    viewBox="0 0 32 32"
+                    width="32"
+                    height="32"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    role="img"
+                    aria-label="Handschlag"
+                  >
+                    <path d="M4 14h3l3-3 5 5" />
+                    <path d="M28 14h-3l-3-3-5 5" />
+                    <path d="m13 21 2 2a1.4 1.4 0 0 0 2-2" />
+                    <path d="m17 22 1.5 1.5a1.4 1.4 0 0 0 2-2L17 18" />
+                    <path d="m20 19 1.5 1.5a1.4 1.4 0 0 0 2-2L18 12" />
+                    <path d="M4 19l3 3 2-2" />
+                  </svg>
+                )}
+                {card.iconKey === 'calendar-check' && (
+                  <svg
+                    viewBox="0 0 32 32"
+                    width="32"
+                    height="32"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    role="img"
+                    aria-label="Kalender mit Bestätigung"
+                  >
+                    <rect x="4" y="7" width="24" height="21" rx="2" />
+                    <path d="M4 13h24" />
+                    <path d="M11 4v6" />
+                    <path d="M21 4v6" />
+                    <path d="m12 20 3 3 6-6" />
+                  </svg>
+                )}
+              </span>
+              <p class="mt-6 font-display text-4xl font-light tabular-nums text-bernstein">{card.num}</p>
+              <h3 class="mt-3 font-display text-xl text-[#F5F0E8]">{card.title}</h3>
               <p class="mt-3 flex-1 text-sm leading-relaxed text-[rgba(245,240,232,0.82)]">{card.text}</p>
             </article>
           ))
@@ -71,6 +145,40 @@ const cards = [
     </RevealSection>
   </div>
 </div>
+
+<script>
+  function initUspCards() {
+    const cards = document.querySelectorAll<HTMLElement>('.usp-card');
+    if (!cards.length) return;
+
+    const reduced =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      cards.forEach((card) => card.classList.add('is-visible'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -60px 0px' },
+    );
+
+    cards.forEach((card) => io.observe(card));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUspCards);
+  } else {
+    initUspCards();
+  }
+</script>
 
 <style>
   .warum-section {
@@ -133,6 +241,18 @@ const cards = [
     box-shadow:
       0 14px 40px rgba(0, 0, 0, 0.32),
       inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .warum-glass-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    color: var(--color-bernstein);
+    background: rgba(204, 158, 77, 0.08);
+    border: 1px solid rgba(204, 158, 77, 0.22);
   }
 
   @media (prefers-reduced-motion: reduce) {

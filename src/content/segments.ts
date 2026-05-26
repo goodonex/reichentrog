@@ -18,45 +18,45 @@ export const geschaeftskundenServices = [
 export const privatkundenUsps = [
   {
     title: 'Ein Ansprechpartner',
-    text: 'Norbert Reichentrog begleitet Sie persönlich — von der ersten Einordnung bis zum Notartermin.',
+    text: 'Von der ersten Einordnung bis zur Schlüsselübergabe — kein Übergeben, kein Weiterschicken, keine Schnittstellen. Sie sprechen einmal, wir übernehmen den Rest.',
   },
   {
-    title: 'Diskret statt laut',
-    text: 'Off-Market-Vermittlung ohne Portal-Inserat. Ihr Auftrag bleibt vertraulich.',
+    title: 'Kein Alleinauftrag',
+    text: 'Sie müssen sich nicht binden, um professionell betreut zu werden. Wir stimmen das Mandat mit Ihnen individuell ab — und haben trotzdem die höchste Abschlussquote im Privatkundenbereich, die wir kennen.',
   },
   {
-    title: 'Bewertung mit Substanz',
-    text: 'DEKRA-zertifizierte Einordnung und Banken-Erfahrung als saubere Entscheidungsbasis.',
+    title: 'Bewertung auf Bankenniveau',
+    text: 'DEKRA-zertifiziert, nachvollziehbar, bankbelastbar. Unsere Bewertungen sind keine Schätzung — sie halten auch dann stand, wenn Ihre Bank genau hinschaut.',
   },
 ] as const;
 
 export const geschaeftskundenUsps = [
   {
     title: 'Transaktionsstruktur',
-    text: 'Vom Datenraum bis zur parallelen Due Diligence — klar geführt, ohne Reibungsverlust.',
+    text: 'Jede Transaktion wird so aufgebaut, dass sie standhält — Datenraum, Due Diligence, Käufer-Matching und Beurkundung aus einer Hand. Keine losen Enden, keine Überraschungen beim Notar.',
   },
   {
     title: 'Banken-Netzwerk',
-    text: 'Finanzierung, Konditionen und Stakeholder-Dialog aus jahrzehntelanger Sparkassen-Praxis.',
+    text: 'Direkter Zugang zu Hamburger Privatbanken, Vermögensverwaltern und Family Offices — nicht über Türsteher, sondern über gewachsene Beziehungen. Kapitalnachweis und Finanzierungsbestätigung prüfen wir, bevor ein Termin stattfindet.',
   },
   {
-    title: 'Off-Market Matching',
-    text: 'Vorqualifizierte Käufer und Investoren — diskret, ohne Marktsignal.',
+    title: 'Aktive Betreuung',
+    text: 'Jeder Mandant wird wöchentlich informiert — Investor wie Eigentümer. Wir haben mehrere Mandate von namhaften Wettbewerbern übernommen, weil die aufgehört hatten, sich zu melden. Das passiert bei uns nicht.',
   },
 ] as const;
 
 export const teamTextBlocks = [
   {
     name: 'Norbert Reichentrog',
-    role: 'Geschäftsführer · Sparkassen-Hintergrund',
-    text: 'Strukturiert komplexe Verkaufs- und Finanzierungsprozesse — mit dem Anspruch, dass jede Entscheidung nachvollziehbar bleibt.',
+    role: 'Geschäftsführer · Finanzierung · Projektentwicklung',
+    text: 'Strukturiert Verkaufs- und Finanzierungsprozesse mit dem Anspruch, dass jede Entscheidung bankbelastbar und nachvollziehbar bleibt.',
     photo: '/images/team/norbert-reichentrog.png',
     photoAlt: 'Norbert Reichentrog — Geschäftsführer Reichentrog & Kollegen',
   },
   {
     name: 'Oliver Alberich',
-    role: 'Partner · Transaktionen & Portfolios',
-    text: 'Spezialisiert auf institutionelle Mandate, Portfolio-Exits und Off-Market-Transaktionen im mittleren bis großen Volumen.',
+    role: 'Partner · Transaktionen · Vermietung · Investoren',
+    text: 'Spezialisiert auf institutionelle Mandate, Vermietung und Portfolio-Transaktionen — vom Erstkontakt bis zum Abschluss, ohne unnötige Zwischenstufen.',
     photo: '/images/team/oliver-alberich.png',
     photoAlt: 'Oliver Alberich — Partner Reichentrog & Kollegen',
   },

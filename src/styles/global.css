@@ -114,6 +114,33 @@
 }
 
 @layer utilities {
+  /* USP-Karten Scroll-Fade-in (WarumSection)
+     Initialzustand: unsichtbar, leicht nach unten versetzt.
+     `.is-visible` wird per IntersectionObserver gesetzt; --usp-card-delay
+     liefert den Stagger-Versatz (150ms · n) zwischen den Karten. */
+  .usp-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--usp-card-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .usp-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .usp-card {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;
@@ -137,15 +164,29 @@
     white-space: normal;
   }
 
+  #site-nav .glass-nav-shell {
+    border-color: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.28);
+  }
+
   #site-nav[data-scrolled='true'] .glass-nav-shell {
-    background: var(--glass-bg-strong);
+    background: rgba(255, 255, 255, 0.42);
+  }
+
+  #site-nav[data-no-hero='true'] .glass-nav-shell {
+    border-color: rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.32);
+  }
+
+  #site-nav[data-no-hero='true'][data-scrolled='true'] .glass-nav-shell {
+    background: rgba(255, 255, 255, 0.48);
   }
 
   /* Navigation auf dunklem Hero */
   #site-nav[data-on-hero='true'] .glass-nav-shell {
     border-color: rgba(255, 255, 255, 0.22);
-    background: rgba(26, 46, 78, 0.48);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.28);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   }
 
   /* Logo (Kompass + Wortmarke) — Brand-Navy bzw. Off-White je nach Hero/Scroll */
@@ -222,8 +263,8 @@
   }
 
   #site-nav[data-on-hero='true'][data-scrolled='true'] .glass-nav-shell {
-    background: rgba(245, 242, 234, 0.72);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.52);
+    border-color: rgba(255, 255, 255, 0.55);
     box-shadow: var(--glass-shadow);
   }
 
