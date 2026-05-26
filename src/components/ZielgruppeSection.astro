@@ -1,0 +1,356 @@
+---
+import CompassMark from './CompassMark.astro';
+import QualificationQuiz from './QualificationQuiz.astro';
+import { privatkundenServices, geschaeftskundenServices } from '../content/segments';
+---
+
+<section id="zielgruppe" class="zielgruppe-section" aria-label="Zielgruppen-Auswahl">
+  <div class="zielgruppe-stack">
+    <a href="/privatkunden/" class="zielgruppe-band zielgruppe-band--privat group">
+      <img
+        src="/images/hero/hero-poster.jpg"
+        alt=""
+        width="1920"
+        height="1080"
+        class="zielgruppe-band__media"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="zielgruppe-band__overlay" aria-hidden="true"></div>
+      <div class="zielgruppe-band__inner">
+        <div class="zielgruppe-band__intro">
+          <p class="zielgruppe-band__eyebrow">Privatkunden</p>
+          <h2 class="zielgruppe-band__headline">Verkauf, Kauf, Bewertung</h2>
+          <p class="zielgruppe-band__copy">
+            Persönlich betreut — für Eigentümer in Hamburg und Umgebung.
+          </p>
+          <span class="zielgruppe-band__cta">
+            Mehr erfahren
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+        <ul class="zielgruppe-glass-bars" aria-label="Leistungen für Privatkunden">
+          {
+            privatkundenServices.map((item) => (
+              <li class="zielgruppe-glass-bar">{item}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </a>
+
+    <button
+      type="button"
+      class="zielgruppe-quiz group"
+      data-quiz-open
+      aria-haspopup="dialog"
+    >
+      <div class="zielgruppe-quiz__inner">
+        <CompassMark class="zielgruppe-quiz__compass text-bernstein" />
+        <p class="zielgruppe-quiz__label">Nicht sicher?</p>
+        <p class="zielgruppe-quiz__headline">3 Fragen, 60 Sekunden</p>
+        <p class="zielgruppe-quiz__copy">Wir ordnen Ihr Anliegen ein — Privat oder Geschäft.</p>
+        <span class="zielgruppe-quiz__cta">Quiz starten</span>
+      </div>
+    </button>
+
+    <a href="/geschaeftskunden/" class="zielgruppe-band zielgruppe-band--geschaeft group">
+      <picture class="zielgruppe-band__picture">
+        <source srcset="/images/sections/geschaeftskunden-hamburg.webp" type="image/webp" />
+        <img
+          src="/images/sections/geschaeftskunden-hamburg.jpg"
+          alt=""
+          width="2400"
+          height="1350"
+          class="zielgruppe-band__media"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <div class="zielgruppe-band__overlay" aria-hidden="true"></div>
+      <div class="zielgruppe-band__inner">
+        <div class="zielgruppe-band__intro">
+          <p class="zielgruppe-band__eyebrow">Geschäftskunden</p>
+          <h2 class="zielgruppe-band__headline">Investoren &amp; Projektentwickler</h2>
+          <p class="zielgruppe-band__copy">
+            Portfolios, Exits und Finanzierung — strukturiert und diskret.
+          </p>
+          <span class="zielgruppe-band__cta">
+            Mehr erfahren
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+        <ul class="zielgruppe-glass-bars" aria-label="Leistungen für Geschäftskunden">
+          {
+            geschaeftskundenServices.map((item) => (
+              <li class="zielgruppe-glass-bar">{item}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </a>
+  </div>
+</section>
+
+<QualificationQuiz />
+
+<style>
+  .zielgruppe-section {
+    background: #1a2e4e;
+  }
+
+  .zielgruppe-stack {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .zielgruppe-band {
+    position: relative;
+    display: block;
+    min-height: min(520px, 85vh);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .zielgruppe-band__picture,
+  .zielgruppe-band__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 600ms ease;
+  }
+
+  .zielgruppe-band__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10, 15, 28, 0.78) 0%,
+      rgba(10, 15, 28, 0.55) 55%,
+      rgba(10, 15, 28, 0.68) 100%
+    );
+    transition: background-color 400ms ease;
+  }
+
+  .group:hover .zielgruppe-band__overlay,
+  .group:focus-visible .zielgruppe-band__overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(10, 15, 28, 0.68) 0%,
+      rgba(10, 15, 28, 0.45) 55%,
+      rgba(10, 15, 28, 0.58) 100%
+    );
+  }
+
+  .group:hover .zielgruppe-band__media,
+  .group:focus-visible .zielgruppe-band__media {
+    transform: scale(1.03);
+  }
+
+  .zielgruppe-band__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 2rem;
+    height: 100%;
+    min-height: inherit;
+    align-content: end;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.75rem 2.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .zielgruppe-band__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      align-items: end;
+      gap: 2.5rem 3rem;
+      padding: 3rem 2.5rem 3.25rem;
+    }
+  }
+
+  .zielgruppe-band__eyebrow {
+    margin-bottom: 0.75rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.72);
+  }
+
+  .zielgruppe-band__headline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: #f5f0e8;
+  }
+
+  .zielgruppe-band__copy {
+    margin-top: 0.75rem;
+    max-width: 24rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(245, 240, 232, 0.72);
+  }
+
+  .zielgruppe-band__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #cc9e4d;
+    transition: color 200ms ease;
+  }
+
+  .group:hover .zielgruppe-band__cta,
+  .group:focus-visible .zielgruppe-band__cta {
+    color: #f5f0e8;
+  }
+
+  .zielgruppe-glass-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .zielgruppe-glass-bar {
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 240, 232, 0.16);
+    background: rgba(10, 15, 28, 0.42);
+    padding: 0.75rem 1.125rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease,
+      transform 200ms ease;
+  }
+
+  .group:hover .zielgruppe-glass-bar,
+  .group:focus-visible .zielgruppe-glass-bar {
+    border-color: rgba(245, 240, 232, 0.28);
+    background: rgba(10, 15, 28, 0.52);
+  }
+
+  .zielgruppe-quiz {
+    display: flex;
+    width: 100%;
+    min-height: 280px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-top: 1px solid rgba(245, 240, 232, 0.08);
+    border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+    background: #1a2e4e;
+    cursor: pointer;
+    text-align: center;
+    color: inherit;
+  }
+
+  @media (min-width: 768px) {
+    .zielgruppe-quiz {
+      min-height: 320px;
+    }
+  }
+
+  .zielgruppe-quiz__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    max-width: 28rem;
+    padding: 2.5rem 1.75rem;
+  }
+
+  .zielgruppe-quiz__compass {
+    width: 3.75rem;
+    height: 3.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .zielgruppe-quiz__label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.55);
+  }
+
+  .zielgruppe-quiz__headline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: #f5f0e8;
+  }
+
+  .zielgruppe-quiz__copy {
+    max-width: 22rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(245, 240, 232, 0.62);
+  }
+
+  .zielgruppe-quiz__cta {
+    margin-top: 0.75rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 240, 232, 0.28);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f5f0e8;
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      transform 200ms ease;
+  }
+
+  .zielgruppe-quiz:hover .zielgruppe-quiz__cta,
+  .zielgruppe-quiz:focus-visible .zielgruppe-quiz__cta {
+    background: rgba(245, 240, 232, 0.08);
+    border-color: rgba(245, 240, 232, 0.45);
+    transform: scale(1.02);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zielgruppe-band__media,
+    .zielgruppe-band__overlay,
+    .zielgruppe-glass-bar,
+    .zielgruppe-quiz__cta {
+      transition: none;
+    }
+
+    .group:hover .zielgruppe-band__media,
+    .group:focus-visible .zielgruppe-band__media {
+      transform: none;
+    }
+  }
+</style>

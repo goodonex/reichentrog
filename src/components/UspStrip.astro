@@ -1,0 +1,131 @@
+---
+interface UspItem {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  items: readonly UspItem[];
+  theme?: 'light' | 'dark';
+  eyebrow?: string;
+  title?: string;
+}
+
+const { items, theme = 'light', eyebrow, title } = Astro.props;
+const onDark = theme === 'dark';
+---
+
+<section
+  class:list={[
+    'usp-strip relative overflow-hidden py-20 md:py-28',
+    onDark ? 'usp-strip--dark bg-steel-navy' : 'usp-strip--light bg-off-white section-mesh-light',
+  ]}
+  aria-label={title || 'Vorteile'}
+  data-cursor-surface={onDark ? 'dark' : 'light'}
+>
+  {
+    onDark && (
+      <div class="usp-strip__mesh pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    )
+  }
+
+  <div class="relative z-[1] mx-auto max-w-content px-6">
+    {
+      (eyebrow || title) && (
+        <header class="mb-14 max-w-2xl md:mb-16">
+          {eyebrow && (
+            <p
+              class:list={[
+                'mb-3 text-[11px] font-semibold uppercase tracking-[0.22em]',
+                onDark ? 'text-bernstein' : 'text-steel-navy/70',
+              ]}
+            >
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <h2
+              class:list={[
+                'font-display text-[clamp(1.875rem,3.2vw,2.75rem)] font-light leading-[1.12]',
+                onDark ? 'text-off-white' : 'text-steel-navy',
+              ]}
+            >
+              {title}
+            </h2>
+          )}
+        </header>
+      )
+    }
+
+    <div class="grid gap-12 md:grid-cols-3 md:gap-0">
+      {
+        items.map((item, i) => (
+          <article
+            class:list={[
+              'usp-strip__item relative md:px-8',
+              i > 0 && 'md:border-l',
+              onDark ? 'md:border-off-white/12' : 'md:border-steel-blue/12',
+              i === 0 && 'md:pl-0',
+              i === items.length - 1 && 'md:pr-0',
+            ]}
+          >
+            <p
+              class:list={[
+                'font-display text-[clamp(2.5rem,4vw,3.25rem)] font-light leading-none tabular-nums',
+                onDark ? 'text-bernstein/90' : 'text-bernstein',
+              ]}
+              aria-hidden="true"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            <h3
+              class:list={[
+                'mt-5 font-display text-[clamp(1.25rem,2vw,1.5rem)] font-light leading-snug',
+                onDark ? 'text-off-white' : 'text-steel-navy',
+              ]}
+            >
+              {item.title}
+            </h3>
+            <p
+              class:list={[
+                'mt-4 text-sm leading-relaxed md:max-w-[18rem]',
+                onDark ? 'text-ice-blue/88' : 'text-steel-navy/72',
+              ]}
+            >
+              {item.text}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .usp-strip__mesh {
+    background:
+      radial-gradient(ellipse 70% 55% at 12% 0%, rgba(204, 158, 77, 0.14), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 88% 100%, rgba(109, 144, 188, 0.12), transparent 55%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 42%);
+  }
+
+  .usp-strip__item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2.5rem;
+    height: 1px;
+    background: rgba(204, 158, 77, 0.55);
+  }
+
+  @media (min-width: 768px) {
+    .usp-strip__item::before {
+      left: 2rem;
+    }
+
+    .usp-strip__item:first-child::before {
+      left: 0;
+    }
+  }
+</style>

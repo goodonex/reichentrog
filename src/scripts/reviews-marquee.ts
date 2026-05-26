@@ -1,16 +1,16 @@
 /** Endlos-Marquee per requestAnimationFrame — zuverlässiger als CSS-Keyframes. */
 const LOOP_DURATION_S = 100;
 
-export function initReviewsMarquee(): void {
-  const marquee = document.querySelector<HTMLElement>('.reviews-marquee');
-  const track = document.querySelector<HTMLElement>('.reviews-marquee__track');
+function initOneMarquee(marquee: HTMLElement): void {
+  const track = marquee.querySelector<HTMLElement>('.reviews-marquee__track');
   const set = track?.querySelector<HTMLElement>('.reviews-marquee__set');
-  if (!marquee || !track || !set) return;
+  if (!track || !set) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reducedMotion) return;
 
   track.style.animation = 'none';
+  marquee.dataset.marqueeReady = 'true';
 
   let setWidth = 0;
   let offset = 0;
@@ -19,7 +19,7 @@ export function initReviewsMarquee(): void {
   let rafId = 0;
 
   const measure = () => {
-    const width = set.getBoundingClientRect().width;
+    const width = set.scrollWidth;
     if (width > 0) {
       setWidth = width;
       if (offset >= setWidth) offset = offset % setWidth;
@@ -41,10 +41,18 @@ export function initReviewsMarquee(): void {
     rafId = requestAnimationFrame(tick);
   };
 
+  const start = () => {
+    measure();
+    if (setWidth <= 0) return;
+    cancelAnimationFrame(rafId);
+    lastTime = performance.now();
+    rafId = requestAnimationFrame(tick);
+  };
+
   measure();
   requestAnimationFrame(() => {
     measure();
-    rafId = requestAnimationFrame(tick);
+    start();
   });
 
   set.querySelectorAll('img').forEach((img) => {
@@ -54,16 +62,24 @@ export function initReviewsMarquee(): void {
   if (typeof ResizeObserver !== 'undefined') {
     const observer = new ResizeObserver(measure);
     observer.observe(set);
+    observer.observe(track);
   } else {
     window.addEventListener('resize', measure);
   }
 
-  marquee.addEventListener('mouseenter', () => {
-    paused = true;
-  });
-  marquee.addEventListener('mouseleave', () => {
-    paused = false;
-    lastTime = performance.now();
+  if (typeof document.fonts?.ready !== 'undefined') {
+    document.fonts.ready.then(measure).catch(() => {});
+  }
+
+  // Nur bei Karten-Hover pausieren (nicht beim ganzen Streifen — sonst steht alles still)
+  marquee.querySelectorAll<HTMLElement>('.reviews-card').forEach((card) => {
+    card.addEventListener('mouseenter', () => {
+      paused = true;
+    });
+    card.addEventListener('mouseleave', () => {
+      paused = false;
+      lastTime = performance.now();
+    });
   });
 
   document.addEventListener('visibilitychange', () => {
@@ -71,4 +87,8 @@ export function initReviewsMarquee(): void {
   });
 
   window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
+}
+
+export function initReviewsMarquee(): void {
+  document.querySelectorAll<HTMLElement>('.reviews-marquee').forEach(initOneMarquee);
 }

@@ -4,11 +4,14 @@
 // Keine Namen, keine Adressen, keine Objektbilder.
 // Anfrage an: o.alberich@reichentrog-finance.de
 
+export type CaseAudience = 'privat' | 'geschaeft';
+
 export interface CaseStudy {
   category: string;
   situation: string;
   action: string;
   result: string;
+  audience: CaseAudience;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -19,6 +22,7 @@ export const caseStudies: CaseStudy[] = [
     action:
       'Gezielte Ansprache aus dem Banken- und Family-Office-Netzwerk. Verhandlung im geschlossenen Kreis, Notar und Finanzierung aus einer Hand koordiniert.',
     result: 'Verkauf innerhalb von 6 Wochen — 4 % über der Erwartung, ohne öffentliche Vermarktung.',
+    audience: 'privat',
   },
   {
     category: 'Erbschaft · Mehrfamilienhaus · Eppendorf',
@@ -27,6 +31,7 @@ export const caseStudies: CaseStudy[] = [
     action:
       'Verkehrswertgutachten als gemeinsame Basis, schrittweise Abstimmung der Erben. Vermieterinformationen und Übergabeprotokoll vorbereitet.',
     result: 'Einvernehmlicher Verkauf an einen Investoren-Mandanten aus dem Bestandsnetzwerk.',
+    audience: 'privat',
   },
   {
     category: 'Portfolio-Exit · Gewerbe · Hamburg Süd',
@@ -35,5 +40,6 @@ export const caseStudies: CaseStudy[] = [
     action:
       'Strukturiertes Datenraum-Setup, parallele Due-Diligence-Vorbereitung. Matching mit zwei vorqualifizierten Käufergruppen.',
     result: 'Transaktion mit einem Käufer abgeschlossen — Gesamtvolumen im mittleren zweistelligen Millionenbereich.',
+    audience: 'geschaeft',
   },
 ];

@@ -1,5 +1,6 @@
 import { initHeroCanvas } from './hero-canvas';
 import { initCustomCursor } from './custom-cursor';
+import { initSegmentHeroVideos } from './segment-hero-video';
 import { initHeroReveal } from './hero-reveal';
 import { initHeroScrollVideo } from './hero-scroll-video';
 import { initPageLoader } from './page-loader';
@@ -227,6 +228,7 @@ function boot(): void {
   initCountups();
   initCookieBanner();
   initCustomCursor();
+  initSegmentHeroVideos();
   initHeroReveal();
   initScrollProgress();
   initFloatingCta();

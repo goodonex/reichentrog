@@ -2,7 +2,23 @@
 import SectionHeader from './SectionHeader.astro';
 import RevealSection from './RevealSection.astro';
 import GlassCard from './GlassCard.astro';
-import { caseStudies } from '../content/cases';
+import { caseStudies, type CaseAudience } from '../content/cases';
+
+interface Props {
+  audience?: CaseAudience | 'all';
+}
+
+const { audience = 'all' } = Astro.props;
+
+const filtered =
+  audience === 'all' ? caseStudies : caseStudies.filter((c) => c.audience === audience);
+
+const gridCols =
+  filtered.length === 1
+    ? 'lg:grid-cols-1 max-w-2xl'
+    : filtered.length === 2
+      ? 'lg:grid-cols-2'
+      : 'lg:grid-cols-3';
 ---
 
 <RevealSection staggerChildren>
@@ -16,9 +32,9 @@ import { caseStudies } from '../content/cases';
        Schema pro Case: { kategorie, ort, ausgangslage (2 Sätze), vorgehen (2 Sätze), ergebnis (1 Satz mit Kennzahl) }
        Keine Namen, keine Adressen, keine Objektbilder.
        Anfrage an: o.alberich@reichentrog-finance.de -->
-  <div class="mt-14 grid gap-8 lg:grid-cols-3">
+  <div class:list={['mt-14 grid gap-8', gridCols]}>
     {
-      caseStudies.map((c) => (
+      filtered.map((c) => (
         <GlassCard
           class="flex flex-col border-steel-blue/14 bg-gradient-to-br from-white/80 via-ice-blue/35 to-white/70 p-8"
           data-reveal-child

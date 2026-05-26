@@ -172,6 +172,20 @@ const initials = (name: string) =>
     display: flex;
     width: max-content;
     will-change: transform;
+    animation: reviews-marquee-scroll 100s linear infinite;
+  }
+
+  .reviews-marquee[data-marquee-ready='true'] .reviews-marquee__track {
+    animation: none;
+  }
+
+  @keyframes reviews-marquee-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
   }
 
   .reviews-card {

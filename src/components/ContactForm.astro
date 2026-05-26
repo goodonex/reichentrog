@@ -4,9 +4,18 @@ interface Props {
   lockAnliegen?: boolean;
   defaultAnliegen?: string;
   objektRef?: string;
+  segment?: string;
+  submitLabel?: string;
 }
 
-const { formName, lockAnliegen = false, defaultAnliegen = '', objektRef = '' } = Astro.props;
+const {
+  formName,
+  lockAnliegen = false,
+  defaultAnliegen = '',
+  objektRef = '',
+  segment = '',
+  submitLabel = 'Gespräch anfragen',
+} = Astro.props;
 
 const presetType =
   lockAnliegen && defaultAnliegen === 'ankauf'
@@ -28,6 +37,7 @@ const presetType =
   data-objekt-ref={objektRef || undefined}
 >
   <input type="hidden" name="form-name" value={formName} />
+  {segment && <input type="hidden" name="segment" value={segment} />}
   <input type="hidden" name="payload" value="" data-form-payload />
   <input type="hidden" name="anliegen_typ" value="" data-field-typ />
   <input type="hidden" name="anliegen_detail" value="" data-field-detail />
@@ -148,7 +158,7 @@ const presetType =
           />
         </div>
       </div>
-      <button type="submit" class="conversation-form__submit mt-8">Gespräch anfragen</button>
+      <button type="submit" class="conversation-form__submit mt-8">{submitLabel}</button>
       <button type="button" class="conversation-form__back mt-4" data-prev-step>← Zurück</button>
     </div>
   </div>

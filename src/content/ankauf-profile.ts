@@ -1,4 +1,4 @@
-/** Ankaufsprofile — inhaltlich an bestehende Profil-Logik angelehnt, für Darstellung auf /ankauf/ */
+/** Ankaufsprofile — Inhalte für Privatkunden- und Geschäftskunden-Seiten */
 
 export const ankaufIntro = {
   title: 'Immobilien-Ankaufsprofile',

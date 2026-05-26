@@ -1,0 +1,411 @@
+---
+import HeroTrustBar from './HeroTrustBar.astro';
+
+interface Props {
+  eyebrow: string;
+  headline: string;
+  subline: string;
+  primaryCta: string;
+  primaryHref: string;
+  secondaryCta?: string;
+  secondaryHref?: string;
+  videoMp4?: string;
+  fallbackPoster: string;
+  fallbackPosterWebp?: string;
+}
+
+const {
+  eyebrow,
+  headline,
+  subline,
+  primaryCta,
+  primaryHref,
+  secondaryCta,
+  secondaryHref,
+  videoMp4,
+  fallbackPoster,
+  fallbackPosterWebp,
+} = Astro.props;
+
+const hasVideo = Boolean(videoMp4);
+---
+
+<section
+  class="segment-hero relative h-svh min-h-[560px] w-full overflow-hidden"
+  data-cursor-surface="dark"
+  data-segment-hero-video={hasVideo ? '' : undefined}
+  data-started={hasVideo ? 'false' : undefined}
+>
+  <div class="segment-hero__media-wrap absolute inset-0">
+    {
+      hasVideo ? (
+        <>
+          <picture class="segment-hero__poster" aria-hidden="true">
+            {fallbackPosterWebp && <source srcset={fallbackPosterWebp} type="image/webp" />}
+            <img
+              src={fallbackPoster}
+              alt=""
+              width="1920"
+              height="1080"
+              class="segment-hero__media segment-hero__poster-img"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
+          <video
+            class="segment-hero__video segment-hero__media"
+            playsinline
+            preload="none"
+            disablepictureinpicture
+          >
+            <source data-src={videoMp4} type="video/mp4" />
+          </video>
+        </>
+      ) : (
+        <picture aria-hidden="true">
+          {fallbackPosterWebp && <source srcset={fallbackPosterWebp} type="image/webp" />}
+          <img
+            src={fallbackPoster}
+            alt=""
+            width="1920"
+            height="1080"
+            class="segment-hero__media"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      )
+    }
+    <div class="segment-hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  {
+    hasVideo && (
+      <>
+        <div class="segment-hero__start" data-video-start-overlay data-cursor-surface="dark">
+          <button type="button" class="segment-hero__play-btn" data-video-start aria-label="Video abspielen">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l11-6.5-11-6.5z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="segment-hero__ended" data-video-ended-panel hidden data-cursor-surface="dark">
+          <button type="button" class="segment-hero__play-btn" data-video-replay aria-label="Video erneut abspielen">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l11-6.5-11-6.5z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="segment-hero__player" data-cursor-surface="dark">
+          <div class="segment-hero__player-row">
+            <button type="button" class="segment-hero__control-btn" data-video-rewind aria-label="10 Sekunden zurück">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="M3 12a9 9 0 109 9" />
+                <path d="M3 12V6M3 12H9" />
+              </svg>
+            </button>
+            <button type="button" class="segment-hero__control-btn" data-video-play aria-pressed="false" data-state="paused">
+              <span class="segment-hero__icon segment-hero__icon--pause" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="5" width="4" height="14" rx="1" />
+                  <rect x="14" y="5" width="4" height="14" rx="1" />
+                </svg>
+              </span>
+              <span class="segment-hero__icon segment-hero__icon--play" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5.5v13l11-6.5-11-6.5z" />
+                </svg>
+              </span>
+            </button>
+            <button type="button" class="segment-hero__control-btn" data-video-mute aria-pressed="false" data-state="unmuted">
+              <span class="segment-hero__icon segment-hero__icon--muted" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M11 5L6 9H3v6h3l5 4V5z" />
+                  <path d="M16 9l4 4M20 9l-4 4" />
+                </svg>
+              </span>
+              <span class="segment-hero__icon segment-hero__icon--unmuted" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M11 5L6 9H3v6h3l5 4V5z" />
+                  <path d="M15.5 8.5a5 5 0 010 7M18 6a8.5 8.5 0 010 12" />
+                </svg>
+              </span>
+            </button>
+
+            <div class="segment-hero__progress-wrap">
+              <input
+                type="range"
+                class="segment-hero__progress"
+                data-video-progress
+                min="0"
+                max="100"
+                step="0.1"
+                value="0"
+                aria-label="Wiedergabeposition"
+              />
+            </div>
+
+            <span class="segment-hero__time" aria-live="off">
+              <span data-video-time-current>0:00</span>
+              <span aria-hidden="true"> / </span>
+              <span data-video-time-total>1:36</span>
+            </span>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  <div
+    class="relative z-[2] flex h-full flex-col justify-end bg-gradient-to-t from-steel-navy via-steel-navy/50 to-steel-navy/20 px-6 pb-36 pt-32 md:justify-center md:pb-40 md:pt-28"
+  >
+    <div class="mx-auto w-full max-w-content">
+      <p class="mb-5 text-[11px] font-medium uppercase tracking-[0.32em] text-bernstein md:text-xs">
+        {eyebrow}
+      </p>
+      <h1
+        class="max-w-4xl font-display text-[clamp(2.25rem,5.5vw,3.75rem)] font-light leading-[1.06] tracking-[-0.03em] text-off-white"
+        style="text-wrap: balance;"
+      >
+        {headline}
+      </h1>
+      <p class="mt-8 max-w-2xl text-lg leading-relaxed text-ice-blue/95 md:text-xl">
+        {subline}
+      </p>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <a
+          href={primaryHref}
+          class="inline-flex items-center gap-2 rounded-full bg-off-white px-8 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-steel-navy shadow-lg transition hover:bg-white"
+        >
+          {primaryCta}
+          <span class="text-bernstein" aria-hidden="true">→</span>
+        </a>
+        {
+          secondaryCta && secondaryHref && (
+            <a
+              href={secondaryHref}
+              class="inline-flex items-center gap-2 rounded-full border border-off-white/35 px-8 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-off-white transition hover:border-off-white/60 hover:bg-white/10"
+            >
+              {secondaryCta}
+            </a>
+          )
+        }
+      </div>
+      <HeroTrustBar />
+    </div>
+  </div>
+</section>
+
+<style>
+  .segment-hero__media-wrap {
+    isolation: isolate;
+  }
+
+  .segment-hero__poster {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: opacity 400ms ease, visibility 400ms ease;
+  }
+
+  .segment-hero__video {
+    z-index: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 400ms ease;
+  }
+
+  .segment-hero[data-started='true'] .segment-hero__poster {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .segment-hero[data-started='true'] .segment-hero__video {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .segment-hero__media {
+    position: absolute;
+    inset: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .segment-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 28, 0.52);
+    pointer-events: none;
+  }
+
+  .segment-hero__start,
+  .segment-hero__ended {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: rgba(10, 15, 28, 0.38);
+    backdrop-filter: blur(2px);
+  }
+
+  .segment-hero__ended[hidden],
+  .segment-hero__start[hidden] {
+    display: none !important;
+  }
+
+  .segment-hero[data-started='true'] .segment-hero__start {
+    display: none !important;
+  }
+
+  .segment-hero__play-btn {
+    display: inline-flex;
+    height: 4.5rem;
+    width: 4.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 240, 232, 0.4);
+    background: rgba(10, 15, 28, 0.55);
+    color: #cc9e4d;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(10, 15, 28, 0.35);
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      transform 200ms ease,
+      color 200ms ease;
+  }
+
+  .segment-hero__play-btn:hover {
+    background: rgba(10, 15, 28, 0.72);
+    border-color: rgba(204, 158, 77, 0.65);
+    color: #f5f0e8;
+    transform: scale(1.06);
+  }
+
+  .segment-hero__play-btn svg {
+    margin-left: 3px;
+  }
+
+  .segment-hero__player {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    padding: 0 1rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .segment-hero__player {
+      padding: 0 1.5rem 1.25rem;
+    }
+  }
+
+  .segment-hero__player-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 240, 232, 0.18);
+    background: rgba(10, 15, 28, 0.62);
+    padding: 0.45rem 0.75rem 0.45rem 0.5rem;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  .segment-hero__control-btn {
+    display: inline-flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 240, 232, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5f0e8;
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .segment-hero__control-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(245, 240, 232, 0.35);
+  }
+
+  .segment-hero__progress-wrap {
+    min-width: 0;
+    flex: 1;
+    padding: 0 0.25rem;
+  }
+
+  .segment-hero__progress {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      #cc9e4d 0%,
+      #cc9e4d var(--progress, 0%),
+      rgba(245, 240, 232, 0.22) var(--progress, 0%),
+      rgba(245, 240, 232, 0.22) 100%
+    );
+    cursor: pointer;
+  }
+
+  .segment-hero__progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    border: none;
+    background: #f5f0e8;
+    box-shadow: 0 0 0 2px rgba(10, 15, 28, 0.35);
+  }
+
+  .segment-hero__progress::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    border: none;
+    background: #f5f0e8;
+  }
+
+  .segment-hero__time {
+    flex-shrink: 0;
+    min-width: 4.5rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: rgba(245, 240, 232, 0.82);
+    text-align: right;
+  }
+
+  .segment-hero__icon {
+    display: none;
+  }
+
+  [data-video-play][data-state='playing'] .segment-hero__icon--pause,
+  [data-video-play][data-state='paused'] .segment-hero__icon--play,
+  [data-video-mute][data-state='muted'] .segment-hero__icon--muted,
+  [data-video-mute][data-state='unmuted'] .segment-hero__icon--unmuted {
+    display: block;
+  }
+</style>

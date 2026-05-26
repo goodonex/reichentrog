@@ -1,0 +1,82 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import RevealSection from './RevealSection.astro';
+import GlassCard from './GlassCard.astro';
+import { ankaufIntro, ankaufProfiles } from '../content/ankauf-profile';
+---
+
+<section
+  id="ankauf"
+  class="bg-off-white py-20 md:py-24"
+  aria-labelledby="ankauf-profile-heading"
+  data-cursor-surface="light"
+>
+  <div class="mx-auto max-w-content px-6">
+    <RevealSection>
+      <SectionHeader
+        headingId="ankauf-profile-heading"
+        eyebrow="Ankauf"
+        title={ankaufIntro.title}
+        subtitle="Passendes Objekt? Dann direkt melden — diskret und strukturiert geprüft."
+      />
+      <p class="mt-6 max-w-3xl font-display text-lg text-steel-blue/90">{ankaufIntro.lead}</p>
+      {
+        ankaufIntro.body.map((paragraph) => (
+          <p class="mt-4 max-w-3xl text-sm leading-relaxed text-steel-navy/80">{paragraph}</p>
+        ))
+      }
+      <div class="mt-12 grid gap-6 lg:grid-cols-2">
+        {
+          ankaufProfiles.map((profile) => (
+            <GlassCard class="overflow-hidden p-0">
+              <div class="border-b border-steel-blue/10 bg-steel-navy/5 px-6 py-5">
+                <h3 class="font-display text-xl font-light text-steel-navy">{profile.name}</h3>
+              </div>
+              <div class="overflow-x-auto px-4 py-2 md:px-6">
+                <table class="w-full min-w-[280px] text-left text-sm">
+                  <tbody>
+                    {profile.rows.map((row) => (
+                      <tr class="border-b border-steel-blue/8 last:border-0">
+                        <th
+                          scope="row"
+                          class="w-[min(38%,11rem)] py-3 pr-3 align-top text-[0.72rem] font-semibold uppercase tracking-[0.06em] text-steel-navy/65"
+                        >
+                          {row.label}
+                        </th>
+                        <td class="py-3 text-steel-navy/82 leading-relaxed">{row.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </GlassCard>
+          ))
+        }
+      </div>
+      <aside
+        class="mt-10 rounded-2xl border border-steel-blue/12 bg-ice-blue/40 px-6 py-5 text-sm leading-relaxed text-steel-navy/80 md:px-8"
+        role="note"
+      >
+        <p>
+          <strong class="font-medium text-steel-navy">Hinweis zur Bearbeitung:</strong>
+          {ankaufIntro.footnote}
+        </p>
+      </aside>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a
+          href="/objekt-anbieten/"
+          class="inline-flex items-center gap-2 rounded-full bg-steel-navy px-7 py-3 text-xs font-medium uppercase tracking-[0.12em] text-off-white transition hover:bg-steel-blue"
+        >
+          Objekt anbieten
+        </a>
+        <a
+          href="/downloads/ankaufsprofile.pdf"
+          download
+          class="inline-flex items-center gap-2 rounded-full border border-steel-navy/20 bg-white/70 px-7 py-3 text-xs font-medium uppercase tracking-[0.1em] text-steel-navy transition hover:bg-white"
+        >
+          PDF herunterladen
+        </a>
+      </div>
+    </RevealSection>
+  </div>
+</section>

@@ -6,16 +6,15 @@ import GlassCard from '../components/GlassCard.astro';
 import RevealSection from '../components/RevealSection.astro';
 import SectionTransition from '../components/SectionTransition.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import VideoPlaceholder from '../components/VideoPlaceholder.astro';
 import HeroSection from '../components/HeroSection.astro';
 import AllesAusEinerHand from '../components/AllesAusEinerHand.astro';
 import BankenHintergrund from '../components/BankenHintergrund.astro';
 import WarumSection from '../components/WarumSection.astro';
 import OffMarketStatement from '../components/OffMarketStatement.astro';
+import ZielgruppeSection from '../components/ZielgruppeSection.astro';
 import CasesSection from '../components/CasesSection.astro';
 import ReichweiteSection from '../components/ReichweiteSection.astro';
 import TeamSection from '../components/TeamSection.astro';
-import GeschaeftskundenSection from '../components/GeschaeftskundenSection.astro';
 import CtaBlock from '../components/CtaBlock.astro';
 import GoogleReviewsSection from '../components/GoogleReviewsSection.astro';
 
@@ -55,56 +54,16 @@ const description =
 
     <OffMarketStatement />
 
-    <!-- 5. Privatkunden / Ankauf / Geschäftskunden -->
+    <ZielgruppeSection />
+
+    <!-- 5. Ankauf -->
     <SectionTransition
-      id="leistungen"
+      id="ankauf"
       featherTop={false}
       cursorSurface="light"
-      class="bg-ice-blue pt-24 pb-0 md:pt-32"
+      class="bg-ice-blue py-24 md:py-32"
     >
-      <div class="mx-auto max-w-content px-6 space-y-24 md:space-y-32">
-        <div id="privatkunden">
-        <RevealSection>
-          <div class="grid gap-16 lg:grid-cols-2 lg:items-start lg:gap-20">
-            <div>
-              <SectionHeader
-                eyebrow="Privatkunden"
-                title="Verkauf, Kauf, Bewertung — persönlich betreut"
-                subtitle="Für Eigentümer in Hamburg: ruhige Beratung, klare Prozesse, nachvollziehbare Entscheidungen."
-              />
-              <ul class="mt-10 space-y-3">
-                {
-                  [
-                    'Immobilienbewertung & Verkehrswert',
-                    'Diskrete Vermittlung & Off-Market',
-                    'Verkaufsstrategie & Vermarktung',
-                    'Kaufberatung & Objektprüfung',
-                    'Begleitung bei Finanzierung & Banken',
-                  ].map((item) => (
-                    <li
-                      class="flex items-start gap-3 rounded-2xl border border-steel-blue/12 bg-white/70 px-5 py-4 text-sm text-steel-navy shadow-sm backdrop-blur-sm"
-                    >
-                      <span class="mt-0.5 font-display text-bernstein" aria-hidden="true">
-                        ·
-                      </span>
-                      {item}
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
-            <VideoPlaceholder
-              variant="dark"
-              name="Norbert Reichentrog"
-              tagline="Persönliches Statement — Video folgt."
-              posterSrc="/images/team/norbert-reichentrog.png"
-              posterAlt="Norbert Reichentrog — Vorschau für das Video-Statement"
-            />
-          </div>
-        </RevealSection>
-        </div>
-
-        <div id="ankauf">
+      <div class="mx-auto max-w-content px-6">
         <RevealSection>
           <SectionHeader
             eyebrow="Ankauf"
@@ -140,7 +99,7 @@ const description =
           </div>
           <div class="mt-12 flex flex-wrap gap-4">
             <a
-              href="/ankauf/"
+              href="/geschaeftskunden/#ankauf"
               class="inline-flex items-center gap-2 rounded-full bg-steel-navy px-8 py-3.5 text-xs font-medium uppercase tracking-[0.12em] text-off-white shadow-lg transition hover:bg-steel-blue"
             >
               Alle Profile &amp; Kriterien
@@ -160,11 +119,6 @@ const description =
             </a>
           </div>
         </RevealSection>
-        </div>
-
-        <div id="geschaeftskunden">
-          <GeschaeftskundenSection />
-        </div>
       </div>
     </SectionTransition>
 

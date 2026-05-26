@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import GlassCard from '../components/GlassCard.astro';
+import SectionTransition from '../components/SectionTransition.astro';
+import SegmentHero from '../components/SegmentHero.astro';
+import UspStrip from '../components/UspStrip.astro';
+import SegmentServices from '../components/SegmentServices.astro';
+import CasesSection from '../components/CasesSection.astro';
+import AnkaufProfilesSection from '../components/AnkaufProfilesSection.astro';
+import TeamTextStrip from '../components/TeamTextStrip.astro';
+import GoogleReviewsSection from '../components/GoogleReviewsSection.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { geschaeftskundenServices, geschaeftskundenUsps } from '../content/segments';
+
+const title = 'Geschäftskunden | Reichentrog & Kollegen — Investoren & Projektentwicklung';
+const description =
+  'Strukturierte Immobilientransaktionen für Investoren und Projektentwickler: Portfolio-Exits, Off-Market Matching und Banken-Dialog — diskret und deutschlandweit.';
+
+---
+
+<BaseLayout {title} {description}>
+  <Nav variant="home" />
+
+  <main id="main">
+    <SegmentHero
+      eyebrow="Geschäftskunden"
+      headline="Transaktionen brauchen Struktur — nicht Lautstärke."
+      subline="Für Investoren, Projektentwickler und institutionelle Mandanten: Portfolios, Exits und Finanzierung — geführt mit Banken-Know-how und Off-Market-Netzwerk."
+      primaryCta="Mandat anfragen"
+      primaryHref="#kontakt-form"
+      secondaryCta="Ankaufsprofile"
+      secondaryHref="#ankauf"
+      videoMp4="/videos/geschaeftskunden.mp4"
+      fallbackPoster="/images/sections/geschaeftskunden-hamburg.jpg"
+      fallbackPosterWebp="/images/sections/geschaeftskunden-hamburg.webp"
+    />
+
+    <UspStrip
+      theme="dark"
+      eyebrow="Warum institutionelle Mandate"
+      title="Präzision, die Transaktionen trägt."
+      items={geschaeftskundenUsps}
+    />
+
+    <SectionTransition
+      id="leistungen"
+      featherTop="from-navy"
+      cursorSurface="light"
+      class="bg-off-white py-24 md:py-32"
+    >
+      <div class="mx-auto max-w-content px-6">
+        <SegmentServices
+          eyebrow="Leistungen"
+          title="Projektentwicklung, Portfolios, Finanzierung"
+          subtitle="Von der ersten Einordnung bis zur Umsetzung — strukturiert, diskret und mit dem richtigen Netzwerk."
+          services={geschaeftskundenServices}
+        />
+      </div>
+    </SectionTransition>
+
+    <SectionTransition id="referenzen" cursorSurface="light" class="bg-ice-blue py-24 md:py-32">
+      <div class="mx-auto max-w-content px-6">
+        <CasesSection audience="geschaeft" />
+      </div>
+    </SectionTransition>
+
+    <AnkaufProfilesSection />
+
+    <TeamTextStrip />
+
+    <SectionTransition
+      id="stimmen"
+      featherTop={false}
+      cursorSurface="light"
+      class="bg-ice-blue py-24 md:py-32"
+    >
+      <div class="mx-auto max-w-content px-6">
+        <GoogleReviewsSection />
+      </div>
+    </SectionTransition>
+
+    <SectionTransition
+      id="kontakt-form"
+      featherTop={false}
+      cursorSurface="light"
+      class="bg-off-white py-24 md:py-32"
+    >
+      <div class="mx-auto max-w-content px-6">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-bernstein">
+            Mandat anfragen
+          </p>
+          <h2 class="mt-4 font-display text-[clamp(1.875rem,3.5vw,2.75rem)] font-light text-steel-navy">
+            Sprechen wir über Ihr Volumen und Ihren Zeitplan.
+          </h2>
+          <p class="mx-auto mt-5 max-w-lg text-sm leading-relaxed text-steel-navy/75">
+            Wir melden uns zeitnah — mit einer ersten Einordnung, ob und wie wir strukturiert ansetzen können.
+          </p>
+        </div>
+        <GlassCard class="mx-auto mt-12 max-w-xl p-8 md:p-10">
+          <ContactForm
+            formName="geschaeftskunden"
+            segment="geschaeftskunde"
+            submitLabel="Mandat anfragen"
+          />
+        </GlassCard>
+      </div>
+    </SectionTransition>
+  </main>
+
+  <Footer />
+</BaseLayout>

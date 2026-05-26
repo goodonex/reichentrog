@@ -52,22 +52,10 @@ const ogImage = new URL('/images/hero/hero-poster.jpg', siteUrl).toString();
       areaServed: 'Hamburg',
     })} />
   </head>
-  <body class:list={['min-h-screen', import.meta.env.DEV && 'pb-14']}>
+  <body class="min-h-screen">
     <PageLoader />
     <div id="scroll-progress" aria-hidden="true"></div>
     <FloatingCta />
-    {
-      import.meta.env.DEV && (
-        <div
-          class="fixed bottom-0 left-0 right-0 z-[999] border-t border-steel-navy/20 bg-bernstein px-4 py-2 text-center text-xs font-medium text-steel-navy shadow-lg"
-          role="status"
-        >
-          Lokale Vorschau: Reichentrog & Kollegen — nur wenn der Server aus
-          <code class="rounded bg-steel-navy/10 px-1">KP - Reichentrog/03_website</code> gestartet wurde
-          (Port 5175).
-        </div>
-      )
-    }
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded-md focus:bg-bernstein focus:px-4 focus:py-2 focus:text-steel-navy">
       Zum Inhalt springen
     </a>

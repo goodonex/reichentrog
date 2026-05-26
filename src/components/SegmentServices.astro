@@ -1,0 +1,41 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import RevealSection from './RevealSection.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  services: readonly string[];
+  theme?: 'light' | 'dark';
+}
+
+const { eyebrow, title, subtitle, services, theme = 'light' } = Astro.props;
+const onDark = theme === 'dark';
+---
+
+<RevealSection>
+  <SectionHeader {eyebrow} {title} {subtitle} theme={theme} />
+  <ul class="mt-10 space-y-3">
+    {
+      services.map((item) => (
+        <li
+          class:list={[
+            'flex items-start gap-3 rounded-2xl border px-5 py-4 text-sm shadow-sm backdrop-blur-sm',
+            onDark
+              ? 'border-off-white/12 bg-steel-navy/30 text-off-white/90'
+              : 'border-steel-blue/12 bg-white/70 text-steel-navy',
+          ]}
+        >
+          <span
+            class:list={['mt-0.5 font-display', onDark ? 'text-bernstein' : 'text-bernstein']}
+            aria-hidden="true"
+          >
+            ·
+          </span>
+          {item}
+        </li>
+      ))
+    }
+  </ul>
+</RevealSection>

@@ -3,6 +3,8 @@ dist/
 .astro/
 .DS_Store
 public/hero-frames/
+public/videos/_originals/
+.netlify/
 *.local
 .env
 .env.*

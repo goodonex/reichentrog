@@ -63,9 +63,11 @@ export function initCustomCursor(): void {
   const onMove = (e: MouseEvent) => {
     targetX = e.clientX;
     targetY = e.clientY;
+    updateSurfaceColor(targetX, targetY);
   };
 
-  const hoverSelector = 'a, button, summary, [role="button"], label, input, textarea, select';
+  const hoverSelector =
+    'a, button, summary, [role="button"], label, input, textarea, select, .segment-hero__control-btn, .segment-hero__play-btn';
 
   document.addEventListener('mousemove', onMove, { passive: true });
 

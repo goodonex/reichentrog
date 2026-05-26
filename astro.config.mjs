@@ -6,6 +6,13 @@ const site = process.env.PUBLIC_SITE_URL || 'https://www.reichentrog-kollegen.de
 
 export default defineConfig({
   site,
+  redirects: {
+    '/ankauf': '/geschaeftskunden/#ankauf',
+    '/ankauf/': '/geschaeftskunden/#ankauf',
+  },
+  devToolbar: {
+    enabled: false,
+  },
   /** Eigener Port — nicht 4321 (häufig anderes Projekt / OMB). Immer aus diesem Ordner starten. */
   server: {
     port: 5175,
