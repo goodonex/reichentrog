@@ -5,42 +5,29 @@ export function initHeroReveal(): void {
   if (!root) return;
 
   const run = () => {
-    const words = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-word]'));
-    const headline = root.querySelector<HTMLElement>('[data-hero-headline]');
     const items = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-item]'));
 
     if (prefersReducedMotion()) {
-      headline?.classList.add('is-visible');
-      words.forEach((w) => {
-        w.classList.add('is-visible');
-      });
       items.forEach((el) => el.classList.add('is-visible'));
-      if (headline) headline.textContent = 'Hanseatisch diskret. Klar erfolgreich.';
       return;
     }
 
-    headline?.classList.add('is-visible');
+    const byKey = (key: string) => items.find((el) => el.dataset.heroItem === key);
 
-    words.forEach((word, i) => {
-      window.setTimeout(() => word.classList.add('is-visible'), i * 80);
-    });
+    // Stufe 1: eyebrow sofort
+    byKey('eyebrow')?.classList.add('is-visible');
 
-    const wordsEnd = words.length * 80;
+    // Stufe 2: Headline + Subline
     window.setTimeout(() => {
-      items.find((el) => el.dataset.heroItem === 'subline')?.classList.add('is-visible');
-    }, wordsEnd + 200);
+      byKey('headline')?.classList.add('is-visible');
+      byKey('subline')?.classList.add('is-visible');
+    }, 200);
 
+    // Stufe 3: Buttons + Trust
     window.setTimeout(() => {
-      items.find((el) => el.dataset.heroItem === 'buttons')?.classList.add('is-visible');
-    }, wordsEnd + 350);
-
-    window.setTimeout(() => {
-      items.find((el) => el.dataset.heroItem === 'trust')?.classList.add('is-visible');
-      items.find((el) => el.dataset.heroItem === 'eyebrow')?.classList.add('is-visible');
-      if (headline) {
-        headline.textContent = 'Hanseatisch diskret. Klar erfolgreich.';
-      }
-    }, wordsEnd + 500);
+      byKey('buttons')?.classList.add('is-visible');
+      byKey('trust')?.classList.add('is-visible');
+    }, 450);
   };
 
   onLoaderDone(run);

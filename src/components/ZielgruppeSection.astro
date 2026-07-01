@@ -114,6 +114,39 @@ import { privatkundenServices, geschaeftskundenServices } from '../content/segme
     cursor: pointer;
   }
 
+  /* Foto-Band → Quiz-Block: sonst harter Farbschnitt Foto/Navy ohne Übergang. */
+  .zielgruppe-band--privat::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: auto 0 0 0;
+    height: 96px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 0%, #1a2e4e 100%);
+  }
+
+  /* Quiz-Block → Foto-Band: Navy blendet oben in das Foto ein. */
+  .zielgruppe-band--geschaeft::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0 0 auto 0;
+    height: 96px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, #1a2e4e 0%, transparent 100%);
+  }
+
+  /* Foto-Band → nächste Section (off-white): Foto blendet unten sanft aus. */
+  .zielgruppe-band--geschaeft::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: auto 0 0 0;
+    height: 96px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 0%, var(--color-off-white) 100%);
+  }
+
   .zielgruppe-band__picture,
   .zielgruppe-band__media {
     position: absolute;

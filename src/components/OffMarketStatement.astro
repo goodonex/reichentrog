@@ -1,5 +1,5 @@
 ---
-/** Off-Market Statement — zwischen Banken-Hintergrund und Privatkunden */
+/** Off-Market Statement — zwischen Banken-Hintergrund und Ankauf */
 ---
 
 <section id="off-market" class="off-market-statement relative bg-[#1c2b4a] py-24 md:py-[120px]">
@@ -32,5 +32,16 @@
       transform: none !important;
       transition: none !important;
     }
+  }
+
+  /* Blendet unten in die (jetzt direkt folgende) Ankauf-Section (bg-ice-blue) über. */
+  .off-market-statement::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: auto 0 0 0;
+    height: 96px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 0%, var(--color-ice-blue) 100%);
   }
 </style>

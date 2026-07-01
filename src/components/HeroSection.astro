@@ -1,17 +1,13 @@
 ---
 import HeroVideo from './HeroVideo.astro';
 import HeroTrustBar from './HeroTrustBar.astro';
-
-const headline = 'Hanseatisch diskret. Klar erfolgreich.';
-const headlineWords = headline.split(' ');
 ---
 
-<section id="hero" class="hero-section relative h-svh w-full md:h-[220vh]">
-  <div class="sticky top-0 h-svh w-full overflow-hidden">
-    <HeroVideo />
-    <div
-      class="relative z-[2] flex h-full flex-col justify-end bg-gradient-to-t from-steel-navy via-steel-navy/55 to-transparent px-6 pb-28 pt-32 md:justify-center md:pb-36 md:pt-24"
-    >
+<section id="hero" class="hero-section relative h-svh w-full overflow-hidden">
+  <HeroVideo />
+  <div
+    class="relative z-[2] flex h-full flex-col justify-end bg-gradient-to-t from-[rgba(10,15,28,0.72)] via-[rgba(10,15,28,0.28)] to-transparent px-6 pb-28 pt-32 md:justify-center md:pb-36 md:pt-24"
+  >
     <div class="mx-auto w-full max-w-content" data-hero-reveal>
       <p
         class="hero-reveal-item mb-5 text-[11px] font-medium uppercase tracking-[0.32em] text-bernstein opacity-0 md:text-xs"
@@ -20,25 +16,18 @@ const headlineWords = headline.split(' ');
         Immobilien-Kanzlei Hamburg
       </p>
       <h1
-        class="hero-reveal-headline max-w-4xl font-display text-[clamp(2.25rem,6vw,4rem)] font-light leading-[1.05] tracking-[-0.03em] text-off-white opacity-0"
+        class="hero-reveal-item max-w-4xl font-display text-[clamp(2.25rem,6vw,4rem)] font-light leading-[1.05] tracking-[-0.03em] text-off-white opacity-0"
         style="text-wrap: balance;"
-        data-hero-headline
+        data-hero-item="headline"
       >
-        {
-          headlineWords.map((word, i) => (
-            <span class="hero-word inline-block opacity-0" data-hero-word={i}>
-              {word}
-              {i < headlineWords.length - 1 ? '\u00A0' : ''}
-            </span>
-          ))
-        }
+        Hanseatisch diskret. Klar erfolgreich.
       </h1>
       <p
         class="hero-reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-ice-blue/95 opacity-0 md:text-xl md:leading-relaxed"
         data-hero-item="subline"
       >
-        Präzise Beratung mit <strong class="font-medium text-off-white">Banken-Hintergrund</strong> und
-        <strong class="font-medium text-off-white">diskrete Vermittlung</strong> — für Haus- und
+        <strong class="font-medium text-off-white">Diskrete Vermittlung</strong> mit
+        <strong class="font-medium text-off-white">Banken-Hintergrund</strong> — für Haus- und
         Wohnungsbesitzer sowie Investoren in Hamburg und ganz Deutschland.
       </p>
       <div class="hero-reveal-item mt-12 flex flex-wrap gap-4 opacity-0" data-hero-item="buttons">
@@ -58,36 +47,19 @@ const headlineWords = headline.split(' ');
       </div>
       <HeroTrustBar />
     </div>
-    </div>
   </div>
 </section>
 
 <style>
-  .hero-reveal-headline.is-visible,
   .hero-reveal-item.is-visible {
     opacity: 1;
-    transition: opacity 300ms ease-out;
-  }
-
-  .hero-word.is-visible {
-    opacity: 1;
-    transition: opacity 300ms ease-out;
+    transition: opacity 500ms ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-reveal-headline,
-    .hero-reveal-item,
-    .hero-word {
+    .hero-reveal-item {
       opacity: 1 !important;
       transition: none !important;
-    }
-  }
-</style>
-
-<style is:global>
-  @media (prefers-reduced-motion: reduce) {
-    .hero-section {
-      height: 100svh !important;
     }
   }
 </style>

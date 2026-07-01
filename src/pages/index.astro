@@ -30,7 +30,11 @@ const description =
     <!-- 1. Hero -->
     <HeroSection />
 
-    <!-- 2. Alles aus einer Hand -->
+    <!-- 2. Zielgruppen-Weiche: Privat oder Geschäft — bewusst direkt nach dem Hero,
+         damit Besucher ohne langes Scrollen zu ihrem Bereich finden. -->
+    <ZielgruppeSection />
+
+    <!-- 3. Alles aus einer Hand -->
     <SectionTransition
       id="alles-aus-einer-hand"
       featherTop={false}
@@ -42,21 +46,19 @@ const description =
       </div>
     </SectionTransition>
 
-    <!-- 3. Warum -->
+    <!-- 4. Warum -->
     <SectionTransition id="warum" featherTop={false} class="overflow-hidden p-0">
       <WarumSection />
     </SectionTransition>
 
-    <!-- 4. Banken-Hintergrund -->
+    <!-- 5. Banken-Hintergrund -->
     <SectionTransition id="banken-hintergrund" featherTop={false} class="overflow-hidden p-0">
       <BankenHintergrund />
     </SectionTransition>
 
     <OffMarketStatement />
 
-    <ZielgruppeSection />
-
-    <!-- 5. Ankauf -->
+    <!-- 6. Ankauf -->
     <SectionTransition
       id="ankauf"
       featherTop={false}
@@ -122,14 +124,14 @@ const description =
       </div>
     </SectionTransition>
 
-    <!-- 6. Cases -->
+    <!-- 7. Cases -->
     <SectionTransition id="cases" cursorSurface="light" class="bg-ice-blue py-24 md:py-32">
       <div class="mx-auto max-w-content px-6">
         <CasesSection />
       </div>
     </SectionTransition>
 
-    <!-- 7. Reichweite -->
+    <!-- 8. Reichweite -->
     <SectionTransition
       id="reichweite"
       featherTop={false}
@@ -141,12 +143,12 @@ const description =
       </div>
     </SectionTransition>
 
-    <!-- 8. Team -->
+    <!-- 9. Team -->
     <SectionTransition id="team" featherTop={false} class="relative">
       <TeamSection />
     </SectionTransition>
 
-    <!-- 9. Stimmen (Google Reviews aus JSON-Cache) -->
+    <!-- 10. Stimmen (Google Reviews aus JSON-Cache) -->
     <SectionTransition
       id="stimmen"
       featherTop={false}
@@ -158,7 +160,7 @@ const description =
       </div>
     </SectionTransition>
 
-    <!-- 10. FAQ -->
+    <!-- 11. FAQ -->
     <SectionTransition
       id="faq"
       featherTop={false}
@@ -215,7 +217,7 @@ const description =
       </div>
     </SectionTransition>
 
-    <!-- 11. CTA -->
+    <!-- 12. CTA -->
     <SectionTransition
       id="kontakt"
       featherTop={false}

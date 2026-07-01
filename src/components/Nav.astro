@@ -11,13 +11,20 @@ interface Props {
 
 const { variant = 'home' } = Astro.props;
 
-const links = [
+/** Kern-Weiche: Privat- oder Geschäftskunde — als Segment-Toggle hervorgehoben,
+ * damit Besucher innerhalb von Sekunden erkennen, wo sie hingehören. */
+const segmentLinks = [
   { href: '/privatkunden/', label: 'Privatkunden' },
   { href: '/geschaeftskunden/', label: 'Geschäftskunden' },
+];
+
+const links = [
   { href: '/objekte/', label: 'Objekte' },
   { href: '/objekt-anbieten/', label: 'Objekt anbieten', highlight: true },
   { href: '/kontakt/', label: 'Kontakt' },
 ];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header
@@ -62,6 +69,25 @@ const links = [
       class="hidden flex-col gap-0.5 pb-1.5 md:flex md:flex-row md:items-center md:justify-end md:gap-0 md:pb-0"
       aria-hidden="true"
     >
+      <div
+        class="nav-segment-group mb-1.5 flex w-full items-center justify-center gap-0.5 rounded-full border px-1 py-1 md:mb-0 md:mr-2 md:w-auto md:justify-start"
+        role="group"
+        aria-label="Kundensegment wählen"
+      >
+        {
+          segmentLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class:list={[
+                'nav-link nav-segment-link relative flex-1 whitespace-nowrap rounded-full px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 md:flex-initial md:px-3.5 md:text-[11px]',
+                currentPath === href.replace(/\/$/, '') && 'is-active',
+              ]}
+            >
+              {label}
+            </a>
+          ))
+        }
+      </div>
       {
         links.map(({ href, label, highlight }) =>
           highlight ? (

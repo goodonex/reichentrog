@@ -65,7 +65,7 @@
     pointer-events: none;
     position: absolute;
     inset: 0;
-    opacity: 0.07;
+    opacity: 0.03;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
@@ -293,6 +293,41 @@
     color: var(--color-steel-navy);
   }
 
+  /* Segment-Toggle Privatkunden/Geschäftskunden — soll sofort als Weiche erkennbar sein */
+  .nav-segment-group {
+    border-color: rgba(204, 158, 77, 0.4);
+    background: rgba(204, 158, 77, 0.1);
+  }
+
+  .nav-segment-link:hover {
+    background: rgba(204, 158, 77, 0.18);
+  }
+
+  #site-nav .nav-segment-link.is-active {
+    background: var(--color-steel-navy);
+    color: var(--color-off-white);
+  }
+
+  #site-nav[data-on-hero='true'] .nav-segment-group {
+    border-color: rgba(204, 158, 77, 0.45);
+    background: rgba(204, 158, 77, 0.14);
+  }
+
+  #site-nav[data-on-hero='true'] .nav-segment-link.is-active {
+    background: var(--color-off-white);
+    color: var(--color-steel-navy);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-segment-group {
+    border-color: rgba(204, 158, 77, 0.4);
+    background: rgba(204, 158, 77, 0.1);
+  }
+
+  #site-nav[data-on-hero='true'][data-scrolled='true'] .nav-segment-link.is-active {
+    background: var(--color-steel-navy);
+    color: var(--color-off-white);
+  }
+
   details summary {
     list-style: none;
   }
@@ -371,7 +406,10 @@ footer .rk-logo-footer .rk-logo-sub {
 }
 
 .section-photo-fades::after {
-  bottom: calc(var(--section-fade-height) / -2);
+  /* Innerhalb der Section-Box bleiben (nicht poken) — sonst schneidet overflow-hidden
+     auf dem SectionTransition-Wrapper die Hälfte des Verlaufs weg und die Farbe
+     erreicht nie --section-fade-to, bevor die nächste Section hart beginnt. */
+  bottom: 0;
   z-index: 10;
   background: linear-gradient(
     to bottom,
