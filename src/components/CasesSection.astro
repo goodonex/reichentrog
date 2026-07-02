@@ -34,12 +34,27 @@ const gridCols =
        Anfrage an: o.alberich@reichentrog-finance.de -->
   <div class:list={['mt-14 grid gap-8', gridCols]}>
     {
-      filtered.map((c) => (
+      filtered.map((c, i) => (
         <GlassCard
-          class="flex flex-col border-steel-blue/14 bg-gradient-to-br from-white/80 via-ice-blue/35 to-white/70 p-8"
+          class:list={[
+            'relative flex flex-col p-8',
+            i === 0
+              ? '!border-2 !border-bernstein !bg-bernstein/15 shadow-[0_20px_48px_-16px_rgba(204,158,77,0.5)] md:-translate-y-3'
+              : 'border-steel-blue/14 bg-gradient-to-br from-white/80 via-ice-blue/35 to-white/70',
+          ]}
           data-reveal-child
         >
-          <p class="inline-flex w-fit rounded-full border border-bernstein/25 bg-bernstein/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-steel-navy">
+          {i === 0 && (
+            <span class="absolute -top-3 left-8 rounded-full bg-bernstein px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-steel-navy shadow-md">
+              Stärkstes Ergebnis
+            </span>
+          )}
+          <p
+            class:list={[
+              'inline-flex w-fit rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-steel-navy',
+              i === 0 ? 'border border-bernstein/60 bg-white/70' : 'border border-bernstein/25 bg-bernstein/10',
+            ]}
+          >
             {c.category}
           </p>
           <div class="mt-6 space-y-6 text-sm leading-relaxed text-steel-navy/85">
@@ -59,7 +74,12 @@ const gridCols =
               <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-bernstein">
                 Ergebnis
               </p>
-              <p class="mt-2.5 font-display text-base font-light leading-snug text-steel-navy">
+              <p
+                class:list={[
+                  'mt-2.5 font-display font-light leading-snug text-steel-navy',
+                  i === 0 ? 'text-lg' : 'text-base',
+                ]}
+              >
                 {c.result}
               </p>
             </div>

@@ -110,18 +110,23 @@ export function initSegmentHeroVideos(): void {
       root.dataset.started = 'true';
     };
 
+    /** Setzt die src synchron, ohne auf 'canplay' zu warten — Safari verlangt, dass
+     *  play() im selben Task wie die User-Geste aufgerufen wird. Ein await davor
+     *  lässt die 'user activation' in Safari verfallen, dann bleibt play() für
+     *  Ton stumm hängen und der Button wirkt "nicht klickbar". */
+    const ensureSourceAttached = (): void => {
+      const src = source.dataset.src;
+      if (src && !source.src) {
+        source.src = src;
+        video.load();
+      }
+    };
+
     const ensureVideoLoaded = (): Promise<void> => {
       if (loadPromise) return loadPromise;
 
       loadPromise = (async () => {
-        const src = source.dataset.src;
-        if (!src) return;
-
-        if (!source.src) {
-          source.src = src;
-          video.load();
-        }
-
+        ensureSourceAttached();
         await waitForCanPlay(video);
 
         if (Number.isFinite(video.duration) && video.duration > 0) {
@@ -153,7 +158,7 @@ export function initSegmentHeroVideos(): void {
       timeCurrent.textContent = '0:00';
     };
 
-    const startPlayback = async (withSound: boolean) => {
+    const startPlayback = (withSound: boolean) => {
       hasStarted = true;
       hideStartOverlay();
       hideEndedPanel();
@@ -166,14 +171,20 @@ export function initSegmentHeroVideos(): void {
 
       if (video.ended) video.currentTime = 0;
 
-      try {
-        await ensureVideoLoaded();
-        await video.play();
-      } catch {
-        video.muted = true;
-        await video.play();
+      // Quelle synchron anhängen und play() sofort aufrufen — noch innerhalb
+      // des Klick-Handlers, ohne await davor (Safari-Anforderung für Ton-Wiedergabe).
+      ensureSourceAttached();
+      const playAttempt = video.play();
+      if (playAttempt && typeof playAttempt.catch === 'function') {
+        playAttempt.catch(() => {
+          // Mit Ton verweigert (z. B. Safari) — stumm erneut versuchen.
+          video.muted = true;
+          video.play().catch(() => {});
+          syncMute();
+        });
       }
 
+      void ensureVideoLoaded();
       syncPlay();
       syncMute();
     };
@@ -187,7 +198,9 @@ export function initSegmentHeroVideos(): void {
           video.currentTime = 0;
           hideEndedPanel();
         }
-        void ensureVideoLoaded().then(() => video.play());
+        ensureSourceAttached();
+        video.play().catch(() => {});
+        void ensureVideoLoaded();
         return;
       }
       video.pause();

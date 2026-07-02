@@ -193,6 +193,11 @@ const cards = [
 
   .warum-section__overlay {
     z-index: 1;
+    /* Foto ist detailreich (Glas-Hochhaus) — Standard-Editorial-Overlay reicht nicht,
+       damit die drei Glaskarten nicht mit der Bildtextur konkurrieren. */
+    --editorial-overlay-top: 0.6;
+    --editorial-overlay-mid: 0.74;
+    --editorial-overlay-bottom: 0.82;
   }
 
   .warum-section__bg {

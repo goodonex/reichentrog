@@ -3,32 +3,36 @@ import HeroVideo from './HeroVideo.astro';
 import HeroTrustBar from './HeroTrustBar.astro';
 ---
 
-<section id="hero" class="hero-section relative h-svh w-full overflow-hidden">
+<section id="hero" class="hero-section section-photo-fades relative h-svh w-full overflow-hidden">
   <HeroVideo />
   <div
-    class="relative z-[2] flex h-full flex-col justify-end bg-gradient-to-t from-[rgba(10,15,28,0.72)] via-[rgba(10,15,28,0.28)] to-transparent px-6 pb-28 pt-32 md:justify-center md:pb-36 md:pt-24"
+    class="hero-scrim relative z-[2] flex h-full flex-col justify-end px-6 pb-28 pt-32 md:justify-center md:pb-36 md:pt-24"
   >
     <div class="mx-auto w-full max-w-content" data-hero-reveal>
       <p
-        class="hero-reveal-item mb-5 text-[11px] font-medium uppercase tracking-[0.32em] text-bernstein opacity-0 md:text-xs"
+        class="hero-reveal-item hero-eyebrow-chip mb-5 inline-flex w-fit items-center text-[11px] font-medium uppercase tracking-[0.32em] text-bernstein opacity-0 md:text-xs"
         data-hero-item="eyebrow"
       >
         Immobilien-Kanzlei Hamburg
       </p>
       <h1
-        class="hero-reveal-item max-w-4xl font-display text-[clamp(2.25rem,6vw,4rem)] font-light leading-[1.05] tracking-[-0.03em] text-off-white opacity-0"
+        class="hero-reveal-item hero-text-shadow max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.12] tracking-[-0.02em] text-off-white opacity-0"
         style="text-wrap: balance;"
         data-hero-item="headline"
       >
-        Hanseatisch diskret. Klar erfolgreich.
+        Diskrete Immobilienvermittlung mit Banken-Hintergrund.
       </h1>
       <p
-        class="hero-reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-ice-blue/95 opacity-0 md:text-xl md:leading-relaxed"
+        class="hero-reveal-item hero-motto mt-4 font-display text-lg italic text-ice-blue/80 opacity-0 md:text-xl"
+        data-hero-item="motto"
+      >
+        Hanseatisch diskret. Klar erfolgreich.
+      </p>
+      <p
+        class="hero-reveal-item mt-6 max-w-2xl text-base leading-relaxed text-ice-blue/95 opacity-0 md:text-lg md:leading-relaxed"
         data-hero-item="subline"
       >
-        <strong class="font-medium text-off-white">Diskrete Vermittlung</strong> mit
-        <strong class="font-medium text-off-white">Banken-Hintergrund</strong> — für Haus- und
-        Wohnungsbesitzer sowie Investoren in Hamburg und ganz Deutschland.
+        Für Haus- und Wohnungsbesitzer sowie Investoren — in Hamburg und ganz Deutschland.
       </p>
       <div class="hero-reveal-item mt-12 flex flex-wrap gap-4 opacity-0" data-hero-item="buttons">
         <a
@@ -51,6 +55,46 @@ import HeroTrustBar from './HeroTrustBar.astro';
 </section>
 
 <style>
+  .hero-section {
+    --section-fade-to: #1a2e4e;
+  }
+
+  /* Deckt Eyebrow/Headline unabhängig vom Videoinhalt ausreichend ab —
+     vorher zu schwach im mittleren/oberen Bereich, wo helles Laub durchscheint. */
+  .hero-scrim {
+    background: linear-gradient(
+      to top,
+      rgba(6, 10, 20, 0.8) 0%,
+      rgba(6, 10, 20, 0.62) 32%,
+      rgba(6, 10, 20, 0.4) 55%,
+      rgba(6, 10, 20, 0.16) 78%,
+      transparent 100%
+    );
+  }
+
+  .hero-text-shadow {
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Marken-Claim als Signatur-Zeile statt Erstkontakt — die funktionale
+     Headline soll zuerst verstanden werden, der Claim folgt als Haltung. */
+  .hero-motto {
+    padding-left: 0.9rem;
+    border-left: 2px solid rgba(204, 158, 77, 0.5);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Eigener, fast deckender Hintergrund für die Eyebrow — verlässt sich nicht
+     mehr auf den Scrim allein. Löst Gold-auf-beiger-Hausfassade-Kontrastproblem. */
+  .hero-eyebrow-chip {
+    border-radius: 9999px;
+    border: 1px solid rgba(204, 158, 77, 0.28);
+    background: rgba(6, 10, 20, 0.55);
+    padding: 0.45rem 0.85rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
   .hero-reveal-item.is-visible {
     opacity: 1;
     transition: opacity 500ms ease-out;

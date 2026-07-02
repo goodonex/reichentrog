@@ -80,13 +80,17 @@ const steps = [
                   type="button"
                   role="tab"
                   id={`process-tab-${i}`}
-                  class:list={['process-stepper__card', i === 0 && 'is-active']}
+                  class:list={['process-stepper__card group', i === 0 && 'is-active']}
                   data-process-step={i}
                   aria-selected={i === 0 ? 'true' : 'false'}
                   aria-controls="process-panel"
                   tabindex={i === 0 ? 0 : -1}
                 >
                   <span class="process-stepper__node" aria-hidden="true">
+                    <ProcessStepIcon
+                      name={step.icon}
+                      class="!h-5 !w-5 !shrink-0 !text-[rgb(26,46,78)] opacity-55 transition-opacity duration-200 group-[.is-active]:opacity-100 group-[.is-active]:!text-[#f5f0e8]"
+                    />
                     <span class="process-stepper__number">{step.number}</span>
                   </span>
                   <span class="process-stepper__copy">
@@ -257,10 +261,19 @@ const steps = [
 
   .process-stepper__card.is-active {
     opacity: 1;
-    background: #fff;
-    border-color: rgb(26 46 78 / 0.16);
-    box-shadow: 0 10px 36px rgb(26 46 78 / 0.07);
+    background: rgb(26 46 78 / 0.05);
+    border-color: #1a2e4e;
+    box-shadow: 0 10px 36px rgb(26 46 78 / 0.1);
     transform: translateY(-1px);
+  }
+
+  .process-stepper__card.is-active::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: 12px 0 0 12px;
+    background: #cc9e4d;
   }
 
   .process-stepper__card:focus-visible {
@@ -269,6 +282,7 @@ const steps = [
   }
 
   .process-stepper__node {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -280,25 +294,42 @@ const steps = [
     background: #f5f2ea;
     transition:
       border-color 220ms ease,
-      background 220ms ease;
+      background 220ms ease,
+      transform 220ms ease;
   }
 
   .process-stepper__card.is-active .process-stepper__node {
-    border-color: #1a2e4e;
-    background: rgb(26 46 78 / 0.04);
+    border-color: #cc9e4d;
+    background: #1a2e4e;
+    transform: scale(1.08);
   }
 
   .process-stepper__number {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 1.75rem;
+    position: absolute;
+    right: -0.3rem;
+    bottom: -0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 9999px;
+    border: 1.5px solid #f5f2ea;
+    background: rgb(26 46 78 / 0.1);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
     line-height: 1;
-    font-weight: 400;
     color: #1a2e4e;
-    transition: transform 220ms ease;
+    transition:
+      background 220ms ease,
+      color 220ms ease;
   }
 
   .process-stepper__card.is-active .process-stepper__number {
-    transform: scale(1.05);
+    background: #cc9e4d;
+    color: #1a2e4e;
+    border-color: #f5f2ea;
   }
 
   .process-stepper__copy {

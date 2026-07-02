@@ -31,7 +31,7 @@ const team = [
     loading="lazy"
     decoding="async"
   />
-  <div class="team-section__overlay absolute inset-0 bg-[rgba(10,15,28,0.55)]" aria-hidden="true"></div>
+  <div class="team-section__overlay absolute inset-0" aria-hidden="true"></div>
 
   <RevealSection class="relative z-[3] w-full">
     <div class="mx-auto max-w-content px-6 pb-20 text-center">
@@ -115,12 +115,27 @@ const team = [
 
   .team-section__photo {
     image-rendering: auto;
+    /* Foto selbst beruhigen (weniger Farbkontrast im Hintergrunddetail),
+       zusätzlich zum Overlay darunter. */
+    filter: saturate(0.7) brightness(0.82) contrast(0.95);
+  }
+
+  /* Foto hat viel Hintergrunddetail — flächiges 0.55-Overlay ließ Text mit dem
+     Bild konkurrieren. Deutlich stärker unten (wo Headline/Karten sitzen). */
+  .team-section__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 15, 28, 0.6) 0%,
+      rgba(10, 15, 28, 0.78) 55%,
+      rgba(10, 15, 28, 0.88) 100%
+    );
   }
 
   .team-member__scrim {
-    background: rgba(10, 15, 28, 0.45);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(8, 12, 22, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 240, 232, 0.08);
     border-radius: 8px;
     padding: 20px 24px;
   }

@@ -1,7 +1,7 @@
 ---
 /** Dünne Linien-Icons im Kompass-Stil — dunkelblau via currentColor */
 interface Props {
-  name: 'finanzierung' | 'abwicklung' | 'notariat' | 'netzwerk';
+  name: 'finanzierung' | 'abwicklung' | 'notariat' | 'netzwerk' | 'privat' | 'geschaeft';
   class?: string;
 }
 
@@ -68,6 +68,33 @@ const { name, class: className } = Astro.props;
         <line x1="16" y1="13" x2="8" y2="19.5" stroke="currentColor" stroke-width="1" />
         <line x1="16" y1="13" x2="24" y2="19.5" stroke="currentColor" stroke-width="1" />
         <line x1="10.5" y1="22" x2="21.5" y2="22" stroke="currentColor" stroke-width="1" />
+      </>
+    )
+  }
+  {
+    name === 'privat' && (
+      <>
+        <path d="M5 15 16 5l11 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M8 13v13h16V13" stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+        <path d="M13 26v-8h6v8" stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+      </>
+    )
+  }
+  {
+    name === 'geschaeft' && (
+      <>
+        <rect x="9" y="4" width="14" height="22" stroke="currentColor" stroke-width="1" />
+        <line x1="12" y1="8" x2="12" y2="8.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="16" y1="8" x2="16" y2="8.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="20" y1="8" x2="20" y2="8.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="12" y1="12.5" x2="12" y2="12.51" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="16" y1="12.5" x2="16" y2="12.51" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="20" y1="12.5" x2="20" y2="12.51" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="12" y1="17" x2="12" y2="17.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="16" y1="17" x2="16" y2="17.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <line x1="20" y1="17" x2="20" y2="17.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <path d="M13 26v-5h6v5" stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+        <line x1="4" y1="26" x2="28" y2="26" stroke="currentColor" stroke-width="1" stroke-linecap="round" />
       </>
     )
   }

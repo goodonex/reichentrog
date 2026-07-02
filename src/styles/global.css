@@ -376,12 +376,13 @@ footer .rk-logo-footer .rk-logo-sub {
 }
 
 /*
- * Section-Edge-Fades — Foto/Video-Sections
- * Oben: Vorgängerfarbe → transparent (Bild scheint durch, kein Navy-Streifen)
- * Unten: Bildkante + Overlay → nächste Section-Farbe
+ * Section-Übergänge — ein einziges, ruhiges Verlaufs-System für die ganze Seite.
+ * Ease-out-Kurve zwischen genau zwei Farben (nie eine dritte Mischfarbe dazwischen —
+ * das war der Grund für den "Nebel"-Look vorher). Länger (104px) als reiner Alpha-
+ * Verlauf, damit das Auge keinen erkennbaren Endpunkt der Kante wahrnimmt.
  */
 .section-photo-fades {
-  --section-fade-height: 80px;
+  --section-fade-height: 104px;
 }
 
 .section-photo-fades::before,
@@ -400,147 +401,31 @@ footer .rk-logo-footer .rk-logo-sub {
   background: linear-gradient(
     to bottom,
     var(--section-fade-from) 0%,
-    color-mix(in oklab, var(--section-fade-from) 25%, transparent) 45%,
+    color-mix(in srgb, var(--section-fade-from) 85%, transparent) 18%,
+    color-mix(in srgb, var(--section-fade-from) 60%, transparent) 36%,
+    color-mix(in srgb, var(--section-fade-from) 35%, transparent) 55%,
+    color-mix(in srgb, var(--section-fade-from) 15%, transparent) 74%,
+    color-mix(in srgb, var(--section-fade-from) 4%, transparent) 90%,
     transparent 100%
   );
 }
 
 .section-photo-fades::after {
-  /* Innerhalb der Section-Box bleiben (nicht poken) — sonst schneidet overflow-hidden
-     auf dem SectionTransition-Wrapper die Hälfte des Verlaufs weg und die Farbe
-     erreicht nie --section-fade-to, bevor die nächste Section hart beginnt. */
   bottom: 0;
   z-index: 10;
   background: linear-gradient(
     to bottom,
-    var(--section-fade-edge-bottom) 0%,
+    transparent 0%,
+    color-mix(in srgb, var(--section-fade-to) 4%, transparent) 10%,
+    color-mix(in srgb, var(--section-fade-to) 15%, transparent) 26%,
+    color-mix(in srgb, var(--section-fade-to) 35%, transparent) 45%,
+    color-mix(in srgb, var(--section-fade-to) 60%, transparent) 64%,
+    color-mix(in srgb, var(--section-fade-to) 85%, transparent) 82%,
     var(--section-fade-to) 100%
   );
 }
 
-/* Section-Exit-Gradients — 80px, oklab, ::after auf der oberen Section */
-#hero,
-#alles-aus-einer-hand,
-#warum,
-#banken-hintergrund,
-#off-market,
-#leistungen,
-#cases,
-#reichweite,
-#team,
-#stimmen,
-#faq,
-#kontakt {
-  position: relative;
-  overflow: visible;
-}
-
-#hero {
-  --section-exit-edge: #202127;
-  --section-exit-to: #f5f2ea;
-}
-
-#hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(
-    in oklab to bottom,
-    transparent 0%,
-    color-mix(in oklab, var(--section-exit-edge) 45%, transparent) 42%,
-    var(--section-exit-to) 100%
-  );
-  pointer-events: none;
-  z-index: 5;
-}
-
-#alles-aus-einer-hand {
-  z-index: 2;
-}
-
-#warum {
-  z-index: 2;
-}
-
-#banken-hintergrund {
-  z-index: 1;
-}
-
-#off-market::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(in oklab to bottom, transparent, #e0e8ef);
-  pointer-events: none;
-  z-index: 5;
-}
-
-#leistungen {
-  z-index: 2;
-}
-
-#cases {
-  z-index: 1;
-}
-
-#cases::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(in oklab to bottom, transparent, #f5f2ea);
-  pointer-events: none;
-  z-index: 5;
-}
-
-#reichweite {
-  z-index: 2;
-}
-
-#team {
-  z-index: 1;
-}
-
-#stimmen::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(in oklab to bottom, transparent, #eee9e0);
-  pointer-events: none;
-  z-index: 5;
-}
-
-#faq::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(in oklab to bottom, transparent, #f5f2ea);
-  pointer-events: none;
-  z-index: 5;
-}
-
-#kontakt::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(in oklab to bottom, transparent, #1a2e4e);
-  pointer-events: none;
-  z-index: 5;
+/* Hero ist die erste Section — kein Top-Fade, nur der Ausklang unten in die Zielgruppen-Navy. */
+#hero.section-photo-fades::before {
+  content: none;
 }

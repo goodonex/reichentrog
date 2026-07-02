@@ -17,9 +17,10 @@ export function initHeroReveal(): void {
     // Stufe 1: eyebrow sofort
     byKey('eyebrow')?.classList.add('is-visible');
 
-    // Stufe 2: Headline + Subline
+    // Stufe 2: Headline + Motto + Subline
     window.setTimeout(() => {
       byKey('headline')?.classList.add('is-visible');
+      byKey('motto')?.classList.add('is-visible');
       byKey('subline')?.classList.add('is-visible');
     }, 200);
 

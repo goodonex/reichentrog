@@ -58,7 +58,7 @@ function initReveals(): void {
         root.classList.add('opacity-100', 'translate-y-0', 'transition-all', 'duration-700', 'ease-out');
       });
     },
-    { threshold: 0.15, rootMargin: '-80px' },
+    { threshold: 0, rootMargin: '0px 0px -10% 0px' },
   );
 
   sections.forEach((el) => io.observe(el));
