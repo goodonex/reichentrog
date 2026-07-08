@@ -217,8 +217,49 @@ function initHero(): void {
   initHeroCanvas(canvas);
 }
 
+/**
+ * Dekorative Hintergrundvideos zuverlässig zum Spielen bringen — v. a. Safari,
+ * das muted-Autoplay je nach Einstellung/Version verweigert und dann seinen
+ * Play-Button zeigt (der sich per CSS nicht mehr zuverlässig ausblenden lässt).
+ * Ein spielendes Video hat keinen Button. Deshalb: sofort versuchen + bei der
+ * ersten Nutzer-Interaktion (Mausbewegung, Scroll, Tap) erneut anstoßen.
+ */
+function initBgVideoPlayback(): void {
+  const videos = Array.from(
+    document.querySelectorAll<HTMLVideoElement>('video[data-bg-video]'),
+  );
+  if (!videos.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const playAll = () => {
+    videos.forEach((video) => {
+      if (getComputedStyle(video).display === 'none') return; // z. B. mobil ausgeblendet
+      video.muted = true;
+      video.playsInline = true;
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    });
+  };
+
+  playAll();
+
+  // Erste beliebige Interaktion garantiert Wiedergabe, falls Autoplay blockiert war.
+  const onFirstInteraction = () => {
+    playAll();
+  };
+  ['pointerdown', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach((evt) => {
+    window.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+  });
+
+  // Wenn ein Tab wieder aktiv wird, erneut anstoßen (Safari pausiert im Hintergrund).
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) playAll();
+  });
+}
+
 function boot(): void {
   initPageLoader();
+  initBgVideoPlayback();
   initHero();
   initHeroScrollVideo();
   initNavTheme();

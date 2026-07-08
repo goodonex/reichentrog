@@ -171,11 +171,15 @@ const initials = (name: string) =>
   .reviews-marquee__track {
     display: flex;
     width: max-content;
-    will-change: transform;
     /* Deklarative CSS-Animation läuft endlos und browsergesteuert — kann nicht
-       „nach einem Durchlauf einfrieren". Zwei identische Sets + Sprung um -50%
-       (= exakt eine Set-Breite) ergeben eine nahtlose Endlosschleife. */
-    animation: reviews-marquee-scroll 100s linear infinite;
+       „nach einem Durchlauf einfrieren". Zwei identische Sets + Sprung um genau
+       eine Set-Breite ergeben eine nahtlose Endlosschleife.
+       WICHTIG: Verschiebung als PIXEL-Wert (per JS gesetzt), nicht als %-Wert —
+       Safari verrechnet Prozent-Transforms auf max-content-Breite falsch, was zum
+       „einmal durchlaufen, dann leer" führte. Fallback 50% bis JS gemessen hat.
+       Kein will-change: verursacht in Safari bei langen Animationen Compositing-
+       Aussetzer. */
+    animation: reviews-marquee-scroll var(--marquee-duration, 100s) linear infinite;
   }
 
   /* Bei Hover über den Streifen pausieren — nichts verschwindet, nur angehalten. */
@@ -188,7 +192,7 @@ const initials = (name: string) =>
       transform: translate3d(0, 0, 0);
     }
     to {
-      transform: translate3d(-50%, 0, 0);
+      transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0);
     }
   }
 
@@ -245,3 +249,39 @@ const initials = (name: string) =>
     }
   }
 </style>
+
+<script>
+  // Verschiebungs-Distanz pixelgenau setzen = exakt eine Set-Breite. Safari
+  // verrechnet %-Transforms auf max-content falsch; ein Pixelwert ist stabil.
+  function initReviewsDistance() {
+    document.querySelectorAll<HTMLElement>('.reviews-marquee').forEach((marquee) => {
+      const track = marquee.querySelector<HTMLElement>('.reviews-marquee__track');
+      const set = track?.querySelector<HTMLElement>('.reviews-marquee__set');
+      if (!track || !set) return;
+
+      const apply = () => {
+        const w = set.scrollWidth;
+        if (w > 0) track.style.setProperty('--marquee-distance', `${w}px`);
+      };
+
+      apply();
+      // Nach Layout, Bildladen, Fonts und bei Resize nachmessen.
+      requestAnimationFrame(apply);
+      set.querySelectorAll('img').forEach((img) => {
+        if (!img.complete) img.addEventListener('load', apply, { once: true });
+      });
+      if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(apply).observe(set);
+      } else {
+        window.addEventListener('resize', apply);
+      }
+      if (document.fonts?.ready) document.fonts.ready.then(apply).catch(() => {});
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReviewsDistance);
+  } else {
+    initReviewsDistance();
+  }
+</script>
