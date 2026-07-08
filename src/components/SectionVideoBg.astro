@@ -102,10 +102,29 @@ const { posterSrc, videoMp4, videoWebm, fallbackClass } = Astro.props;
   });
 
   document.querySelectorAll<HTMLVideoElement>('.section-video-bg__video').forEach((video) => {
-    const hide = () => video.classList.add('is-unavailable');
+    // Nur bei echtem Ladefehler ausblenden — NICHT bei einer (oft nur transienten)
+    // Autoplay-Ablehnung. Browser lehnen play() für weit unter dem Fold liegende
+    // Videos häufig ab; ein hartes Ausblenden ließ dort dauerhaft nur das Poster stehen.
+    video.addEventListener('error', () => video.classList.add('is-unavailable'), { once: true });
 
-    video.addEventListener('error', hide, { once: true });
+    const tryPlay = () => {
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    };
 
-    video.play().catch(hide);
+    // Abspielen, sobald die Section in Sichtweite kommt (und Wiederholversuch bei
+    // jedem erneuten Eintritt), plus ein sofortiger Versuch für Above-the-fold.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) tryPlay();
+          });
+        },
+        { rootMargin: '200px 0px' },
+      );
+      io.observe(video);
+    }
+    tryPlay();
   });
 </script>
