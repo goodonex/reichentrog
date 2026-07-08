@@ -73,9 +73,16 @@ const {
     image-rendering: auto;
   }
 
+  /* Poster liegt ÜBER dem Video und verdeckt es physisch — solange das Video nicht
+     spielt, ist damit auch Safaris nativer Play-Button (im Video-Layer darunter)
+     nicht sichtbar. Sobald das Video läuft, blendet das Poster weg. */
+  .hero-poster-wrap {
+    z-index: 3;
+  }
+
   .hero-poster {
     z-index: 0;
-    transition: opacity 400ms ease;
+    transition: opacity 500ms ease;
   }
 
   .hero-poster.is-hidden {
@@ -84,11 +91,6 @@ const {
 
   .hero-video {
     z-index: 1;
-    opacity: 0;
-    transition: opacity 600ms ease;
-  }
-
-  .hero-video.is-ready {
     opacity: 1;
   }
 
