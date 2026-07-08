@@ -40,16 +40,15 @@ const {
   <video
     id="hero-video"
     class="hero-video"
-    autoplay
     loop
     muted
     playsinline
-    preload="auto"
-    poster={posterJpg}
-    data-bg-video
+    preload="none"
   >
-    <source src={videoMp4} type="video/mp4" />
-    <source src={videoWebm} type="video/webm" />
+    {/* Quellen bewusst als data-src: erst bei der ersten Interaktion angehängt,
+        damit Safari vorher keinen nativen Play-Button für ein pausiertes Video zeigt. */}
+    <source data-src={videoMp4} type="video/mp4" />
+    <source data-src={videoWebm} type="video/webm" />
   </video>
 
   <div class="grain-overlay hero-video-grain" aria-hidden="true"></div>

@@ -1,4 +1,9 @@
-/** Hero-Video: simple crossfade Poster → Video wenn bereit. */
+/**
+ * Hero-Video: Quellen erst bei der ersten Nutzer-Interaktion (Klick/Scroll/Maus)
+ * anhängen und abspielen. So zeigt Safari NIE seinen nativen Play-Button für ein
+ * pausiertes Video — vor der Interaktion existiert schlicht keine abspielbare
+ * Quelle, nur das Poster-Bild liegt darüber. Läuft das Video, blendet das Poster weg.
+ */
 export function initHeroScrollVideo(): void {
   const video = document.getElementById('hero-video') as HTMLVideoElement | null;
   const poster = document.getElementById('hero-poster') as HTMLImageElement | null;
@@ -6,48 +11,48 @@ export function initHeroScrollVideo(): void {
 
   const mobileMq = window.matchMedia('(max-width: 767px)');
   const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
-
   if (mobileMq.matches || motionMq.matches) return;
 
-  const tryPlay = () => {
+  const reveal = () => poster?.classList.add('is-hidden');
+  video.addEventListener('playing', reveal);
+  video.addEventListener('timeupdate', () => {
+    if (!video.paused && video.currentTime > 0) reveal();
+  });
+
+  const events = ['pointerdown', 'touchstart', 'keydown', 'scroll', 'mousemove', 'click'];
+  let attached = false;
+
+  const start = () => {
+    if (!attached) {
+      attached = true;
+      video.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => {
+        if (s.dataset.src && !s.getAttribute('src')) s.src = s.dataset.src;
+      });
+      video.load();
+    }
     video.muted = true;
     const p = video.play();
     if (p && typeof p.catch === 'function') p.catch(() => {});
   };
 
-  // Das Video erst SICHTBAR machen, wenn es WIRKLICH spielt — nicht schon bei
-  // „canplay". Bis dahin liegt das Poster (ein Bild, kein Play-Button) darüber.
-  // Damit sieht man nie Safaris nativen Play-Button eines pausierten Videos:
-  // Startet Autoplay → Poster blendet sofort weg. Blockt Safari Autoplay →
-  // Poster bleibt (sauber, ohne Button), bis die erste Interaktion play() auslöst.
-  const reveal = () => {
-    video.classList.add('is-ready');
-    poster?.classList.add('is-hidden');
-  };
+  const onInteract = () => start();
+  events.forEach((evt) => window.addEventListener(evt, onInteract, { passive: true }));
 
-  video.addEventListener('playing', reveal);
-  // Falls das Video bereits läuft, bevor der Listener dranhing (Autoplay greift
-  // sofort): laufendes Playback nachträglich aufdecken.
-  video.addEventListener('timeupdate', () => {
-    if (!video.paused && video.currentTime > 0) reveal();
+  // Sobald das Video läuft, die Interaktions-Listener abräumen.
+  video.addEventListener(
+    'playing',
+    () => events.forEach((evt) => window.removeEventListener(evt, onInteract)),
+    { once: true },
+  );
+
+  // Tab wieder aktiv → weiterspielen, sofern schon gestartet.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && attached) start();
   });
-  if (!video.paused && video.currentTime > 0) reveal();
-
-  if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-    tryPlay();
-  } else {
-    video.addEventListener('canplay', tryPlay, { once: true });
-    video.addEventListener('loadeddata', tryPlay, { once: true });
-  }
-
-  tryPlay();
 
   video.addEventListener(
     'error',
-    () => {
-      video.classList.remove('is-ready');
-      poster?.classList.remove('is-hidden');
-    },
+    () => poster?.classList.remove('is-hidden'),
     { once: true },
   );
 }
