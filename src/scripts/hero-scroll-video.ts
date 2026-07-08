@@ -10,29 +10,44 @@ export function initHeroScrollVideo(): void {
   if (mobileMq.matches || motionMq.matches) return;
 
   const tryPlay = () => {
+    video.muted = true;
     const p = video.play();
     if (p && typeof p.catch === 'function') p.catch(() => {});
   };
 
-  const showVideo = () => {
+  // Das Video erst SICHTBAR machen, wenn es WIRKLICH spielt — nicht schon bei
+  // „canplay". Bis dahin liegt das Poster (ein Bild, kein Play-Button) darüber.
+  // Damit sieht man nie Safaris nativen Play-Button eines pausierten Videos:
+  // Startet Autoplay → Poster blendet sofort weg. Blockt Safari Autoplay →
+  // Poster bleibt (sauber, ohne Button), bis die erste Interaktion play() auslöst.
+  const reveal = () => {
     video.classList.add('is-ready');
     poster?.classList.add('is-hidden');
-    // Safari startet muted-Videos nicht immer allein über das autoplay-Attribut —
-    // explizit anstoßen, sobald genug Daten da sind.
-    tryPlay();
   };
 
+  video.addEventListener('playing', reveal);
+  // Falls das Video bereits läuft, bevor der Listener dranhing (Autoplay greift
+  // sofort): laufendes Playback nachträglich aufdecken.
+  video.addEventListener('timeupdate', () => {
+    if (!video.paused && video.currentTime > 0) reveal();
+  });
+  if (!video.paused && video.currentTime > 0) reveal();
+
   if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-    showVideo();
+    tryPlay();
   } else {
-    video.addEventListener('canplay', showVideo, { once: true });
+    video.addEventListener('canplay', tryPlay, { once: true });
     video.addEventListener('loadeddata', tryPlay, { once: true });
   }
 
   tryPlay();
 
-  video.addEventListener('error', () => {
-    video.classList.remove('is-ready');
-    poster?.classList.remove('is-hidden');
-  }, { once: true });
+  video.addEventListener(
+    'error',
+    () => {
+      video.classList.remove('is-ready');
+      poster?.classList.remove('is-hidden');
+    },
+    { once: true },
+  );
 }

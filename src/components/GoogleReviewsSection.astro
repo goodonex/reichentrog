@@ -171,29 +171,11 @@ const initials = (name: string) =>
   .reviews-marquee__track {
     display: flex;
     width: max-content;
-    /* Deklarative CSS-Animation läuft endlos und browsergesteuert — kann nicht
-       „nach einem Durchlauf einfrieren". Zwei identische Sets + Sprung um genau
-       eine Set-Breite ergeben eine nahtlose Endlosschleife.
-       WICHTIG: Verschiebung als PIXEL-Wert (per JS gesetzt), nicht als %-Wert —
-       Safari verrechnet Prozent-Transforms auf max-content-Breite falsch, was zum
-       „einmal durchlaufen, dann leer" führte. Fallback 50% bis JS gemessen hat.
-       Kein will-change: verursacht in Safari bei langen Animationen Compositing-
-       Aussetzer. */
-    animation: reviews-marquee-scroll var(--marquee-duration, 100s) linear infinite;
-  }
-
-  /* Bei Hover über den Streifen pausieren — nichts verschwindet, nur angehalten. */
-  .reviews-marquee:hover .reviews-marquee__track {
-    animation-play-state: paused;
-  }
-
-  @keyframes reviews-marquee-scroll {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0);
-    }
+    /* Die Endlos-Bewegung treibt die Web Animations API (JS) mit einer exakten
+       Pixel-Distanz (= genau eine Kartenreihe). Das ist Safari-sicher: keine
+       %-Transforms auf max-content (die Safari falsch verrechnet) und keine
+       CSS-Variablen in laufenden Keyframes (die Safari nicht neu einliest) —
+       beides hatte zur „Lücke" bzw. zum Stehenbleiben geführt. */
   }
 
   .reviews-card {
@@ -251,37 +233,61 @@ const initials = (name: string) =>
 </style>
 
 <script>
-  // Verschiebungs-Distanz pixelgenau setzen = exakt eine Set-Breite. Safari
-  // verrechnet %-Transforms auf max-content falsch; ein Pixelwert ist stabil.
-  function initReviewsDistance() {
+  // Endlos-Marquee über die Web Animations API: exakte Pixel-Distanz (= genau
+  // eine Kartenreihe) direkt in die Animation gebacken. Browsergesteuert wie eine
+  // CSS-Animation (kann nicht „einfrieren" wie eine rAF-Schleife), aber ohne die
+  // Safari-Fallstricke von %-Transforms und CSS-Variablen in Keyframes.
+  const PX_PER_SECOND = 22; // ruhiges, gleichmäßiges Tempo unabhängig von der Breite
+
+  function initReviewsMarquee() {
     document.querySelectorAll<HTMLElement>('.reviews-marquee').forEach((marquee) => {
       const track = marquee.querySelector<HTMLElement>('.reviews-marquee__track');
       const set = track?.querySelector<HTMLElement>('.reviews-marquee__set');
       if (!track || !set) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (typeof track.animate !== 'function') return;
 
-      const apply = () => {
-        const w = set.scrollWidth;
-        if (w > 0) track.style.setProperty('--marquee-distance', `${w}px`);
+      let animation: Animation | null = null;
+      let lastWidth = 0;
+
+      const build = () => {
+        const width = set.scrollWidth;
+        if (width <= 0 || width === lastWidth) return;
+        lastWidth = width;
+        if (animation) animation.cancel();
+        animation = track.animate(
+          [
+            { transform: 'translate3d(0, 0, 0)' },
+            { transform: `translate3d(${-width}px, 0, 0)` },
+          ],
+          { duration: (width / PX_PER_SECOND) * 1000, iterations: Infinity, easing: 'linear' },
+        );
       };
 
-      apply();
-      // Nach Layout, Bildladen, Fonts und bei Resize nachmessen.
-      requestAnimationFrame(apply);
+      build();
+      requestAnimationFrame(build);
       set.querySelectorAll('img').forEach((img) => {
-        if (!img.complete) img.addEventListener('load', apply, { once: true });
+        if (!img.complete) img.addEventListener('load', build, { once: true });
       });
       if (typeof ResizeObserver !== 'undefined') {
-        new ResizeObserver(apply).observe(set);
+        new ResizeObserver(build).observe(set);
       } else {
-        window.addEventListener('resize', apply);
+        window.addEventListener('resize', build);
       }
-      if (document.fonts?.ready) document.fonts.ready.then(apply).catch(() => {});
+      if (document.fonts?.ready) document.fonts.ready.then(build).catch(() => {});
+
+      // Bei Hover pausieren, sonst weiter — nichts verschwindet.
+      marquee.addEventListener('mouseenter', () => animation?.pause());
+      marquee.addEventListener('mouseleave', () => animation?.play());
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) animation?.play();
+      });
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initReviewsDistance);
+    document.addEventListener('DOMContentLoaded', initReviewsMarquee);
   } else {
-    initReviewsDistance();
+    initReviewsMarquee();
   }
 </script>
