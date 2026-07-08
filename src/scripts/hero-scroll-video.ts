@@ -9,16 +9,27 @@ export function initHeroScrollVideo(): void {
 
   if (mobileMq.matches || motionMq.matches) return;
 
+  const tryPlay = () => {
+    const p = video.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  };
+
   const showVideo = () => {
     video.classList.add('is-ready');
     poster?.classList.add('is-hidden');
+    // Safari startet muted-Videos nicht immer allein über das autoplay-Attribut —
+    // explizit anstoßen, sobald genug Daten da sind.
+    tryPlay();
   };
 
   if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
     showVideo();
   } else {
     video.addEventListener('canplay', showVideo, { once: true });
+    video.addEventListener('loadeddata', tryPlay, { once: true });
   }
+
+  tryPlay();
 
   video.addEventListener('error', () => {
     video.classList.remove('is-ready');
