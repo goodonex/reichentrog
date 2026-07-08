@@ -10,7 +10,6 @@ import {
   initScrollProgress,
 } from './ui-enhancements';
 import { initReviewsExpand } from './reviews-expand';
-import { initReviewsMarquee } from './reviews-marquee';
 import { initProcessStepper } from './process-stepper';
 import { prefersReducedMotion } from './motion';
 
@@ -234,7 +233,6 @@ function boot(): void {
   initFloatingCta();
   initOffMarketReveal();
   initReviewsExpand();
-  initReviewsMarquee();
   initProcessStepper();
 }
 

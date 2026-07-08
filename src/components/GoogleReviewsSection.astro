@@ -60,12 +60,12 @@ const initials = (name: string) =>
         {
           [0, 1].map((setIndex) => (
             <div
-              class="reviews-marquee__set flex shrink-0 gap-6"
+              class="reviews-marquee__set flex shrink-0"
               aria-hidden={setIndex === 1 ? 'true' : undefined}
             >
               {displayReviews.map((review) => (
                 <GlassCard
-                  class="reviews-card shrink-0 border-steel-navy/10 bg-white/80 p-8"
+                  class="reviews-card mr-6 shrink-0 border-steel-navy/10 bg-white/80 p-8"
                   role="listitem"
                 >
                   <div class="flex items-center gap-3">
@@ -172,11 +172,15 @@ const initials = (name: string) =>
     display: flex;
     width: max-content;
     will-change: transform;
+    /* Deklarative CSS-Animation läuft endlos und browsergesteuert — kann nicht
+       „nach einem Durchlauf einfrieren". Zwei identische Sets + Sprung um -50%
+       (= exakt eine Set-Breite) ergeben eine nahtlose Endlosschleife. */
     animation: reviews-marquee-scroll 100s linear infinite;
   }
 
-  .reviews-marquee[data-marquee-ready='true'] .reviews-marquee__track {
-    animation: none;
+  /* Bei Hover über den Streifen pausieren — nichts verschwindet, nur angehalten. */
+  .reviews-marquee:hover .reviews-marquee__track {
+    animation-play-state: paused;
   }
 
   @keyframes reviews-marquee-scroll {
