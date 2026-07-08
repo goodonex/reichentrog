@@ -12,6 +12,10 @@ interface Props {
   videoMp4?: string;
   fallbackPoster: string;
   fallbackPosterWebp?: string;
+  fallbackPosterAvif?: string;
+  /** Anzeige-Dauer im Poster-Zustand (preload="none"). Wird beim ersten Play
+   *  aus den echten Metadaten überschrieben. Format m:ss. */
+  videoDuration?: string;
 }
 
 const {
@@ -25,6 +29,8 @@ const {
   videoMp4,
   fallbackPoster,
   fallbackPosterWebp,
+  fallbackPosterAvif,
+  videoDuration = '0:00',
 } = Astro.props;
 
 const hasVideo = Boolean(videoMp4);
@@ -41,6 +47,7 @@ const hasVideo = Boolean(videoMp4);
       hasVideo ? (
         <>
           <picture class="segment-hero__poster" aria-hidden="true">
+            {fallbackPosterAvif && <source srcset={fallbackPosterAvif} type="image/avif" />}
             {fallbackPosterWebp && <source srcset={fallbackPosterWebp} type="image/webp" />}
             <img
               src={fallbackPoster}
@@ -64,6 +71,7 @@ const hasVideo = Boolean(videoMp4);
         </>
       ) : (
         <picture aria-hidden="true">
+          {fallbackPosterAvif && <source srcset={fallbackPosterAvif} type="image/avif" />}
           {fallbackPosterWebp && <source srcset={fallbackPosterWebp} type="image/webp" />}
           <img
             src={fallbackPoster}
@@ -152,7 +160,7 @@ const hasVideo = Boolean(videoMp4);
             <span class="segment-hero__time" aria-live="off">
               <span data-video-time-current>0:00</span>
               <span aria-hidden="true"> / </span>
-              <span data-video-time-total>1:36</span>
+              <span data-video-time-total>{videoDuration}</span>
             </span>
           </div>
         </div>
@@ -163,7 +171,7 @@ const hasVideo = Boolean(videoMp4);
   <div
     class="relative z-[2] flex h-full flex-col justify-end bg-gradient-to-t from-steel-navy via-steel-navy/50 to-steel-navy/20 px-6 pb-36 pt-32 md:justify-center md:pb-40 md:pt-28"
   >
-    <div class="mx-auto w-full max-w-content">
+    <div class="mx-auto w-full max-w-content segment-hero__copy">
       <p class="mb-5 text-[11px] font-medium uppercase tracking-[0.32em] text-bernstein md:text-xs">
         {eyebrow}
       </p>
@@ -205,6 +213,16 @@ const hasVideo = Boolean(videoMp4);
     isolation: isolate;
   }
 
+  /* Lesbarkeit über hellen Video-/Poster-Stellen absichern (z. B. Fensterlicht,
+     Gesicht) — dezenter Schatten statt stärkerem Overlay, damit das Video klar bleibt. */
+  .segment-hero__copy h1 {
+    text-shadow: 0 2px 18px rgba(6, 10, 20, 0.5);
+  }
+
+  .segment-hero__copy p {
+    text-shadow: 0 1px 12px rgba(6, 10, 20, 0.45);
+  }
+
   .segment-hero__poster {
     position: absolute;
     inset: 0;
@@ -238,11 +256,38 @@ const hasVideo = Boolean(videoMp4);
     object-position: center;
   }
 
+  /* Cinematischer Links-Scrim: schützt die linksbündige Copy, lässt das Motiv
+     rechts (Sprecher/Raum) hell. Zusätzlich sanfte Abdunklung nach unten für die CTAs. */
   .segment-hero__overlay {
     position: absolute;
     inset: 0;
-    background: rgba(10, 15, 28, 0.52);
+    /* Muss über Poster (z-index:1) UND Video (z-index:0) liegen, sonst wirkt der
+       Scrim im Poster-Zustand nicht (Poster würde ihn sonst überdecken). */
+    z-index: 2;
+    background:
+      linear-gradient(
+        to right,
+        rgba(10, 15, 28, 0.78) 0%,
+        rgba(10, 15, 28, 0.6) 38%,
+        rgba(10, 15, 28, 0.32) 68%,
+        rgba(10, 15, 28, 0.32) 100%
+      ),
+      linear-gradient(to top, rgba(10, 15, 28, 0.55) 0%, transparent 45%);
     pointer-events: none;
+  }
+
+  /* Mobil steht die Copy vollbreit über dem mittigen Motiv — dort greift ein
+     Links-Scrim nicht. Gleichmäßig kräftigere Abdunklung für sichere Lesbarkeit. */
+  @media (max-width: 767px) {
+    .segment-hero__overlay {
+      background:
+        linear-gradient(
+          to top,
+          rgba(8, 12, 24, 0.88) 0%,
+          rgba(8, 12, 24, 0.72) 45%,
+          rgba(8, 12, 24, 0.66) 100%
+        );
+    }
   }
 
   .segment-hero__start,

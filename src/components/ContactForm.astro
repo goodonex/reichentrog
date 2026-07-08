@@ -152,12 +152,14 @@ const presetType =
             id={`kontakt-${formName}`}
             type="text"
             required
-            autocomplete="email"
+            autocomplete="on"
+            inputmode="text"
             class="conversation-form__input"
             data-contact-info
           />
         </div>
       </div>
+      <p class="conversation-form__error mt-4" role="alert" data-form-error hidden></p>
       <button type="submit" class="conversation-form__submit mt-8">{submitLabel}</button>
       <button type="button" class="conversation-form__back mt-4" data-prev-step>← Zurück</button>
     </div>
@@ -268,6 +270,18 @@ const presetType =
 
   .conversation-form__dot.is-active {
     background: #1c2b4a;
+  }
+
+  .conversation-form__error {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #9a3412;
+  }
+
+  .conversation-form__input.has-error {
+    border-color: #9a3412;
+    box-shadow: 0 0 0 2px rgba(154, 52, 18, 0.12);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -389,11 +403,32 @@ const presetType =
         });
       });
 
+      const errorEl = form.querySelector<HTMLElement>('[data-form-error]');
+      const nameInputEl = form.querySelector<HTMLInputElement>('[data-contact-name]');
+      const kontaktInputEl = form.querySelector<HTMLInputElement>('[data-contact-info]');
+
+      const showError = (msg: string) => {
+        if (errorEl) {
+          errorEl.textContent = msg;
+          errorEl.hidden = false;
+        }
+      };
+      const clearError = () => {
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.hidden = true;
+        }
+        nameInputEl?.classList.remove('has-error');
+        kontaktInputEl?.classList.remove('has-error');
+        nameInputEl?.removeAttribute('aria-invalid');
+        kontaktInputEl?.removeAttribute('aria-invalid');
+      };
+      nameInputEl?.addEventListener('input', clearError);
+      kontaktInputEl?.addEventListener('input', clearError);
+
       form.addEventListener('submit', (e) => {
-        const nameInput = form.querySelector<HTMLInputElement>('[data-contact-name]');
-        const kontaktInput = form.querySelector<HTMLInputElement>('[data-contact-info]');
-        const name = nameInput?.value.trim() || '';
-        const kontakt = kontaktInput?.value.trim() || '';
+        const name = nameInputEl?.value.trim() || '';
+        const kontakt = kontaktInputEl?.value.trim() || '';
 
         const payload = { typ: type, detail, name, kontakt, objekt: objektRef || undefined };
         payloadField.value = JSON.stringify(payload);
@@ -405,8 +440,41 @@ const presetType =
         const objektLine = objektRef ? `Objekt: ${objektRef}\n` : '';
         nachrichtField.value = `${objektLine}Typ: ${type}\nDetail: ${detail}`;
 
-        if (!type || !detail || !name || !kontakt) {
+        // Anliegen unvollständig → zurück zum ersten offenen Schritt statt stumm abbrechen.
+        if (!type || !detail) {
           e.preventDefault();
+          clearError();
+          showStep(!type ? 1 : 2);
+          showError('Bitte wählen Sie zunächst Ihr Anliegen aus.');
+          return;
+        }
+
+        clearError();
+        let firstInvalid: HTMLInputElement | null = null;
+        if (!name) {
+          nameInputEl?.classList.add('has-error');
+          nameInputEl?.setAttribute('aria-invalid', 'true');
+          firstInvalid = firstInvalid || nameInputEl || null;
+        }
+        // Kontakt muss wie eine E-Mail ODER eine Telefonnummer aussehen.
+        const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(kontakt);
+        const looksLikePhone = /^[+()/\d][\d\s()/.-]{4,}$/.test(kontakt);
+        if (!kontakt || (!looksLikeEmail && !looksLikePhone)) {
+          kontaktInputEl?.classList.add('has-error');
+          kontaktInputEl?.setAttribute('aria-invalid', 'true');
+          firstInvalid = firstInvalid || kontaktInputEl || null;
+        }
+
+        if (firstInvalid) {
+          e.preventDefault();
+          showError(
+            !name && !kontakt
+              ? 'Bitte Name und eine Telefonnummer oder E-Mail angeben.'
+              : !name
+                ? 'Bitte geben Sie Ihren Namen an.'
+                : 'Bitte eine gültige Telefonnummer oder E-Mail-Adresse angeben.',
+          );
+          firstInvalid.focus();
         }
       });
 

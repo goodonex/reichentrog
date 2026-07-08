@@ -4,18 +4,60 @@ import CookieBanner from '../components/CookieBanner.astro';
 import PageLoader from '../components/PageLoader.astro';
 import CustomCursor from '../components/CustomCursor.astro';
 import FloatingCta from '../components/FloatingCta.astro';
-import { siteName, siteTagline } from '../content/site';
+import { siteName, siteTagline, phoneHref, emailDisplay } from '../content/site';
+
+interface FaqItem {
+  q: string;
+  a: string;
+}
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  /** Optionale FAQ-Items → rendert zusätzlich FAQPage-Schema (z. B. Startseite). */
+  faq?: FaqItem[];
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, faq } = Astro.props;
 const siteUrl = Astro.site ?? new URL('http://localhost:5175');
 const canonical = new URL(Astro.url.pathname, siteUrl);
 const ogImage = new URL('/images/hero/hero-poster.jpg', siteUrl).toString();
+
+const telephone = phoneHref.replace('tel:', '');
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'RealEstateAgent',
+  name: siteName,
+  description: siteTagline,
+  url: siteUrl.toString(),
+  logo: new URL('/icon-512.png', siteUrl).toString(),
+  image: ogImage,
+  telephone,
+  email: emailDisplay,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Karnapp 25',
+    postalCode: '21079',
+    addressLocality: 'Hamburg',
+    addressCountry: 'DE',
+  },
+  areaServed: 'Hamburg',
+};
+
+const faqSchema = faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    }
+  : null;
+
 ---
 
 <!doctype html>
@@ -42,18 +84,8 @@ const ogImage = new URL('/images/hero/hero-poster.jpg', siteUrl).toString();
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#2A2D52" />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'RealEstateAgent',
-      name: siteName,
-      description: siteTagline,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Hamburg',
-        addressCountry: 'DE',
-      },
-      areaServed: 'Hamburg',
-    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   </head>
   <body class="min-h-screen">
     <PageLoader />

@@ -21,9 +21,36 @@ import GoogleReviewsSection from '../components/GoogleReviewsSection.astro';
 const title = 'Reichentrog & Kollegen | Immobilien-Kanzlei Hamburg · Off-Market';
 const description =
   'Reichentrog & Kollegen — Hanseatisch diskrete Immobilienvermittlung mit Banken-Hintergrund. Für Eigentümer, Investoren und institutionelle Mandanten in Hamburg und ganz Deutschland.';
+
+const faqItems = [
+  {
+    q: 'Was verstehen Sie unter Diskretion?',
+    a: 'Wir bewerben Ihre Immobilie nicht unnötig öffentlich auf Portalen, sondern sprechen gezielt qualifizierte Nachfrager in unserem Netzwerk an. Ihr Auftrag bleibt vertraulich.',
+  },
+  {
+    q: 'Benötige ich einen Alleinauftrag?',
+    a: 'Nein zwingend. Wir stimmen das Mandat mit Ihnen individuell ab — von exklusiv bis begleitend, transparent und ohne Druck.',
+  },
+  {
+    q: 'Entspricht Ihre Bewertung einem Gutachten?',
+    a: 'Unsere Einordnungen sind fundiert und DEKRA-zertifiziert. Für Rechtsfälle erstellen wir auf Wunsch Verkehrswertgutachten nach ImmoWertV.',
+  },
+  {
+    q: 'Unterstützen Sie bei Bankgesprächen?',
+    a: 'Ja — mit langjähriger Sparkassen-Erfahrung begleiten wir Finanzierungs- und Konditionsgespräche sowie Förderwege.',
+  },
+  {
+    q: 'Wie erfolgt die Honorierung nach Maklerrecht 2020?',
+    a: 'Wir arbeiten nach aktuellem Recht. Die Provision wird vorab transparent vereinbart — abhängig von Auftrag und Leistungsbild.',
+  },
+  {
+    q: 'In welchen Regionen sind Sie tätig?',
+    a: 'Schwerpunkt Hamburg und Umgebung — Elbvororte, Alstertal, Harvestehude, Eppendorf. Für Geschäftskunden und institutionelle Mandate sind wir deutschlandweit aktiv.',
+  },
+];
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} faq={faqItems}>
   <Nav />
 
   <main id="main">
@@ -172,32 +199,7 @@ const description =
           <SectionHeader eyebrow="FAQ" title="Häufig gestellte Fragen" align="center" class="mx-auto" />
           <div class="mx-auto mt-12 max-w-3xl">
             {
-              [
-                {
-                  q: 'Was verstehen Sie unter Diskretion?',
-                  a: 'Wir bewerben Ihre Immobilie nicht unnötig öffentlich auf Portalen, sondern sprechen gezielt qualifizierte Nachfrager in unserem Netzwerk an. Ihr Auftrag bleibt vertraulich.',
-                },
-                {
-                  q: 'Benötige ich einen Alleinauftrag?',
-                  a: 'Nein zwingend. Wir stimmen das Mandat mit Ihnen individuell ab — von exklusiv bis begleitend, transparent und ohne Druck.',
-                },
-                {
-                  q: 'Entspricht Ihre Bewertung einem Gutachten?',
-                  a: 'Unsere Einordnungen sind fundiert und DEKRA-zertifiziert. Für Rechtsfälle erstellen wir auf Wunsch Verkehrswertgutachten nach ImmoWertV.',
-                },
-                {
-                  q: 'Unterstützen Sie bei Bankgesprächen?',
-                  a: 'Ja — mit langjähriger Sparkassen-Erfahrung begleiten wir Finanzierungs- und Konditionsgespräche sowie Förderwege.',
-                },
-                {
-                  q: 'Wie erfolgt die Honorierung nach Maklerrecht 2020?',
-                  a: 'Wir arbeiten nach aktuellem Recht. Die Provision wird vorab transparent vereinbart — abhängig von Auftrag und Leistungsbild.',
-                },
-                {
-                  q: 'In welchen Regionen sind Sie tätig?',
-                  a: 'Schwerpunkt Hamburg und Umgebung — Elbvororte, Alstertal, Harvestehude, Eppendorf. Für Geschäftskunden und institutionelle Mandate sind wir deutschlandweit aktiv.',
-                },
-              ].map((item) => (
+              faqItems.map((item) => (
                 <details class="group border-b border-steel-blue/12 py-1">
                   <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-lg text-steel-navy transition hover:text-steel-blue">
                     <span>{item.q}</span>

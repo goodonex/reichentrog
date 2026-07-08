@@ -18,8 +18,9 @@ const segmentLinks = [
   { href: '/geschaeftskunden/', label: 'Geschäftskunden' },
 ];
 
+// Hinweis: „Objekte" (Referenzen) ist bewusst nicht verlinkt, solange keine echten,
+// aktuell verfügbaren Objekte vorliegen — die Seite ist noindex.
 const links = [
-  { href: '/objekte/', label: 'Objekte' },
   { href: '/objekt-anbieten/', label: 'Objekt anbieten', highlight: true },
   { href: '/kontakt/', label: 'Kontakt' },
 ];
@@ -79,7 +80,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
             <a
               href={href}
               class:list={[
-                'nav-link nav-segment-link relative flex-1 whitespace-nowrap rounded-full px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 md:flex-initial md:px-3.5 md:text-[11px]',
+                'nav-link nav-segment-link relative flex-1 whitespace-nowrap rounded-full px-3.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 md:flex-initial',
                 currentPath === href.replace(/\/$/, '') && 'is-active',
               ]}
             >
@@ -93,14 +94,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
           highlight ? (
             <a
               href={href}
-              class="nav-highlight mt-1 rounded-full bg-steel-navy px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.1em] text-off-white transition hover:bg-steel-blue md:mt-0"
+              class="nav-highlight mt-1 rounded-full bg-steel-navy px-3.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.1em] text-off-white transition hover:bg-steel-blue md:mt-0"
             >
               {label}
             </a>
           ) : (
             <a
               href={href}
-              class="nav-link group relative whitespace-nowrap rounded-full px-2 py-1.5 text-[9px] font-medium uppercase tracking-[0.08em] text-steel-blue transition-colors duration-300 hover:text-steel-navy sm:px-2.5 sm:text-[10px] sm:tracking-[0.1em]"
+              class="nav-link group relative whitespace-nowrap rounded-full px-3 py-2 text-[11px] font-medium uppercase tracking-[0.1em] text-steel-blue transition-colors duration-300 hover:text-steel-navy sm:px-3.5"
             >
               <span class="absolute inset-0 -z-10 scale-95 rounded-full bg-white/0 opacity-0 transition-all group-hover:scale-100 group-hover:bg-white/35 group-hover:opacity-100" />
               {label}
