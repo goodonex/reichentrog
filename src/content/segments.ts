@@ -22,7 +22,7 @@ export const privatkundenUsps = [
   },
   {
     title: 'Kein Alleinauftrag',
-    text: 'Sie müssen sich nicht binden, um professionell betreut zu werden. Wir stimmen das Mandat mit Ihnen individuell ab — und haben trotzdem die höchste Abschlussquote im Privatkundenbereich, die wir kennen.',
+    text: 'Sie müssen sich nicht binden, um professionell betreut zu werden. Wir stimmen das Mandat mit Ihnen individuell ab — und überzeugen die meisten Eigentümer schon im ersten Gespräch.',
   },
   {
     title: 'Bewertung auf Bankenniveau',
