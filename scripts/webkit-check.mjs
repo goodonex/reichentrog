@@ -27,20 +27,33 @@ console.log(`\n=== ${ENGINE_NAME} ${browser.version()} gegen ${BASE} ===\n`);
 await page.goto(BASE + '/', { waitUntil: 'load' });
 await page.waitForTimeout(1500);
 
-/* ---------- HERO: vor Interaktion ---------- */
+/* ---------- HERO: vor Interaktion (inkl. mousemove — darf KEINEN Button zeigen) ---------- */
+await page.mouse.move(700, 450);
+await page.mouse.move(720, 860); // Richtung Cookie-Button, wie ein echter Nutzer
+await page.waitForTimeout(600);
+
 const heroBefore = await page.evaluate(() => {
   const v = document.getElementById('hero-video');
   if (!v) return { missing: true };
   return {
     sourcesWithSrc: [...v.querySelectorAll('source')].filter((s) => s.getAttribute('src')).length,
-    currentSrc: v.currentSrc || '',
+    videoOpacity: getComputedStyle(v).opacity,
     paused: v.paused,
+    t: v.currentTime,
     posterVisible: !document.getElementById('hero-poster')?.classList.contains('is-hidden'),
   };
 });
+// Zwei gültige button-freie Zustände: (a) Video transparent & Poster liegt drüber
+// (Autoplay blockiert → Button unsichtbar, weil Element opacity 0), oder
+// (b) Autoplay hat schon gegriffen → Video SPIELT (spielendes Video hat keinen Button).
+// Verboten ist nur: sichtbares, PAUSIERTES Video (= Safari-Button sichtbar).
+const buttonFree =
+  !heroBefore.missing &&
+  ((Number(heroBefore.videoOpacity) < 0.05 && heroBefore.posterVisible) ||
+    (!heroBefore.paused && heroBefore.t > 0));
 ok(
-  'Hero vor Interaktion: keine Videoquelle (→ kein nativer Play-Button möglich)',
-  !heroBefore.missing && heroBefore.sourcesWithSrc === 0 && !heroBefore.currentSrc,
+  'Hero nach mousemove, vor Klick: kein sichtbarer pausierter Zustand (→ kein Button)',
+  buttonFree,
   JSON.stringify(heroBefore),
 );
 await page.screenshot({ path: `${SHOT_DIR}/${ENGINE_NAME}-hero-before.png` });
@@ -48,25 +61,49 @@ await page.screenshot({ path: `${SHOT_DIR}/${ENGINE_NAME}-hero-before.png` });
 /* ---------- HERO: echter Klick auf Cookie-Button ---------- */
 const cookieBtn = page.locator('#cookie-necessary, #cookie-accept-all').first();
 await cookieBtn.click();
-await page.waitForTimeout(2500);
 
+// Weißblitz-Fenster: 200 ms nach Klick darf das Poster NICHT weg sein, solange
+// kein Frame präsentiert wurde (revealed erst per requestVideoFrameCallback).
+await page.waitForTimeout(200);
+const flashWindow = await page.evaluate(() => {
+  const v = document.getElementById('hero-video');
+  const posterHidden = document.getElementById('hero-poster')?.classList.contains('is-hidden');
+  return { posterHidden: !!posterHidden, videoOpacity: getComputedStyle(v).opacity, t: v.currentTime };
+});
+await page.screenshot({ path: `${SHOT_DIR}/${ENGINE_NAME}-hero-flashwindow.png` });
+ok(
+  'Hero 200ms nach Klick: kein vorzeitiger Reveal ohne gerenderten Frame (kein Weißblitz)',
+  !flashWindow.posterHidden || flashWindow.t > 0,
+  JSON.stringify(flashWindow),
+);
+
+// Auf den Reveal warten (Poster weg) — dann muss das Video wirklich laufen.
+await page.waitForFunction(
+  () => document.getElementById('hero-poster')?.classList.contains('is-hidden'),
+  { timeout: 8000 },
+);
 const t1 = await page.evaluate(() => document.getElementById('hero-video')?.currentTime ?? -1);
-await page.waitForTimeout(2000);
+await page.waitForTimeout(1500);
 const heroAfter = await page.evaluate(() => {
   const v = document.getElementById('hero-video');
   return {
     currentSrc: (v.currentSrc || '').split('/').pop(),
     currentTime: v.currentTime,
     paused: v.paused,
-    posterHidden: document.getElementById('hero-poster')?.classList.contains('is-hidden'),
+    videoOpacity: getComputedStyle(v).opacity,
+    isReady: v.classList.contains('is-ready'),
   };
 });
 ok(
-  'Hero nach Cookie-Klick: Video spielt (currentTime steigt, nicht pausiert)',
-  heroAfter.currentTime > t1 && t1 >= 0 && !heroAfter.paused,
-  `t1=${t1.toFixed(2)} → t2=${heroAfter.currentTime.toFixed(2)}, paused=${heroAfter.paused}, src=${heroAfter.currentSrc}`,
+  'Hero nach Reveal: Video spielt (currentTime steigt, nicht pausiert)',
+  heroAfter.currentTime > t1 && t1 > 0 && !heroAfter.paused,
+  `t1=${t1.toFixed(2)} → t2=${heroAfter.currentTime.toFixed(2)}, paused=${heroAfter.paused}`,
 );
-ok('Hero nach Cookie-Klick: Poster ausgeblendet (Video sichtbar)', !!heroAfter.posterHidden);
+ok(
+  'Hero nach Reveal: Video sichtbar (opacity 1, is-ready)',
+  heroAfter.isReady && Number(heroAfter.videoOpacity) > 0.9,
+  `opacity=${heroAfter.videoOpacity}`,
+);
 await page.screenshot({ path: `${SHOT_DIR}/${ENGINE_NAME}-hero-after.png` });
 
 /* ---------- MARQUEE: Endlos-Loop ohne leere Fläche ---------- */

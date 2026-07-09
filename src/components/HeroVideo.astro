@@ -92,8 +92,16 @@ const {
     opacity: 0;
   }
 
+  /* Video transparent, bis der erste echte Frame gerendert wurde (is-ready).
+     opacity wirkt auf das GANZE Element inkl. Safaris UA-Play-Button — damit ist
+     der Button in jedem Zustand unsichtbar, und der Weißblitz beim Ladebeginn auch. */
   .hero-video {
     z-index: 1;
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+
+  .hero-video.is-ready {
     opacity: 1;
   }
 
