@@ -179,7 +179,15 @@ const initials = (name: string) =>
   }
 
   .reviews-card {
-    flex: 0 0 clamp(280px, 78vw, 360px);
+    /* WICHTIG: feste width + min/max statt nur flex-basis. WebKit/Safari ignoriert
+       die clamp()-flex-basis bei der intrinsischen Breitenberechnung des Sets
+       (max-content) und misst stattdessen die ungebrochene Textbreite → Set wurde
+       ~9250px statt ~1900px breit, 80% davon Leerfläche → „Marquee läuft durch,
+       dann minutenlang leer". Mit definiter width summiert WebKit korrekt. */
+    flex: 0 0 auto;
+    width: clamp(280px, 78vw, 360px);
+    min-width: 280px;
+    max-width: 360px;
     height: 200px;
     max-height: 200px;
     overflow: hidden;
@@ -208,7 +216,11 @@ const initials = (name: string) =>
 
   @media (min-width: 768px) {
     .reviews-card {
-      flex: 0 0 clamp(300px, calc((min(72rem, 100vw - 3rem) - 3rem) / 3), 380px);
+      /* Gleiche WebKit-Absicherung wie oben: definite width statt clamp()-flex-basis. */
+      flex: 0 0 auto;
+      width: clamp(300px, calc((min(72rem, 100vw - 3rem) - 3rem) / 3), 380px);
+      min-width: 300px;
+      max-width: 380px;
     }
   }
 

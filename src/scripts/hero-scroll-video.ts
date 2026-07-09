@@ -22,17 +22,26 @@ export function initHeroScrollVideo(): void {
   const events = ['pointerdown', 'touchstart', 'keydown', 'scroll', 'mousemove', 'click'];
   let attached = false;
 
+  const tryPlay = () => {
+    video.muted = true;
+    const p = video.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  };
+
   const start = () => {
     if (!attached) {
       attached = true;
       video.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => {
         if (s.dataset.src && !s.getAttribute('src')) s.src = s.dataset.src;
       });
+      // Nach dem Anhängen NICHT sofort play() (würde vom load() abgebrochen und
+      // verbrennt die User-Geste) — das autoplay-Attribut startet die Wiedergabe
+      // selbst, sobald genug Daten da sind; canplay-play() als Absicherung.
+      video.addEventListener('canplay', tryPlay, { once: true });
       video.load();
+      return;
     }
-    video.muted = true;
-    const p = video.play();
-    if (p && typeof p.catch === 'function') p.catch(() => {});
+    tryPlay();
   };
 
   const onInteract = () => start();

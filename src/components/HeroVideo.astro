@@ -37,9 +37,13 @@ const {
     />
   </picture>
 
+  {/* autoplay ist ohne angehängte Quelle wirkungslos (kein Play-Button möglich) —
+      sobald das Script die Quellen bei der ersten Interaktion anhängt, startet der
+      Browser die Wiedergabe selbst, ohne auf eine weitere Geste angewiesen zu sein. */}
   <video
     id="hero-video"
     class="hero-video"
+    autoplay
     loop
     muted
     playsinline
