@@ -27,6 +27,30 @@ console.log(`\n=== ${ENGINE_NAME} ${browser.version()} gegen ${BASE} ===\n`);
 await page.goto(BASE + '/', { waitUntil: 'load' });
 await page.waitForTimeout(1500);
 
+/* ---------- HERO: lädt sofort (ohne Interaktion) — Start bei Klick dann instant.
+   Autoplay ohne Geste ist Browser-Policy: Chromium spielt sofort, WebKit/Safari
+   erst bei der ersten Geste. Beides gilt als bestanden; entscheidend ist, dass
+   der Download OHNE Interaktion startet (readyState ≥ 3 in ≤4s). ---------- */
+let autostart = { playing: false, t: 0, readyState: 0, posterHidden: false };
+for (let i = 0; i < 16; i++) {
+  autostart = await page.evaluate(() => {
+    const v = document.getElementById('hero-video');
+    return {
+      playing: !!v && !v.paused && v.currentTime > 0,
+      t: v?.currentTime ?? 0,
+      readyState: v?.readyState ?? 0,
+      posterHidden: !!document.getElementById('hero-poster')?.classList.contains('is-hidden'),
+    };
+  });
+  if (autostart.playing || autostart.readyState >= 3) break;
+  await page.waitForTimeout(250);
+}
+ok(
+  'Hero lädt ohne Interaktion vor (spielt sofort ODER ist abspielbereit gepuffert)',
+  autostart.playing || autostart.readyState >= 3,
+  `playing=${autostart.playing}, readyState=${autostart.readyState}, t=${autostart.t.toFixed(2)}`,
+);
+
 /* ---------- HERO: vor Interaktion (inkl. mousemove — darf KEINEN Button zeigen) ---------- */
 await page.mouse.move(700, 450);
 await page.mouse.move(720, 860); // Richtung Cookie-Button, wie ein echter Nutzer

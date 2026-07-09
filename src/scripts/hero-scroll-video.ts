@@ -66,24 +66,24 @@ export function initHeroScrollVideo(): void {
     video.load();
   };
 
-  /* Passive Signale (mousemove/scroll): nur laden — autoplay-Attribut startet
-     selbst, sobald es darf. Echte Gesten: zusätzlich play() in der Geste. */
-  const passiveEvents = ['mousemove', 'scroll'];
+  /* Quellen SOFORT anhängen: Download startet mit dem Seitenaufbau, das
+     autoplay-Attribut startet die Wiedergabe, sobald genug Daten da sind →
+     Video läuft direkt beim Betreten der Seite. Der Play-Button-Schutz liegt
+     komplett bei der Opacity-Gate (Video transparent, bis ein Frame einer
+     LAUFENDEN Wiedergabe gerendert ist) — Lazy-Anhängen ist dafür nicht mehr
+     nötig und hat den Start nur verzögert. */
+  attachSources();
+
+  /* Fallback für Browser, die muted-Autoplay blockieren: bei der ersten echten
+     Geste (z. B. Cookie-Klick) play() direkt in der Geste. */
   const gestureEvents = ['pointerdown', 'touchstart', 'keydown', 'click'];
+  const onGesture = () => tryPlay();
 
-  const onPassive = () => attachSources();
-  const onGesture = () => {
-    attachSources();
-    tryPlay();
-  };
-
-  passiveEvents.forEach((e) => window.addEventListener(e, onPassive, { passive: true }));
   gestureEvents.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
 
   video.addEventListener(
     'playing',
     () => {
-      passiveEvents.forEach((e) => window.removeEventListener(e, onPassive));
       gestureEvents.forEach((e) => window.removeEventListener(e, onGesture));
     },
     { once: true },
