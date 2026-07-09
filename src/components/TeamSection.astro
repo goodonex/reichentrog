@@ -27,14 +27,25 @@ const team = [
     alt="Norbert Reichentrog und Oliver Alberich — Partner bei Reichentrog & Kollegen"
     width="1024"
     height="346"
-    class="team-section__photo absolute inset-0 min-h-full min-w-full object-cover object-[center_20%]"
+    class="team-section__photo absolute inset-0 hidden min-h-full min-w-full object-cover object-[center_20%] md:block"
     loading="lazy"
     decoding="async"
   />
   <div class="team-section__overlay absolute inset-0" aria-hidden="true"></div>
 
   <RevealSection class="relative z-[3] w-full">
-    <div class="mx-auto max-w-content px-6 pb-20 text-center">
+    <div class="mx-auto max-w-content px-6 pb-20 pt-20 text-center md:pt-0">
+      {/* Mobil: Gruppenfoto als eigenes Band oben — im Hochformat-Vollbild würde
+          object-cover die beiden auf einen zusammenschneiden. */}
+      <img
+        src={teamPhoto}
+        alt="Norbert Reichentrog und Oliver Alberich — Partner bei Reichentrog & Kollegen"
+        width="1024"
+        height="346"
+        class="team-section__photo-mobile mx-auto mb-10 block aspect-[1024/346] w-full rounded-2xl object-cover object-[center_30%] md:hidden"
+        loading="lazy"
+        decoding="async"
+      />
       <p class="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f5f0e8]/60">
         Team
       </p>
@@ -138,6 +149,22 @@ const team = [
     border: 1px solid rgba(245, 240, 232, 0.08);
     border-radius: 8px;
     padding: 20px 24px;
+  }
+
+  /* Mobil: kein Vollflächen-Foto (Querformat → nur einer sichtbar), stattdessen
+     Bild-Band oben + dunkler Grund für den Text. Inhalt fließt von oben statt
+     unten (justify-end ist nur fürs Desktop-Vollbild sinnvoll). */
+  .team-section__photo-mobile {
+    filter: saturate(0.82) brightness(0.92);
+    border: 1px solid rgba(245, 240, 232, 0.1);
+  }
+
+  @media (max-width: 767px) {
+    .team-section {
+      min-height: 0;
+      justify-content: flex-start;
+      background-color: #0b1220;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
