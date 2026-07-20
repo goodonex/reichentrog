@@ -1,6 +1,5 @@
 ---
 import RevealSection from './RevealSection.astro';
-import SectionVideoBg from './SectionVideoBg.astro';
 
 const partners = [
   'Privatbanken',
@@ -12,20 +11,15 @@ const partners = [
 ---
 
 <div class="banken-hintergrund section-photo-fades relative min-h-[520px] w-full">
-  <!--
-    HIGGSFIELD PROMPT (BankenHintergrund-Background):
-    Side-angle close-up of two hands on a dark desk — documents, fountain pen, cufflinks, warm
-    tungsten lamp, shallow depth of field. Discreet private-banking atmosphere, muted desaturated
-    tones, no faces, no generic front-facing handshake. Alternative: overhead view of consultation
-    at table, focus on hands and papers only. Dark, warm, cinematic stillness with minimal movement.
-    Seamless 15–20s loop.
-  -->
-  <SectionVideoBg
-    posterSrc="/images/sections/banken-poster.jpg"
-    videoMp4="/videos/banken-loop.mp4"
-    videoWebm="/videos/banken-loop.webm"
-    fallbackClass="banken-hintergrund__bg"
-  />
+  <div class="absolute inset-0 z-0 banken-hintergrund__bg">
+    <img
+      src="/images/sections/banken-poster.jpg"
+      alt=""
+      class="h-full w-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
   <div class="grain-overlay" aria-hidden="true"></div>
   <div class="editorial-dark-overlay absolute inset-0" aria-hidden="true"></div>
 

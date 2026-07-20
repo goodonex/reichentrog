@@ -1,9 +1,7 @@
 import { initHeroCanvas } from './hero-canvas';
-import { initCustomCursor } from './custom-cursor';
 import { initSegmentHeroVideos } from './segment-hero-video';
 import { initHeroReveal } from './hero-reveal';
 import { initHeroScrollVideo } from './hero-scroll-video';
-import { initPageLoader } from './page-loader';
 import {
   initFloatingCta,
   initOffMarketReveal,
@@ -258,7 +256,6 @@ function initBgVideoPlayback(): void {
 }
 
 function boot(): void {
-  initPageLoader();
   initBgVideoPlayback();
   initHero();
   initHeroScrollVideo();
@@ -267,7 +264,6 @@ function boot(): void {
   initReveals();
   initCountups();
   initCookieBanner();
-  initCustomCursor();
   initSegmentHeroVideos();
   initHeroReveal();
   initScrollProgress();

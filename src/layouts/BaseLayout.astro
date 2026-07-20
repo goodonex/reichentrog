@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
 import CookieBanner from '../components/CookieBanner.astro';
-import PageLoader from '../components/PageLoader.astro';
-import CustomCursor from '../components/CustomCursor.astro';
 import FloatingCta from '../components/FloatingCta.astro';
 import { siteName, siteTagline, phoneHref, emailDisplay } from '../content/site';
 
@@ -88,7 +86,6 @@ const faqSchema = faq?.length
     {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   </head>
   <body class="min-h-screen">
-    <PageLoader />
     <div id="scroll-progress" aria-hidden="true"></div>
     <FloatingCta />
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded-md focus:bg-bernstein focus:px-4 focus:py-2 focus:text-steel-navy">
@@ -96,7 +93,6 @@ const faqSchema = faq?.length
     </a>
     <slot />
     <CookieBanner />
-    <CustomCursor />
     <script>
       import '../scripts/main.ts';
     </script>

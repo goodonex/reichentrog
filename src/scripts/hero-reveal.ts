@@ -1,4 +1,4 @@
-import { onLoaderDone, prefersReducedMotion } from './motion';
+import { prefersReducedMotion } from './motion';
 
 export function initHeroReveal(): void {
   const root = document.querySelector('[data-hero-reveal]');
@@ -31,5 +31,5 @@ export function initHeroReveal(): void {
     }, 450);
   };
 
-  onLoaderDone(run);
+  run();
 }

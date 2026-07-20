@@ -1,6 +1,5 @@
 ---
 import RevealSection from './RevealSection.astro';
-import SectionVideoBg from './SectionVideoBg.astro';
 
 const cards = [
   {
@@ -31,19 +30,15 @@ const cards = [
 ---
 
 <div class="warum-section section-photo-fades relative w-full py-24 md:py-32 lg:py-36">
-  <!--
-    HIGGSFIELD PROMPT (WarumSection-Background):
-    Slow Ken Burns push-in on Hamburg Altbau architectural detail — brick and stucco facade,
-    ornate window frame or stairwell fragment, overcast evening light, desaturated cool navy-grey
-    palette. No full building frontal, no people, quiet premium mood. Works as subtle loop or
-    slow zoom on still. Seamless 15–20s loop, cinematic real estate editorial.
-  -->
-  <SectionVideoBg
-    posterSrc="/images/sections/warum-poster.jpg"
-    videoMp4="/videos/warum-loop.mp4"
-    videoWebm="/videos/warum-loop.webm"
-    fallbackClass="warum-section__bg"
-  />
+  <div class="absolute inset-0 z-0 warum-section__bg">
+    <img
+      src="/images/sections/warum-poster.jpg"
+      alt=""
+      class="h-full w-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
   <div class="grain-overlay" aria-hidden="true"></div>
   <div class="editorial-dark-overlay warum-section__overlay absolute inset-0" aria-hidden="true"></div>
 
