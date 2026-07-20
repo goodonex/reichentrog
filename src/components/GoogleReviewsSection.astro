@@ -245,55 +245,58 @@ const initials = (name: string) =>
 </style>
 
 <script>
-  // Endlos-Marquee über die Web Animations API: exakte Pixel-Distanz (= genau
-  // eine Kartenreihe) direkt in die Animation gebacken. Browsergesteuert wie eine
-  // CSS-Animation (kann nicht „einfrieren" wie eine rAF-Schleife), aber ohne die
-  // Safari-Fallstricke von %-Transforms und CSS-Variablen in Keyframes.
-  const PX_PER_SECOND = 22; // ruhiges, gleichmäßiges Tempo unabhängig von der Breite
-
+  // Endlos-Marquee per DOM-Recycling (Muster aus CoLective, colective-website/index.html):
+  // NIE weit verschieben. Sobald die erste Karte links komplett draußen ist, wandert ihr
+  // DOM-Knoten ans Ende und der Versatz wird um ihre Breite reduziert. Transform bleibt
+  // dauerhaft klein, es gibt keinen Endzustand und keine Riesenfläche — endlos per
+  // Konstruktion, ohne die Safari-Fallstricke der früheren WAAPI-Variante (die die volle
+  // Set-Breite verschob).
   function initReviewsMarquee() {
     document.querySelectorAll<HTMLElement>('.reviews-marquee').forEach((marquee) => {
       const track = marquee.querySelector<HTMLElement>('.reviews-marquee__track');
-      const set = track?.querySelector<HTMLElement>('.reviews-marquee__set');
-      if (!track || !set) return;
+      if (!track) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (typeof track.animate !== 'function') return;
 
-      let animation: Animation | null = null;
-      let lastWidth = 0;
+      const dup = track.querySelector<HTMLElement>('.reviews-marquee__set[aria-hidden="true"]');
+      if (dup) dup.remove(); // Recycling braucht kein Duplikat — halbiert die Fläche
 
-      const build = () => {
-        const width = set.scrollWidth;
-        if (width <= 0 || width === lastWidth) return;
-        lastWidth = width;
-        if (animation) animation.cancel();
-        animation = track.animate(
-          [
-            { transform: 'translate3d(0, 0, 0)' },
-            { transform: `translate3d(${-width}px, 0, 0)` },
-          ],
-          { duration: (width / PX_PER_SECOND) * 1000, iterations: Infinity, easing: 'linear' },
-        );
-      };
+      const set = track.querySelector<HTMLElement>('.reviews-marquee__set');
+      if (!set || set.children.length < 2) return;
 
-      build();
-      requestAnimationFrame(build);
-      set.querySelectorAll('img').forEach((img) => {
-        if (!img.complete) img.addEventListener('load', build, { once: true });
+      const firstCard = set.firstElementChild as HTMLElement;
+      const MARGIN = parseFloat(getComputedStyle(firstCard).marginRight) || 0;
+      const speed = () => window.__marqueeSpeed || 19; // px/s; Hook für Tests
+
+      track.style.willChange = 'auto'; // keine dauerhafte Layer-Promotion in Safari
+
+      let x = 0;
+      let prev: number | null = null;
+      let paused = false;
+
+      marquee.addEventListener('mouseenter', () => {
+        paused = true;
       });
-      if (typeof ResizeObserver !== 'undefined') {
-        new ResizeObserver(build).observe(set);
-      } else {
-        window.addEventListener('resize', build);
+      marquee.addEventListener('mouseleave', () => {
+        paused = false;
+      });
+
+      function step(now: number) {
+        if (prev !== null && !paused) {
+          x += (speed() * Math.min(now - prev, 100)) / 1000; // dt gekappt (Tab-Wechsel)
+          let first = set!.firstElementChild as HTMLElement;
+          let w1 = first.getBoundingClientRect().width + MARGIN;
+          while (x >= w1) {
+            x -= w1;
+            set!.appendChild(first); // gleicher Frame: Layout rückt exakt nach
+            first = set!.firstElementChild as HTMLElement;
+            w1 = first.getBoundingClientRect().width + MARGIN;
+          }
+          track.style.transform = `translate3d(-${x.toFixed(2)}px, 0, 0)`;
+        }
+        prev = now;
+        requestAnimationFrame(step);
       }
-      if (document.fonts?.ready) document.fonts.ready.then(build).catch(() => {});
-
-      // Bei Hover pausieren, sonst weiter — nichts verschwindet.
-      marquee.addEventListener('mouseenter', () => animation?.pause());
-      marquee.addEventListener('mouseleave', () => animation?.play());
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) animation?.play();
-      });
+      requestAnimationFrame(step);
     });
   }
 
