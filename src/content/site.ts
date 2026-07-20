@@ -1,7 +1,7 @@
 /** Zentrale Site-Daten */
 export const siteName = 'Reichentrog & Kollegen';
 export const siteTagline =
-  'Immobilien-Kanzlei Hamburg · Hanseatisch diskret · Off-Market';
+  'Immobilienkanzlei Hamburg · Banken-Kompetenz · Kein Alleinauftrag';
 
 export const phoneDisplay = '040/41 00 90-0';
 export const phoneHref = 'tel:+494041009000';
