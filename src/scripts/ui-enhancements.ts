@@ -1,5 +1,3 @@
-import { prefersReducedMotion } from './motion';
-
 export function initScrollProgress(): void {
   const bar = document.getElementById('scroll-progress');
   if (!bar) return;
@@ -51,27 +49,4 @@ export function initFloatingCta(): void {
     { passive: true },
   );
   sync();
-}
-
-export function initOffMarketReveal(): void {
-  const headline = document.querySelector<HTMLElement>('.off-market-statement__headline');
-  if (!headline) return;
-
-  if (prefersReducedMotion()) {
-    headline.classList.add('is-visible');
-    return;
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        headline.classList.add('is-visible');
-        io.disconnect();
-      });
-    },
-    { threshold: 0.35 },
-  );
-
-  io.observe(headline);
 }

@@ -2,11 +2,7 @@ import { initHeroCanvas } from './hero-canvas';
 import { initSegmentHeroVideos } from './segment-hero-video';
 import { initHeroReveal } from './hero-reveal';
 import { initHeroScrollVideo } from './hero-scroll-video';
-import {
-  initFloatingCta,
-  initOffMarketReveal,
-  initScrollProgress,
-} from './ui-enhancements';
+import { initFloatingCta, initScrollProgress } from './ui-enhancements';
 import { initReviewsExpand } from './reviews-expand';
 import { initProcessStepper } from './process-stepper';
 import { prefersReducedMotion } from './motion';
@@ -268,7 +264,6 @@ function boot(): void {
   initHeroReveal();
   initScrollProgress();
   initFloatingCta();
-  initOffMarketReveal();
   initReviewsExpand();
   initProcessStepper();
 }

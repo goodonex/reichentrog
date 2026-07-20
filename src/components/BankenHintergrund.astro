@@ -23,45 +23,74 @@ const partners = [
   <div class="grain-overlay" aria-hidden="true"></div>
   <div class="editorial-dark-overlay absolute inset-0" aria-hidden="true"></div>
 
-  <div class="relative z-[2] mx-auto flex min-h-[520px] max-w-content items-center px-6 py-24 md:py-32 lg:py-36">
+  <div class="relative z-[2] mx-auto max-w-content px-6 py-24 md:py-32 lg:py-36">
     <RevealSection class="w-full">
-      <div class="max-w-2xl">
-        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
-          Banken-Hintergrund
-        </p>
-        <h2
-          class="font-display text-[clamp(2rem,4vw,3.25rem)] font-light leading-[1.1] tracking-[-0.02em] text-[#F5F0E8]"
-          style="text-wrap: balance;"
-        >
-          Warum Banken mit uns arbeiten.
-        </h2>
-        <p class="mt-6 text-[0.95rem] leading-relaxed text-[rgba(245,240,232,0.85)]">
-          Reichentrog & Kollegen arbeitet seit Jahren eng mit Hamburger Privatbanken und
-          Vermögensverwaltern zusammen, wenn Immobilienangelegenheiten ihrer Mandanten diskret und verlässlich gelöst
-          werden müssen. Daraus haben wir gelernt, was Vermögende und institutionelle Eigentümer erwarten:
-          keine Show, kein Massengeschäft, keine Kompromisse bei der Vertraulichkeit. Dieses Niveau bringen
-          wir in jeden Auftrag — ob Bank-Mandat oder Privatkunde.
-        </p>
-        <p
-          class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium uppercase tracking-[0.14em] text-[#F5F0E8]/60"
-          aria-label="Partner-Kategorien"
-        >
-          {
-            partners.map((p, i) => (
-              <>
-                {i > 0 && (
-                  <span class="text-[#F5F0E8]/30" aria-hidden="true">
-                    ·
-                  </span>
-                )}
-                <span>{p}</span>
-              </>
-            ))
-          }
-        </p>
-        <p class="mt-10 text-sm text-[#F5F0E8]/70">
-          <span data-countup data-target="10" data-suffix="+">10+</span> Jahre Erfahrung im Bankenumfeld
-        </p>
+      <div class="grid gap-12 md:grid-cols-2 md:gap-16">
+        <div>
+          <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
+            Banken-Hintergrund
+          </p>
+          <h2
+            class="font-display text-[clamp(2rem,4vw,3.25rem)] font-light leading-[1.1] tracking-[-0.02em] text-[#F5F0E8]"
+            style="text-wrap: balance;"
+          >
+            Warum Banken mit uns arbeiten.
+          </h2>
+          <p class="mt-6 text-[0.95rem] leading-relaxed text-[rgba(245,240,232,0.85)]">
+            Reichentrog & Kollegen arbeitet seit Jahren eng mit Hamburger Privatbanken und
+            Vermögensverwaltern zusammen, wenn Immobilienangelegenheiten ihrer Mandanten diskret und verlässlich gelöst
+            werden müssen. Daraus haben wir gelernt, was Vermögende und institutionelle Eigentümer erwarten:
+            keine Show, kein Massengeschäft, keine Kompromisse bei der Vertraulichkeit. Dieses Niveau bringen
+            wir in jeden Auftrag — ob Bank-Mandat oder Privatkunde.
+          </p>
+          <p
+            class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium uppercase tracking-[0.14em] text-[#F5F0E8]/60"
+            aria-label="Partner-Kategorien"
+          >
+            {
+              partners.map((p, i) => (
+                <>
+                  {i > 0 && (
+                    <span class="text-[#F5F0E8]/30" aria-hidden="true">
+                      ·
+                    </span>
+                  )}
+                  <span>{p}</span>
+                </>
+              ))
+            }
+          </p>
+          <div class="mt-10 flex items-baseline gap-3">
+            <span
+              class="font-display text-[clamp(3rem,6vw,5rem)] font-light leading-none text-bernstein"
+              data-countup
+              data-target="10"
+              data-suffix="+"
+            >
+              10+
+            </span>
+            <span class="text-sm text-[#F5F0E8]/70">Jahre Erfahrung im Bankenumfeld</span>
+          </div>
+        </div>
+
+        <div class="md:border-l md:border-[#F5F0E8]/12 md:pl-16">
+          <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F0E8]/70 md:mb-3.5">
+            Die Kanzlei
+          </p>
+          <h3
+            class="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-light italic leading-[1.15] text-[#F5F0E8]"
+            style="text-wrap: balance;"
+          >
+            Warum wir Kanzlei heißen — und nicht Makler.
+          </h3>
+          <!-- KUNDE BESTÄTIGEN: Wortlaut der Namens-Anekdote ({{KANZLEI_ZITAT_FREIGABE}}) -->
+          <p class="mt-6 text-[0.95rem] leading-relaxed text-[rgba(245,240,232,0.85)]">
+            Der Name geht auf einen Rechtsanwalt aus Norbert Reichentrogs Netzwerk zurück: „Sie
+            arbeiten wie wir mit unseren Mandanten — nennen Sie es Kanzlei." Dabei ist es
+            geblieben. Mandanten statt Kunden, Mandate statt Aufträge — und Diskretion als
+            Haltung, nicht als Werbeversprechen.
+          </p>
+        </div>
       </div>
     </RevealSection>
   </div>
@@ -71,7 +100,7 @@ const partners = [
   .banken-hintergrund {
     --section-fade-from: #18243d;
     --section-fade-edge-bottom: #303a45;
-    --section-fade-to: #1c2b4a;
+    --section-fade-to: var(--color-ice-blue);
   }
 
   .banken-hintergrund__bg {

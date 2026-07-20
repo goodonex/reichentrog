@@ -8,10 +8,8 @@ import SectionTransition from '../components/SectionTransition.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import HeroSection from '../components/HeroSection.astro';
 import AllesAusEinerHand from '../components/AllesAusEinerHand.astro';
-import KlassischVsWir from '../components/KlassischVsWir.astro';
 import BankenHintergrund from '../components/BankenHintergrund.astro';
 import WarumSection from '../components/WarumSection.astro';
-import OffMarketStatement from '../components/OffMarketStatement.astro';
 import ZielgruppeSection from '../components/ZielgruppeSection.astro';
 import CasesSection from '../components/CasesSection.astro';
 import ReichweiteSection from '../components/ReichweiteSection.astro';
@@ -74,18 +72,6 @@ const faqItems = [
       </div>
     </SectionTransition>
 
-    <!-- 3b. Der Unterschied -->
-    <SectionTransition
-      id="unterschied"
-      featherTop={false}
-      cursorSurface="light"
-      class="bg-off-white py-20 md:py-32"
-    >
-      <div class="mx-auto max-w-content px-6">
-        <KlassischVsWir />
-      </div>
-    </SectionTransition>
-
     <!-- 4. Warum -->
     <SectionTransition id="warum" featherTop={false} class="overflow-hidden p-0">
       <WarumSection />
@@ -95,8 +81,6 @@ const faqItems = [
     <SectionTransition id="banken-hintergrund" featherTop={false} class="overflow-hidden p-0">
       <BankenHintergrund />
     </SectionTransition>
-
-    <OffMarketStatement />
 
     <!-- 6. Ankauf -->
     <SectionTransition

@@ -383,8 +383,7 @@ footer .rk-logo-footer .rk-logo-sub {
 /* #hero: Video/Poster — Scroll-Exit rgba(245,240,232) (HeroVideo.astro) */
 /* #alles-aus-einer-hand: #F5F2EA (tailwind.config off-white) */
 /* #warum: Foto/Video — Edge-Top #576272, Edge-Bottom #10131a (WarumSection + .section-photo-fades) */
-/* #banken-hintergrund: Foto/Video — Edge-Top #273442, Edge-Bottom #303a45 (BankenHintergrund.astro) */
-/* #off-market: #1C2B4A (OffMarketStatement.astro bg-[#1c2b4a]) */
+/* #banken-hintergrund: Foto/Video — Edge-Top #273442, Edge-Bottom #303a45, Edge-Fade-To ice-blue (BankenHintergrund.astro) */
 /* #privatkunden: #E0E8EF (Parent #leistungen bg-ice-blue) */
 /* #ankauf: #E0E8EF */
 /* #geschaeftskunden: #E0E8EF */
