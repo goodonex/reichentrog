@@ -41,15 +41,15 @@ const rows = [
   <!-- Desktop: 3-Spalten-Tabelle -->
   <div class="mt-12 hidden md:block lg:mt-14">
     <div class="grid grid-cols-[1fr,1.4fr,1.4fr] gap-x-6 border-b border-steel-navy/12 pb-4">
-      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-steel-navy/50">Merkmal</p>
-      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-steel-navy/50">Üblich am Markt</p>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-steel-navy/70">Merkmal</p>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-steel-navy/70">Üblich am Markt</p>
       <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-bernstein">Reichentrog &amp; Kollegen</p>
     </div>
     {
       rows.map((row) => (
         <div class="grid grid-cols-[1fr,1.4fr,1.4fr] items-start gap-x-6 border-b border-steel-navy/8 py-6">
           <h3 class="font-display text-lg text-steel-navy">{row.merkmal}</h3>
-          <p class="text-sm leading-relaxed text-steel-navy/60">{row.ueblich}</p>
+          <p class="text-sm leading-relaxed text-steel-navy/70">{row.ueblich}</p>
           <div class="klassisch-vs-wir__highlight rounded-2xl border border-bernstein/25 bg-white/70 p-5">
             <p class="text-sm leading-relaxed text-steel-navy">{row.wir}</p>
           </div>
@@ -64,10 +64,10 @@ const rows = [
       rows.map((row) => (
         <div class="rounded-2xl border border-steel-navy/10 bg-white/50 p-6">
           <h3 class="font-display text-lg text-steel-navy">{row.merkmal}</h3>
-          <p class="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-steel-navy/40">
+          <p class="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-steel-navy/70">
             Üblich am Markt
           </p>
-          <p class="mt-1.5 text-sm leading-relaxed text-steel-navy/60">{row.ueblich}</p>
+          <p class="mt-1.5 text-sm leading-relaxed text-steel-navy/70">{row.ueblich}</p>
           <div class="klassisch-vs-wir__highlight mt-4 rounded-xl border border-bernstein/25 bg-white/70 p-4">
             <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-bernstein">
               Reichentrog &amp; Kollegen
