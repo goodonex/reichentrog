@@ -8,6 +8,7 @@ import SectionTransition from '../components/SectionTransition.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import HeroSection from '../components/HeroSection.astro';
 import AllesAusEinerHand from '../components/AllesAusEinerHand.astro';
+import KlassischVsWir from '../components/KlassischVsWir.astro';
 import BankenHintergrund from '../components/BankenHintergrund.astro';
 import WarumSection from '../components/WarumSection.astro';
 import OffMarketStatement from '../components/OffMarketStatement.astro';
@@ -70,6 +71,18 @@ const faqItems = [
     >
       <div class="mx-auto max-w-content px-6">
         <AllesAusEinerHand />
+      </div>
+    </SectionTransition>
+
+    <!-- 3b. Der Unterschied -->
+    <SectionTransition
+      id="unterschied"
+      featherTop={false}
+      cursorSurface="light"
+      class="bg-off-white py-20 md:py-32"
+    >
+      <div class="mx-auto max-w-content px-6">
+        <KlassischVsWir />
       </div>
     </SectionTransition>
 
