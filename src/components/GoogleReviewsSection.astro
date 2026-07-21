@@ -238,6 +238,12 @@ const initials = (name: string) =>
       will-change: auto;
     }
 
+    /* Ohne Animation braucht die statische Scroll-Liste kein Duplikat-Set —
+       das JS entfernt es bei reduced-motion nicht (früher Return), daher hier. */
+    .reviews-marquee__set[aria-hidden='true'] {
+      display: none;
+    }
+
     .reviews-card {
       scroll-snap-align: start;
     }
@@ -281,7 +287,10 @@ const initials = (name: string) =>
       });
 
       function step(now: number) {
-        if (prev !== null && !paused) {
+        // Auch pausieren, solange eine Karte aufgeklappt ist (Touch hat kein
+        // mouseenter) — sonst läuft die gerade gelesene Bewertung davon.
+        const holding = paused || set!.querySelector('.is-expanded') !== null;
+        if (prev !== null && !holding) {
           x += (speed() * Math.min(now - prev, 100)) / 1000; // dt gekappt (Tab-Wechsel)
           let first = set!.firstElementChild as HTMLElement;
           let w1 = first.getBoundingClientRect().width + MARGIN;
